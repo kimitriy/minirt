@@ -6,12 +6,13 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/14 22:55:41 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/16 16:48:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
 
+// makes point
 t_point	*p_make(float x, float y, float z)
 {
 	t_point	*new_point;
@@ -23,6 +24,7 @@ t_point	*p_make(float x, float y, float z)
 	new_point->z = z;
 	return (new_point);
 }
+
 
 void	v_xyz(t_vctr *vctr, t_point *tail, t_point *head)
 {
@@ -46,6 +48,7 @@ void	v_nxyz(t_vctr *vctr)
 	vctr->nz = vctr->z * lngth_invrsn;
 }
 
+//makes vector
 t_vctr	*v_make(t_point *tail, t_point *head)
 {
 	t_vctr *new_vctr;
@@ -81,6 +84,15 @@ void    v_n_prdct(t_vctr *vctr, float num)
 	v_nxyz(vctr);
 }
 
+void    nv_n_prdct(t_vctr *vctr, float num)
+{
+	vctr->x = vctr->nx * num;
+	vctr->y = vctr->ny * num;
+	vctr->z = vctr->nz * num;
+	v_lngth(vctr);
+	v_nxyz(vctr);
+}
+
 float	v_dt_prdct(t_vctr *vctr1, t_vctr *vctr2)
 {
 	float	dt_prdct;
@@ -99,7 +111,7 @@ float	v_angle(t_vctr *vctr1, t_vctr *vctr2)
 	return (angle);
 }
 
-void	vcalc(void)
+void	v_node(void)
 {
 	t_point	*a1;
 	t_point	*a2;
@@ -133,7 +145,7 @@ void	vcalc(void)
 
 	dot_product = v_dt_prdct(A1A2, A1A3);
 
-	angle = v_angle(A1A2, A1A3);
+	angle = v_angle(A1A2, A1A3) * 180 / M_PI;
 
 	printf("A1A2x1.5 (x:%f, y:%f, z:%f / nx:%f, ny:%f, nz:%f / lngth:%f)\n", A1A2->x, A1A2->y, A1A2->z, A1A2->nx, A1A2->ny, A1A2->nz, A1A2->lngth);
 	printf("A1A3 (x:%f, y:%f, z:%f / nx:%f, ny:%f, nz:%f / lngth:%f)\n", A1A3->x, A1A3->y, A1A3->z, A1A3->nx, A1A3->ny, A1A3->nz, A1A3->lngth);

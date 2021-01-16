@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/14 22:48:48 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/16 15:23:16 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,11 @@ void	strct_node(char **scn_arr, int size)
 	np = make_t_prsr();
 
 	prsr(scn_arr, size, &nscn, &np);
-	vcalc();
-	//print_nscn(&nscn);
-	//call_mlx_func();
+	rays_node(&nscn);
+	
 }
+
+//v_node();
+	//cnvs_node(&nscn);
+	//print_node(&nscn);
+	//mlx_node();

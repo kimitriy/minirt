@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/14 14:02:41 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/16 15:06:21 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	img2win(void)
 	mlx_loop(mlx); //holds the window opened
 }
 
-void	call_mlx_func()
+void	mlx_node(void)
 {
 	img2win();
 }

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:46:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/13 17:50:40 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/16 15:06:24 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void    print_trngl(t_scn *nscn)
     }
 }
 
-void	print_nscn(t_scn *nscn)
+void	print_node(t_scn *nscn)
 {
 	print_cam(nscn);
 	print_light(nscn);

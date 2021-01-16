@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/15 16:13:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/16 18:03:49 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,24 @@ typedef struct 		s_cnvs_xy
 	int				y_ncrtsn;
 }					t_cnvs_xy;
 
+typedef struct 		s_ray
+{
+	t_cnvs_xy		cnvs_xy;
+	t_point			*tail_point;
+	t_point			*head_point;
+	t_vctr			vctr[3];
+	t_point			hit_point[3];
+	float			dstnce;
+}					t_ray;
+
+//color
+typedef struct 		s_color
+{
+	int			x;
+	int			y;
+	int			z;
+}					t_color;
+
 //ft_mnrt_main.c
 void				make_scn_arr(t_list **head, int size);
 
@@ -335,14 +353,14 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 int					ft_lstsize(t_list *lst);
 
 //ft_mnrt_mlx.c
-void				call_mlx_func();
+void				call_node(void);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void				draw_sqr(t_data *data, t_draw_sqr *sqr);
 void				make_new_sqr(t_draw_sqr *new_sqr);
 void				img2win(void);
 
 //ft_mnrt_print_nscn.c
-void				print_nscn(t_scn *nscn);
+void				print_node(t_scn *nscn);
 void    			print_cam(t_scn *nscn);
 void    			print_light(t_scn *nscn);
 void    			print_pln(t_scn *nscn);
@@ -359,10 +377,20 @@ void				v_nxyz(t_vctr *vctr);
 t_vctr				*v_make(t_point *tail, t_point *head);
 t_vctr				*v_sum(t_vctr *vctr1, t_vctr *vctr2);
 void    			v_n_prdct(t_vctr *vctr, float num);
+void    			nv_n_prdct(t_vctr *vctr, float num);
 float				v_dt_prdct(t_vctr *vctr1, t_vctr *vctr2);
 float				v_angle(t_vctr *vctr1, t_vctr *vctr2);
-void				vcalc(void);
+void				v_node(void);
 
 //ft_mnrt_cnvs.c
+void				cnvs_node(t_scn *nscn);
+void				cnvrse2crtsn(t_cnvs_xy *xy);
+void				cnvrse2ncrtsn(t_cnvs_xy *xy);
+t_point				*cnvrse2xyz(t_scn *nscn, t_cnvs_xy *xy);
+
+//ft_mnrt_rays.c
+void				rays_node(t_scn *nscn);
+void				ray_eqtn(t_ray *ray, int dstnce, int gen);
+void   				*make_ray(t_scn *nscn, int x, int y);
 
 #endif

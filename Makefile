@@ -6,12 +6,12 @@
 #    By: rburton <rburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/28 11:32:38 by rburton           #+#    #+#              #
-#    Updated: 2021/01/14 22:47:50 by rburton          ###   ########.fr        #
+#    Updated: 2021/01/16 15:25:20 by rburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC 		= ft_mnrt_main.c ft_mnrt_utls.c ft_mnrt_atof.c ft_mnrt_strct.c ft_mnrt_lst.c ft_mnrt_prsr.c ft_mnrt_print_nscn.c ft_mnrt_mlx.c ft_mnrt_vctr.c
-#SRC 		= ft_mnrt_main.c ft_mnrt_utls.c ft_mnrt_atof.c ft_mnrt_strct.c ft_mnrt_lst.c ft_mnrt_prsr.c mlx_window.c
+SRC 		= ft_mnrt_main.c ft_mnrt_utls.c ft_mnrt_atof.c ft_mnrt_strct.c ft_mnrt_lst.c ft_mnrt_prsr.c ft_mnrt_mlx.c ft_mnrt_vctr.c ft_mnrt_cnvs.c ft_mnrt_rays.c
+#SRC 		= ft_mnrt_main.c ft_mnrt_utls.c ft_mnrt_atof.c ft_mnrt_strct.c ft_mnrt_lst.c ft_mnrt_prsr.c mlx_window.c ft_mnrt_print_nscn.c
 #SRC 		= ft_mnrt_main.c ft_mnrt_utls.c ft_mnrt_atof.c ft_mnrt_strct.c ft_mnrt_lst.c ft_mnrt_prsr.c mlx_window.c
 
 OBJS		= ${SRC:.c=.o}
