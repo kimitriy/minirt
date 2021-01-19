@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/16 15:06:21 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/18 20:47:05 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,25 @@ void	draw_sqr(t_data *data, t_draw_sqr *sqr)
 	}
 }
 
+void	draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr)
+{
+	int		x;
+	int		y;
+
+	x = 0;
+	y = 0;
+	while (y < nscn->n_rsltn.y)
+	{
+		while (x < 1920)
+		{
+			my_mlx_pixel_put(data, x, y, (unsigned int)arr[y][x]);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+}
+
 void	make_new_crcl(t_draw_crcl *new_crcl)
 {
 	new_crcl->start_x = 500;
@@ -119,29 +138,32 @@ void	draw_crcl(t_data *data, t_draw_crcl *crcl)
 	}
 }
 
-void	img2win(void)
+void	img2win(t_scn *nscn, unsigned int **arr)
 {
 	void		*mlx; //pointer for mlx instance
 	void		*mlx_win; //pointer for mlx window instance
 	t_data		img;
-	t_draw_sqr	new_sqr;
-	t_draw_crcl	new_crcl;
+	// t_draw_sqr	new_sqr;
+	// t_draw_crcl	new_crcl;
 
-	make_new_sqr(&new_sqr);
-	make_new_crcl(&new_crcl);
+	
+	// make_new_sqr(&new_sqr);
+	// make_new_crcl(&new_crcl);
+	
 	mlx = mlx_init(); //initialises mlx instance
-	mlx_win = mlx_new_window(mlx, 1000, 1000, "Hello, world!"); //initialises new window
-	img.img = mlx_new_image(mlx, 1000, 1000);
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello, world!"); //initialises new window
+	img.img = mlx_new_image(mlx, 1920, 1080);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pix, &img.line_lngth, &img.endian);
 	//draw_sqr(&img, &new_sqr);
-	draw_crcl(&img, &new_crcl);
+	//draw_crcl(&img, &new_crcl);
+	draw_from_arr(nscn, &img, arr);
 	//my_mlx_pixel_put(&img, 500, 100, 0x00FF0000); //x, y
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 
 	mlx_loop(mlx); //holds the window opened
 }
 
-void	mlx_node(void)
-{
-	img2win();
-}
+// void	mlx_node(void)
+// {
+// 	img2win();
+// }

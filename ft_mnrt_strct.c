@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/16 15:23:16 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/18 19:18:11 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	make_t_cam(t_scn *nscn)
 	
 	if (!(new_cam = (t_cam*)malloc(1 * sizeof(t_cam))))
 		new_cam = NULL;
-	new_cam->x = 0;
-	new_cam->y = 0;
-	new_cam->z = 0;
+	new_cam->p.x = 0;
+	new_cam->p.y = 0;
+	new_cam->p.z = 0;
 	new_cam->nx = 0;
 	new_cam->ny = 0;
 	new_cam->nz = 0;
@@ -53,9 +53,9 @@ void	make_t_lght(t_scn *nscn)
 
 	if (!(new_lght = (t_lght*)malloc(1 * sizeof(t_lght))))
 		new_lght = NULL;
-	new_lght->x = 0;
-	new_lght->y = 0;
-	new_lght->z = 0;
+	new_lght->p.x = 0;
+	new_lght->p.y = 0;
+	new_lght->p.z = 0;
 	new_lght->lvl = 0;
 	new_lght->r = 0;
 	new_lght->g = 0;
@@ -74,9 +74,9 @@ void	make_t_pln(t_scn *nscn)
 
 	if (!(new_pln = (t_pln*)malloc(1 * sizeof(t_pln))))
 		new_pln = NULL;
-	new_pln->x = 0;
-	new_pln->y = 0;
-	new_pln->z = 0;
+	new_pln->p.x = 0;
+	new_pln->p.y = 0;
+	new_pln->p.z = 0;
 	new_pln->nx = 0;
 	new_pln->ny = 0;
 	new_pln->nz = 0;
@@ -97,9 +97,9 @@ void	make_t_sphr(t_scn *nscn)
 
 	if (!(new_sphr = (t_sphr*)malloc(1 * sizeof(t_sphr))))
 		new_sphr = NULL;
-	new_sphr->x = 0;
-	new_sphr->y = 0;
-	new_sphr->z = 0;
+	new_sphr->p.x = 0;
+	new_sphr->p.y = 0;
+	new_sphr->p.z = 0;
 	new_sphr->d = 0;
 	new_sphr->r = 0;
 	new_sphr->g = 0;
@@ -118,9 +118,9 @@ void	make_t_cyl(t_scn *nscn)
 
 	if (!(new_cyl = (t_cyl*)malloc(1 * sizeof(t_cyl))))
 		new_cyl = NULL;
-	new_cyl->x = 0;
-	new_cyl->y = 0;
-	new_cyl->z = 0;
+	new_cyl->p.x = 0;
+	new_cyl->p.y = 0;
+	new_cyl->p.z = 0;
 	new_cyl->nx = 0;
 	new_cyl->ny = 0;
 	new_cyl->nz = 0;
@@ -143,9 +143,9 @@ void	make_t_sqr(t_scn *nscn)
 
 	if (!(new_sqr = (t_sqr*)malloc(1 * sizeof(t_sqr))))
 		new_sqr = NULL;
-	new_sqr->x = 0;
-	new_sqr->y = 0;
-	new_sqr->z = 0;
+	new_sqr->p.x = 0;
+	new_sqr->p.y = 0;
+	new_sqr->p.z = 0;
 	new_sqr->nx = 0;
 	new_sqr->ny = 0;
 	new_sqr->nz = 0;
@@ -167,15 +167,15 @@ void	make_t_trngl(t_scn *nscn)
 
 	if (!(new_trngl = (t_trngl*)malloc(1 * sizeof(t_trngl))))
 		new_trngl = NULL;
-	new_trngl->x1 = 0;
-	new_trngl->y1 = 0;
-	new_trngl->z1 = 0;
-	new_trngl->x2 = 0;
-	new_trngl->y2 = 0;
-	new_trngl->z2 = 0;
-	new_trngl->x3 = 0;
-	new_trngl->y3 = 0;
-	new_trngl->z3 = 0;
+	new_trngl->p1.x = 0;
+	new_trngl->p1.y = 0;
+	new_trngl->p1.z = 0;
+	new_trngl->p2.x = 0;
+	new_trngl->p2.y = 0;
+	new_trngl->p2.z = 0;
+	new_trngl->p3.x = 0;
+	new_trngl->p3.y = 0;
+	new_trngl->p3.z = 0;
 	new_trngl->r = 0;
 	new_trngl->g = 0;
 	new_trngl->b = 0;

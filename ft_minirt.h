@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/16 18:03:49 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/18 20:47:04 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ typedef struct		s_ambnt
 
 typedef struct		s_cam
 {
-	float			x;
-	float			y;
-	float			z;
+	t_point			p;
+	// float			x;
+	// float			y;
+	// float			z;
 	float			nx;
 	float			ny;
 	float			nz;
@@ -49,9 +50,10 @@ typedef struct		s_cam
 
 typedef struct		s_lght
 {
-	float			x;
-	float			y;
-	float			z;
+	t_point			p;
+	// float			x;
+	// float			y;
+	// float			z;
 	float			lvl;
 	unsigned int	r;
 	unsigned int	g;
@@ -61,9 +63,10 @@ typedef struct		s_lght
 
 typedef struct		s_pln
 {
-	float			x;
-	float			y;
-	float			z;
+	t_point			p;
+	// float			x;
+	// float			y;
+	// float			z;
 	float			nx;
 	float			ny;
 	float			nz;
@@ -75,9 +78,10 @@ typedef struct		s_pln
 
 typedef struct		s_sphr
 {
-	float			x;
-	float			y;
-	float			z;
+	t_point			p;
+	// float			x;
+	// float			y;
+	// float			z;
 	float			d;
 	unsigned int	r;
 	unsigned int	g;
@@ -87,9 +91,10 @@ typedef struct		s_sphr
 
 typedef struct		s_cyl
 {
-	float			x;
-	float			y;
-	float			z;
+	t_point			p;
+	// float			x;
+	// float			y;
+	// float			z;
 	float			nx;
 	float			ny;
 	float			nz;
@@ -103,9 +108,10 @@ typedef struct		s_cyl
 
 typedef struct		s_sqr
 {
-	float			x;
-	float			y;
-	float			z;
+	t_point			p;
+	// float			x;
+	// float			y;
+	// float			z;
 	float			nx;
 	float			ny;
 	float			nz;
@@ -118,15 +124,18 @@ typedef struct		s_sqr
 
 typedef struct		s_trngl
 {
-	float			x1;
-	float			y1;
-	float			z1;
-	float			x2;
-	float			y2;
-	float			z2;
-	float			x3;
-	float			y3;
-	float			z3;
+	t_point			p1;
+	// float			x1;
+	// float			y1;
+	// float			z1;
+	t_point			p2;
+	// float			x2;
+	// float			y2;
+	// float			z2;
+	t_point			p3;
+	// float			x3;
+	// float			y3;
+	// float			z3;
 	unsigned int	r;
 	unsigned int	g;
 	unsigned int	b;
@@ -243,43 +252,39 @@ typedef struct 		s_point
 	float			z;
 }					t_point;
 
-typedef struct 		s_vctr
+typedef struct		s_2d_point
+{
+	float			x;
+	float			y;
+}					t_2d_point;
+
+typedef struct 		s_vxyz
 {
 	float			x;
 	float			y;
 	float			z;
-	float			nx;
-	float			ny;
-	float			nz;
+}					t_vxyz;
+
+typedef struct 		s_vctr
+{
+	t_vxyz			xyz;
+	t_vxyz			nrmlsd;
 	float			lngth;
 }					t_vctr;
 
-typedef struct 		s_cnvs_xy
-{
-	t_rsltn			rsltn;
-	int				x_crtsn;
-	int				y_crtsn;
-	int				x_ncrtsn;
-	int				y_ncrtsn;
-}					t_cnvs_xy;
-
 typedef struct 		s_ray
 {
-	t_cnvs_xy		cnvs_xy;
-	t_point			*tail_point;
-	t_point			*head_point;
+	int				sgmnt;
+	t_point			tail_point;
+	t_point			head_point;
 	t_vctr			vctr[3];
 	t_point			hit_point[3];
 	float			dstnce;
+	unsigned int	a;
+	unsigned int	r;
+	unsigned int	g;
+	unsigned int	b;
 }					t_ray;
-
-//color
-typedef struct 		s_color
-{
-	int			x;
-	int			y;
-	int			z;
-}					t_color;
 
 //ft_mnrt_main.c
 void				make_scn_arr(t_list **head, int size);
@@ -357,7 +362,8 @@ void				call_node(void);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void				draw_sqr(t_data *data, t_draw_sqr *sqr);
 void				make_new_sqr(t_draw_sqr *new_sqr);
-void				img2win(void);
+void				draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr);
+void				img2win(t_scn *nscn, unsigned int **arr);
 
 //ft_mnrt_print_nscn.c
 void				print_node(t_scn *nscn);
@@ -370,27 +376,30 @@ void    			print_sqr(t_scn *nscn);
 void    			print_trngl(t_scn *nscn);
 
 //ft_mnrt_vctr.c
-t_point				*p_make(float x, float y, float z);
+void				p_make(t_point *output, float x, float y, float z);
 void				v_xyz(t_vctr *vctr, t_point *tail, t_point *head);
 void				v_lngth(t_vctr *vctr);
 void				v_nxyz(t_vctr *vctr);
-t_vctr				*v_make(t_point *tail, t_point *head);
+void				v_make(t_vctr *output, t_point *tail, t_point *head);
 t_vctr				*v_sum(t_vctr *vctr1, t_vctr *vctr2);
 void    			v_n_prdct(t_vctr *vctr, float num);
 void    			nv_n_prdct(t_vctr *vctr, float num);
-float				v_dt_prdct(t_vctr *vctr1, t_vctr *vctr2);
+float				v_dt_prdct(t_vxyz *xyz1, t_vxyz *xyz2);
 float				v_angle(t_vctr *vctr1, t_vctr *vctr2);
 void				v_node(void);
 
 //ft_mnrt_cnvs.c
 void				cnvs_node(t_scn *nscn);
-void				cnvrse2crtsn(t_cnvs_xy *xy);
-void				cnvrse2ncrtsn(t_cnvs_xy *xy);
-t_point				*cnvrse2xyz(t_scn *nscn, t_cnvs_xy *xy);
+void				cnvrse2crtsn(t_scn *nscn,t_2d_point *xy);
+void				cnvrse2ncrtsn(t_scn *nscn,t_2d_point *xy);
+void				cnvrse2xyz(t_scn *nscn, t_point *output, t_2d_point *xy);
 
 //ft_mnrt_rays.c
 void				rays_node(t_scn *nscn);
 void				ray_eqtn(t_ray *ray, int dstnce, int gen);
 void   				*make_ray(t_scn *nscn, int x, int y);
+unsigned int		**make_rays_array(t_scn *nscn);
+unsigned long 		cnvrse2argb(unsigned int a, unsigned int r, unsigned int g, unsigned int b);
+unsigned int		**launch_rays(t_scn *nscn, unsigned int **rays_arr);
 
 #endif

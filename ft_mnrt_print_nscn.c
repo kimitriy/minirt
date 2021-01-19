@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:46:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/16 15:06:24 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/18 19:18:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void    print_cam(t_scn *nscn)
     while (i < nscn->n_cntr.cam)
     {
     	cam = nscn->n_cam->content;
-        printf("nscn->n_cam->x:%f\n", cam->x);
-        printf("nscn->n_cam->y:%f\n", cam->y);
-        printf("nscn->n_cam->z:%f\n", cam->z);
+        printf("nscn->n_cam->x:%f\n", cam->p.x);
+        printf("nscn->n_cam->y:%f\n", cam->p.y);
+        printf("nscn->n_cam->z:%f\n", cam->p.z);
         printf("nscn->n_cam->nx:%f\n", cam->nx);
         printf("nscn->n_cam->ny:%f\n", cam->ny);
         printf("nscn->n_cam->nz:%f\n", cam->nz);
@@ -46,9 +46,9 @@ void    print_light(t_scn *nscn)
     while (i < nscn->n_cntr.lght)
     {
         lght = nscn->n_lght->content;
-		printf("nscn->n_lght->x:%f\n", lght->x);
-        printf("nscn->n_lght->y:%f\n", lght->y);
-        printf("nscn->n_lght->z:%f\n", lght->z);
+		printf("nscn->n_lght->x:%f\n", lght->p.x);
+        printf("nscn->n_lght->y:%f\n", lght->p.y);
+        printf("nscn->n_lght->z:%f\n", lght->p.z);
         printf("nscn->n_lght->lvl:%f\n", lght->lvl);
         printf("nscn->n_lght->r:%d\n", lght->r);
         printf("nscn->n_lght->g:%d\n", lght->g);
@@ -69,9 +69,9 @@ void    print_pln(t_scn *nscn)
     while (i < nscn->n_cntr.pln)
     {
         pln = nscn->n_pln->content;
-		printf("nscn->n_pln->x:%f\n", pln->x);
-        printf("nscn->n_pln->y:%f\n", pln->y);
-        printf("nscn->n_pln->z:%f\n", pln->z);
+		printf("nscn->n_pln->x:%f\n", pln->p.x);
+        printf("nscn->n_pln->y:%f\n", pln->p.y);
+        printf("nscn->n_pln->z:%f\n", pln->p.z);
         printf("nscn->n_pln->nx:%f\n", pln->nx);
         printf("nscn->n_pln->ny:%f\n", pln->ny);
         printf("nscn->n_pln->nz:%f\n", pln->nz);
@@ -94,9 +94,9 @@ void    print_sphr(t_scn *nscn)
     while (i < nscn->n_cntr.sphr)
     {
         sphr = nscn->n_sphr->content;
-		printf("nscn->n_sphr->x:%f\n", sphr->x);
-        printf("nscn->n_sphr->y:%f\n", sphr->y);
-        printf("nscn->n_sphr->z:%f\n", sphr->z);
+		printf("nscn->n_sphr->x:%f\n", sphr->p.x);
+        printf("nscn->n_sphr->y:%f\n", sphr->p.y);
+        printf("nscn->n_sphr->z:%f\n", sphr->p.z);
         printf("nscn->n_sphr->d:%f\n", sphr->d);
         printf("nscn->n_sphr->r:%d\n", sphr->r);
         printf("nscn->n_sphr->g:%d\n", sphr->g);
@@ -117,9 +117,9 @@ void    print_cyl(t_scn *nscn)
     while (i < nscn->n_cntr.cyl)
     {
         cyl = nscn->n_cyl->content;
-		printf("nscn->n_cyl->x:%f\n", cyl->x);
-        printf("nscn->n_cyl->y:%f\n", cyl->y);
-        printf("nscn->n_cyl->z:%f\n", cyl->z);
+		printf("nscn->n_cyl->x:%f\n", cyl->p.x);
+        printf("nscn->n_cyl->y:%f\n", cyl->p.y);
+        printf("nscn->n_cyl->z:%f\n", cyl->p.z);
         printf("nscn->n_cyl->nx:%f\n", cyl->nx);
         printf("nscn->n_cyl->ny:%f\n", cyl->ny);
         printf("nscn->n_cyl->nz:%f\n", cyl->nz);
@@ -144,9 +144,9 @@ void    print_sqr(t_scn *nscn)
     while (i < nscn->n_cntr.sqr)
     {
         sqr = nscn->n_sqr->content;
-		printf("nscn->n_sqr->x:%f\n", sqr->x);
-        printf("nscn->n_sqr->y:%f\n", sqr->y);
-        printf("nscn->n_sqr->z:%f\n", sqr->z);
+		printf("nscn->n_sqr->x:%f\n", sqr->p.x);
+        printf("nscn->n_sqr->y:%f\n", sqr->p.y);
+        printf("nscn->n_sqr->z:%f\n", sqr->p.z);
         printf("nscn->n_sqr->nx:%f\n", sqr->nx);
         printf("nscn->n_sqr->ny:%f\n", sqr->ny);
         printf("nscn->n_sqr->nz:%f\n", sqr->nz);
@@ -170,15 +170,15 @@ void    print_trngl(t_scn *nscn)
     while (i < nscn->n_cntr.trngl)
     {
         trngl = nscn->n_trngl->content;
-		printf("nscn->n_trngl->x1:%f\n", trngl->x1);
-        printf("nscn->n_trngl->y2:%f\n", trngl->y1);
-        printf("nscn->n_trngl->z3:%f\n", trngl->z1);
-        printf("nscn->n_trngl->x2:%f\n", trngl->x2);
-        printf("nscn->n_trngl->y2:%f\n", trngl->y2);
-        printf("nscn->n_trngl->z2:%f\n", trngl->z2);
-        printf("nscn->n_trngl->x3:%f\n", trngl->x3);
-        printf("nscn->n_trngl->y3:%f\n", trngl->y3);
-        printf("nscn->n_trngl->z3:%f\n", trngl->z3);
+		printf("nscn->n_trngl->x1:%f\n", trngl->p1.x);
+        printf("nscn->n_trngl->y2:%f\n", trngl->p1.y);
+        printf("nscn->n_trngl->z3:%f\n", trngl->p1.z);
+        printf("nscn->n_trngl->x2:%f\n", trngl->p2.x);
+        printf("nscn->n_trngl->y2:%f\n", trngl->p2.y);
+        printf("nscn->n_trngl->z2:%f\n", trngl->p2.z);
+        printf("nscn->n_trngl->x3:%f\n", trngl->p3.x);
+        printf("nscn->n_trngl->y3:%f\n", trngl->p3.y);
+        printf("nscn->n_trngl->z3:%f\n", trngl->p3.z);
         printf("nscn->n_trngl->r:%d\n", trngl->r);
         printf("nscn->n_trngl->g:%d\n", trngl->g);
         printf("nscn->n_trngl->b:%d\n", trngl->b);
