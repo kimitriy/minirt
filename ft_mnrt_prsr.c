@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/18 19:18:08 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/23 17:12:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	write_ambnt(t_scn *nscn, t_prsr *np)
 
 void	write_cam(t_scn *nscn, t_prsr *np)
 {
-	t_cam *tmp;
+	t_cam 	*tmp;
 
 	tmp = NULL;
 	make_t_cam(nscn);
@@ -58,11 +58,13 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
 	tmp->p.z = ft_atof(np->z);
-	tmp->nx = ft_atof(np->nx);
-	tmp->ny = ft_atof(np->ny);
-	tmp->nz = ft_atof(np->nz);
+	tmp->v.nxyz.x = ft_atof(np->nx);
+	tmp->v.nxyz.y = ft_atof(np->ny);
+	tmp->v.nxyz.z = ft_atof(np->nz);
 	tmp->fov = ft_atoi(np->fov);
+	v_fill(&tmp->v);
 	nscn->n_cntr.cam++;
+	//nscn->n_cam = nscn->n_cam->next;
 }
 
 void	write_lght(t_scn *nscn, t_prsr *np)
@@ -92,12 +94,13 @@ void	write_pln(t_scn *nscn, t_prsr *np)
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
 	tmp->p.z = ft_atof(np->z);
-	tmp->nx = ft_atof(np->nx);
-	tmp->ny = ft_atof(np->ny);
-	tmp->nz = ft_atof(np->nz);
+	tmp->v.nxyz.x = ft_atof(np->nx);
+	tmp->v.nxyz.y = ft_atof(np->ny);
+	tmp->v.nxyz.z = ft_atof(np->nz);
 	tmp->r = ft_atoi(np->r);
 	tmp->g = ft_atoi(np->g);
 	tmp->b = ft_atoi(np->b);
+	v_fill(&tmp->v);
 	nscn->n_cntr.pln++;
 }
 
@@ -128,14 +131,15 @@ void	write_cyl(t_scn *nscn, t_prsr *np)
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
 	tmp->p.z = ft_atof(np->z);
-	tmp->nx = ft_atof(np->nx);
-	tmp->ny = ft_atof(np->ny);
-	tmp->nz = ft_atof(np->nz);
+	tmp->v.nxyz.x = ft_atof(np->nx);
+	tmp->v.nxyz.y = ft_atof(np->ny);
+	tmp->v.nxyz.z = ft_atof(np->nz);
 	tmp->d = ft_atof(np->d);
 	tmp->h = ft_atof(np->h);
 	tmp->r = ft_atoi(np->r);
 	tmp->g = ft_atoi(np->g);
 	tmp->b = ft_atoi(np->b);
+	v_fill(&tmp->v);
 	nscn->n_cntr.cyl++;
 }
 
@@ -149,13 +153,14 @@ void	write_sqr(t_scn *nscn, t_prsr *np)
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
 	tmp->p.z = ft_atof(np->z);
-	tmp->nx = ft_atof(np->nx);
-	tmp->ny = ft_atof(np->ny);
-	tmp->nz = ft_atof(np->nz);
+	tmp->v.nxyz.x = ft_atof(np->nx);
+	tmp->v.nxyz.y = ft_atof(np->ny);
+	tmp->v.nxyz.z = ft_atof(np->nz);
 	tmp->side = ft_atof(np->side);
 	tmp->r = ft_atoi(np->r);
 	tmp->g = ft_atoi(np->g);
 	tmp->b = ft_atoi(np->b);
+	v_fill(&tmp->v);
 	nscn->n_cntr.sqr++;
 }
 

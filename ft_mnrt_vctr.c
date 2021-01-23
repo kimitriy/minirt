@@ -6,86 +6,88 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/18 20:47:05 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 02:12:02 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
 
-// makes point
-// t_point	*p_make(float x, float y, float z)
-// {
-// 	t_point	*new_point;
-	
-// 	if (!(new_point = (t_point*)malloc(1 * sizeof(t_point))))
-// 		return NULL;
-// 	new_point->x = x;
-// 	new_point->y = y;
-// 	new_point->z = z;
-// 	return (new_point);
-// }
-
-void	p_make(t_point *output, float x, float y, float z)
+void	p2d_make(t_2d_point *out, int x, int y)
 {
-	output->x = x;
-	output->y = y;
-	output->z = z;
+	out->x = x;
+	out->y = y;
 }
 
-void	v_xyz(t_vctr *vctr, t_point *tail, t_point *head)
+void	p_make(t_point *out, float x, float y, float z)
 {
-	vctr->xyz.x = head->x - tail->x;
-	vctr->xyz.y = head->y - tail->y;
-	vctr->xyz.z = head->z - tail->z;
+	out->x = x;
+	out->y = y;
+	out->z = z;
 }
 
-void	v_lngth(t_vctr *vctr)
+void	v_xyz(t_vxyz *out, t_point *tail, t_point *head)
 {
-	vctr->lngth = sqrtf(powf(vctr->xyz.x, 2) + powf(vctr->xyz.y, 2) + powf(vctr->xyz.z, 2));
+	out->x = head->x - tail->x;
+	out->y = head->y - tail->y;
+	out->z = head->z - tail->z;
 }
 
-void	v_nxyz(t_vctr *vctr)
+void	v_lngth(t_vctr *nvctr)
+{
+	if (nvctr->xyz.x != 0 || nvctr->xyz.y != 0 || nvctr->xyz.y != 0)
+		nvctr->lngth = sqrtf(powf(nvctr->xyz.x, 2) + powf(nvctr->xyz.y, 2) + powf(nvctr->xyz.z, 2));
+	else if (nvctr->nxyz.x != 0 || nvctr->nxyz.y != 0 || nvctr->nxyz.z != 0)
+		nvctr->lngth = 1;
+}
+
+void	v_n(t_vctr *nvctr)
 {
 	float	lngth_invrsn;
 
-	lngth_invrsn = 1 / vctr->lngth;
-	vctr->nrmlsd.x = vctr->xyz.x * lngth_invrsn;
-	vctr->nrmlsd.y = vctr->xyz.y * lngth_invrsn;
-	vctr->nrmlsd.z = vctr->xyz.z * lngth_invrsn;
+	lngth_invrsn = 1 / nvctr->lngth;
+	if (nvctr->xyz.x != 0 || nvctr->xyz.y != 0 || nvctr->xyz.y != 0)
+	{
+		nvctr->nxyz.x = nvctr->xyz.x * lngth_invrsn;
+		nvctr->nxyz.y = nvctr->xyz.y * lngth_invrsn;
+		nvctr->nxyz.z = nvctr->xyz.z * lngth_invrsn;
+	}
+	else if (nvctr->nxyz.x != 0 || nvctr->nxyz.y != 0 || nvctr->nxyz.z != 0)
+	{
+		nvctr->xyz.x = nvctr->nxyz.x * lngth_invrsn;
+		nvctr->xyz.y = nvctr->nxyz.y * lngth_invrsn;
+		nvctr->xyz.z = nvctr->nxyz.z * lngth_invrsn;
+	}
 }
 
-//makes vector
-// t_vctr	*v_make(t_point *tail, t_point *head)
-// {
-// 	t_vctr *new_vctr;
-
-// 	if (!(new_vctr = (t_vctr*)malloc(1 * sizeof(t_vctr))))
-// 		return NULL;
-// 	v_xyz(new_vctr, tail, head);
-// 	v_lngth(new_vctr);
-// 	v_nxyz(new_vctr);
-// 	return (new_vctr);
-// }
-
-void	v_make(t_vctr *output, t_point *tail, t_point *head)
+void	v_null(t_vctr *nvctr)
 {
-	v_xyz(output, tail, head);
-	v_lngth(output);
-	v_nxyz(output);
+	nvctr->xyz.x = 0;
+	nvctr->xyz.y = 0;
+	nvctr->xyz.z = 0;
+	nvctr->nxyz.x = 0;
+	nvctr->nxyz.y = 0;
+	nvctr->nxyz.z = 0;
+	nvctr->lngth = 0;
 }
 
-t_vctr	*v_sum(t_vctr *vctr1, t_vctr *vctr2)
+void	v_fill(t_vctr *nvctr)
 {
-	t_vctr *new_vctr;
-	
-	if (!(new_vctr = (t_vctr*)malloc(1 * sizeof(t_vctr))))
-		return NULL;
-	new_vctr->xyz.x = vctr1->xyz.x + vctr2->xyz.x;
-	new_vctr->xyz.y = vctr1->xyz.y + vctr2->xyz.y;
-	new_vctr->xyz.z = vctr1->xyz.z + vctr2->xyz.z;
-	v_lngth(new_vctr);
-	v_nxyz(new_vctr);
-	return (new_vctr);
+	v_lngth(nvctr);
+	v_n(nvctr);
+}
+
+void	v_make(t_vctr *out, t_point *tail, t_point *head)
+{
+	v_xyz(&out->xyz, tail, head);
+	v_fill(out);
+}
+
+void	v_sum(t_vctr *out, t_vctr *vctr1, t_vctr *vctr2)
+{
+	out->xyz.x = vctr1->xyz.x + vctr2->xyz.x;
+	out->xyz.y = vctr1->xyz.y + vctr2->xyz.y;
+	out->xyz.z = vctr1->xyz.z + vctr2->xyz.z;
+	v_fill(out);
 }
 
 void    v_n_prdct(t_vctr *vctr, float num)
@@ -93,20 +95,18 @@ void    v_n_prdct(t_vctr *vctr, float num)
 	vctr->xyz.x = vctr->xyz.x * num;
 	vctr->xyz.y = vctr->xyz.y * num;
 	vctr->xyz.z = vctr->xyz.z * num;
-	v_lngth(vctr);
-	v_nxyz(vctr);
+	v_fill(vctr);
 }
 
 void    nv_n_prdct(t_vctr *vctr, float num)
 {
-	vctr->xyz.x = vctr->nrmlsd.x * num;
-	vctr->xyz.y = vctr->nrmlsd.y * num;
-	vctr->xyz.z = vctr->nrmlsd.z * num;
-	v_lngth(vctr);
-	v_nxyz(vctr);
+	vctr->xyz.x = vctr->nxyz.x * num;
+	vctr->xyz.y = vctr->nxyz.y * num;
+	vctr->xyz.z = vctr->nxyz.z * num;
+	v_fill(vctr);
 }
 
-float	v_dt_prdct(t_vxyz *xyz1, t_vxyz *xyz2)
+float	v_d_prdct(t_vxyz *xyz1, t_vxyz *xyz2)
 {
 	float	dt_prdct;
 
@@ -114,56 +114,67 @@ float	v_dt_prdct(t_vxyz *xyz1, t_vxyz *xyz2)
 	return (dt_prdct);
 }
 
+float	v_x_point_prdct(t_vxyz *xyz, t_point *p)
+{
+	float	prdct;
+
+	prdct = xyz->x * p->x + xyz->y * p->y + xyz->z * p->z;
+	return (prdct);
+}
+
+void	v_crss_prdct(t_vxyz *out, t_vxyz *xyz1, t_vxyz *xyz2)
+{
+	out->x = xyz1->y * xyz2->z - xyz2->y * xyz1->z;
+	out->y = -1 * (xyz1->x * xyz2->z - xyz2->x * xyz1->z);
+	out->z = xyz1->x * xyz2->y - xyz2->x * xyz1->y;
+}
+
 float	v_angle(t_vctr *vctr1, t_vctr *vctr2)
 {
     float	angle;
 	float	dt_prdct;
 
-	dt_prdct = v_dt_prdct(vctr1, vctr2);
+	dt_prdct = v_d_prdct(&vctr1->xyz, &vctr2->xyz);
 	angle = acosf(dt_prdct / (vctr1->lngth * vctr2->lngth));
 	return (angle);
 }
 
+void	v_nrml2trngl(t_trngl *trn)
+{
+	t_vctr	a;
+	t_vctr	b;
+	t_vctr	nrml;
+
+	v_make(&a, &trn->p1, &trn->p2);
+	v_make(&b, &trn->p1, &trn->p3);
+	v_crss_prdct(&nrml.xyz, &a.xyz, &b.xyz);
+	trn->n = nrml;
+	v_fill(&trn->n);
+	printf("vAB(%f, %f, %f)\n", a.xyz.x, a.xyz.y, a.xyz.z);
+	printf("nvAB(%f, %f, %f)\n", a.nxyz.x, a.nxyz.y, a.nxyz.z);
+	printf("vAC(%f, %f, %f)\n", b.xyz.x, b.xyz.y, b.xyz.z);
+	printf("nvAC(%f, %f, %f)\n", b.nxyz.x, b.nxyz.y, b.nxyz.z);
+}
+
 void	v_node(void)
 {
-	t_point	*a1;
-	t_point	*a2;
-	t_point	*a3;
-	t_point	*a4;
-	//t_point	*s;
+	t_point	a;
+	t_point	b;
+	t_point	c;
+	t_trngl	delta;
 
-	t_vctr	*A1A2;
-	t_vctr	*A1A3;
-	t_vctr	*A1A4;
-	t_vctr	*vsum;
+	p_make(&a, 1, 4, 0);
+	p_make(&b, 4, 3, 1);
+	p_make(&c, 2, 6, 3);
 
-	float	dot_product;
-	float	angle;
+	delta.p1 = a;
+	delta.p2 = b;
+	delta.p3 = c;
 
-	a1 = p_make(10, 5, -4);
-	a2 = p_make(-8, 6, 3);
-	a3 = p_make(1, 1, -1);
-	a4 = p_make(0, 0, 1);
-	//s = p_make();
+	v_nrml2trngl(&delta);
 
-	A1A2 = v_make(a1, a2);
-	A1A3 = v_make(a1, a3);
-	A1A4 = v_make(a1, a4);
-
-	vsum = v_sum(A1A2, A1A3);
-
-	printf("A1A2 (x:%f, y:%f, z:%f / nx:%f, ny:%f, nz:%f / lngth:%f)\n", A1A2->xyz.x, A1A2->xyz.y, A1A2->xyz.z, A1A2->nrmlsd.x, A1A2->nrmlsd.y, A1A2->nrmlsd.z, A1A2->lngth);
-
-	//v_n_prdct(A1A2, 1.5);
-
-	dot_product = v_dt_prdct(A1A2, A1A3);
-
-	angle = v_angle(A1A2, A1A3) * 180 / M_PI;
-
-	printf("A1A2x1.5 (x:%f, y:%f, z:%f / nx:%f, ny:%f, nz:%f / lngth:%f)\n", A1A2->xyz.x, A1A2->xyz.y, A1A2->xyz.z, A1A2->nrmlsd.x, A1A2->nrmlsd.y, A1A2->nrmlsd.z, A1A2->lngth);
-	printf("A1A3 (x:%f, y:%f, z:%f / nx:%f, ny:%f, nz:%f / lngth:%f)\n", A1A3->xyz.x, A1A3->xyz.y, A1A3->xyz.z, A1A3->nrmlsd.x, A1A3->nrmlsd.y, A1A3->nrmlsd.z, A1A3->lngth);
-	printf("A1A4 (x:%f, y:%f, z:%f / nx:%f, ny:%f, nz:%f / lngth:%f)\n", A1A4->xyz.x, A1A4->xyz.y, A1A4->xyz.z, A1A4->nrmlsd.x, A1A4->nrmlsd.y, A1A4->nrmlsd.z, A1A4->lngth);
-	printf("vsum (x:%f, y:%f, z:%f / nx:%f, ny:%f, nz:%f / lngth:%f)\n", vsum->xyz.x, vsum->xyz.y, vsum->xyz.z, vsum->nrmlsd.x, vsum->nrmlsd.y, vsum->nrmlsd.z, vsum->lngth);
-	printf("dot_product:%f\n", dot_product);
-	printf("angle:%f\n", angle);
+	printf("A(%f, %f, %f)\n", a.x, a.y, a.z);
+	printf("B(%f, %f, %f)\n", b.x, b.y, b.z);
+	printf("C(%f, %f, %f)\n", c.x, c.y, c.z);
+	printf("nrml2trngle(%f, %f, %f)\n", delta.n.nxyz.x, delta.n.nxyz.y, delta.n.nxyz.z);
 }

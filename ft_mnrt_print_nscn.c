@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:46:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/18 19:18:10 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 02:07:36 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void    print_cam(t_scn *nscn)
     int     i;
     t_cam   *cam;
 
-    cam = NULL;
-	
     i = 0;
     while (i < nscn->n_cntr.cam)
     {
@@ -26,9 +24,9 @@ void    print_cam(t_scn *nscn)
         printf("nscn->n_cam->x:%f\n", cam->p.x);
         printf("nscn->n_cam->y:%f\n", cam->p.y);
         printf("nscn->n_cam->z:%f\n", cam->p.z);
-        printf("nscn->n_cam->nx:%f\n", cam->nx);
-        printf("nscn->n_cam->ny:%f\n", cam->ny);
-        printf("nscn->n_cam->nz:%f\n", cam->nz);
+        printf("nscn->n_cam->nx:%f\n", cam->v.nxyz.x);
+        printf("nscn->n_cam->ny:%f\n", cam->v.nxyz.y);
+        printf("nscn->n_cam->nz:%f\n", cam->v.nxyz.z);
         printf("nscn->n_cam->fov:%d\n", cam->fov);
         nscn->n_cam = nscn->n_cam->next;
         i++;
@@ -40,8 +38,6 @@ void    print_light(t_scn *nscn)
     int		i;
     t_lght	*lght;
 
-    lght = NULL;
-    
     i = 0;
     while (i < nscn->n_cntr.lght)
     {
@@ -63,7 +59,7 @@ void    print_pln(t_scn *nscn)
     int		i;
     t_pln	*pln;
 
-    pln = NULL;
+    // pln = NULL;
     
     i = 0;
     while (i < nscn->n_cntr.pln)
@@ -72,9 +68,9 @@ void    print_pln(t_scn *nscn)
 		printf("nscn->n_pln->x:%f\n", pln->p.x);
         printf("nscn->n_pln->y:%f\n", pln->p.y);
         printf("nscn->n_pln->z:%f\n", pln->p.z);
-        printf("nscn->n_pln->nx:%f\n", pln->nx);
-        printf("nscn->n_pln->ny:%f\n", pln->ny);
-        printf("nscn->n_pln->nz:%f\n", pln->nz);
+        printf("nscn->n_pln->nx:%f\n", pln->v.nxyz.x);
+        printf("nscn->n_pln->ny:%f\n", pln->v.nxyz.y);
+        printf("nscn->n_pln->nz:%f\n", pln->v.nxyz.z);
         printf("nscn->n_pln->r:%d\n", pln->r);
         printf("nscn->n_pln->g:%d\n", pln->g);
         printf("nscn->n_pln->b:%d\n", pln->b);
@@ -88,7 +84,7 @@ void    print_sphr(t_scn *nscn)
     int		i;
     t_sphr	*sphr;
 
-    sphr = NULL;
+    // sphr = NULL;
     
     i = 0;
     while (i < nscn->n_cntr.sphr)
@@ -111,7 +107,7 @@ void    print_cyl(t_scn *nscn)
     int		i;
     t_cyl	*cyl;
 
-    cyl = NULL;
+    // cyl = NULL;
     
     i = 0;
     while (i < nscn->n_cntr.cyl)
@@ -120,9 +116,9 @@ void    print_cyl(t_scn *nscn)
 		printf("nscn->n_cyl->x:%f\n", cyl->p.x);
         printf("nscn->n_cyl->y:%f\n", cyl->p.y);
         printf("nscn->n_cyl->z:%f\n", cyl->p.z);
-        printf("nscn->n_cyl->nx:%f\n", cyl->nx);
-        printf("nscn->n_cyl->ny:%f\n", cyl->ny);
-        printf("nscn->n_cyl->nz:%f\n", cyl->nz);
+        printf("nscn->n_cyl->nx:%f\n", cyl->v.nxyz.x);
+        printf("nscn->n_cyl->ny:%f\n", cyl->v.nxyz.y);
+        printf("nscn->n_cyl->nz:%f\n", cyl->v.nxyz.z);
         printf("nscn->n_cyl->d:%f\n", cyl->d);
         printf("nscn->n_cyl->h:%f\n", cyl->h);
         printf("nscn->n_cyl->r:%d\n", cyl->r);
@@ -138,7 +134,7 @@ void    print_sqr(t_scn *nscn)
     int		i;
     t_sqr	*sqr;
 
-    sqr = NULL;
+    // sqr = NULL;
     
     i = 0;
     while (i < nscn->n_cntr.sqr)
@@ -147,9 +143,9 @@ void    print_sqr(t_scn *nscn)
 		printf("nscn->n_sqr->x:%f\n", sqr->p.x);
         printf("nscn->n_sqr->y:%f\n", sqr->p.y);
         printf("nscn->n_sqr->z:%f\n", sqr->p.z);
-        printf("nscn->n_sqr->nx:%f\n", sqr->nx);
-        printf("nscn->n_sqr->ny:%f\n", sqr->ny);
-        printf("nscn->n_sqr->nz:%f\n", sqr->nz);
+        printf("nscn->n_sqr->nx:%f\n", sqr->v.nxyz.x);
+        printf("nscn->n_sqr->ny:%f\n", sqr->v.nxyz.y);
+        printf("nscn->n_sqr->nz:%f\n", sqr->v.nxyz.z);
         printf("nscn->n_sqr->side:%f\n", sqr->side);
         printf("nscn->n_sqr->r:%d\n", sqr->r);
         printf("nscn->n_sqr->g:%d\n", sqr->g);
@@ -164,7 +160,7 @@ void    print_trngl(t_scn *nscn)
     int		i;
     t_trngl	*trngl;
 
-    trngl = NULL;
+    // trngl = NULL;
     
     i = 0;
     while (i < nscn->n_cntr.trngl)

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/18 19:18:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/23 16:47:19 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ void	make_t_cam(t_scn *nscn)
 	new_cam->p.x = 0;
 	new_cam->p.y = 0;
 	new_cam->p.z = 0;
-	new_cam->nx = 0;
-	new_cam->ny = 0;
-	new_cam->nz = 0;
+	new_cam->v.xyz.x = 0;
+	new_cam->v.xyz.y = 0;
+	new_cam->v.xyz.z = 0;
+	v_null(&new_cam->v);
 	new_cam->fov = 0;
 	new_cam->nxt = NULL;
-	//ft_lstadd_front(&nscn->n_cam, ft_lstnew(new_cam));
 	if (nscn->n_cntr.cam == 0)
 		nscn->n_cam = ft_lstnew(new_cam);
 	else
@@ -61,7 +61,6 @@ void	make_t_lght(t_scn *nscn)
 	new_lght->g = 0;
 	new_lght->b = 0;
 	new_lght->nxt = NULL;
-	//ft_lstadd_front(&nscn->n_lght, ft_lstnew(new_lght));
 	if (nscn->n_cntr.lght == 0)
 		nscn->n_lght = ft_lstnew(new_lght);
 	else
@@ -77,14 +76,14 @@ void	make_t_pln(t_scn *nscn)
 	new_pln->p.x = 0;
 	new_pln->p.y = 0;
 	new_pln->p.z = 0;
-	new_pln->nx = 0;
-	new_pln->ny = 0;
-	new_pln->nz = 0;
+	new_pln->v.xyz.x = 0;
+	new_pln->v.xyz.y = 0;
+	new_pln->v.xyz.z = 0;
+	v_null(&new_pln->v);
 	new_pln->r = 0;
 	new_pln->g = 0;
 	new_pln->b = 0;
 	new_pln->nxt = NULL;
-	//ft_lstadd_front(&nscn->n_pln, ft_lstnew(new_pln));
 	if (nscn->n_cntr.pln == 0)
 		nscn->n_pln = ft_lstnew(new_pln);
 	else
@@ -105,7 +104,6 @@ void	make_t_sphr(t_scn *nscn)
 	new_sphr->g = 0;
 	new_sphr->b = 0;
 	new_sphr->nxt = NULL;
-	//ft_lstadd_front(&nscn->n_sphr, ft_lstnew(new_sphr));
 	if (nscn->n_cntr.sphr == 0)
 		nscn->n_sphr = ft_lstnew(new_sphr);
 	else
@@ -121,16 +119,16 @@ void	make_t_cyl(t_scn *nscn)
 	new_cyl->p.x = 0;
 	new_cyl->p.y = 0;
 	new_cyl->p.z = 0;
-	new_cyl->nx = 0;
-	new_cyl->ny = 0;
-	new_cyl->nz = 0;
+	new_cyl->v.xyz.x = 0;
+	new_cyl->v.xyz.y = 0;
+	new_cyl->v.xyz.z = 0;
+	v_null(&new_cyl->v);
 	new_cyl->d = 0;
 	new_cyl->h = 0;
 	new_cyl->r = 0;
 	new_cyl->g = 0;
 	new_cyl->b = 0;
 	new_cyl->nxt = NULL;
-	//ft_lstadd_front(&nscn->n_cyl, ft_lstnew(new_cyl));
 	if (nscn->n_cntr.cyl == 0)
 		nscn->n_cyl = ft_lstnew(new_cyl);
 	else
@@ -146,15 +144,15 @@ void	make_t_sqr(t_scn *nscn)
 	new_sqr->p.x = 0;
 	new_sqr->p.y = 0;
 	new_sqr->p.z = 0;
-	new_sqr->nx = 0;
-	new_sqr->ny = 0;
-	new_sqr->nz = 0;
+	new_sqr->v.xyz.x = 0;
+	new_sqr->v.xyz.y = 0;
+	new_sqr->v.xyz.z = 0;
+	v_null(&new_sqr->v);
 	new_sqr->side = 0;
 	new_sqr->r = 0;
 	new_sqr->g = 0;
 	new_sqr->b = 0;
 	new_sqr->nxt = NULL;
-	//ft_lstadd_front(&nscn->n_sqr, ft_lstnew(new_sqr));
 	if (nscn->n_cntr.sqr == 0)
 		nscn->n_sqr = ft_lstnew(new_sqr);
 	else
@@ -176,11 +174,14 @@ void	make_t_trngl(t_scn *nscn)
 	new_trngl->p3.x = 0;
 	new_trngl->p3.y = 0;
 	new_trngl->p3.z = 0;
+	new_trngl->n.xyz.x = 0;
+	new_trngl->n.xyz.y = 0;
+	new_trngl->n.xyz.z = 0;
+	v_null(&new_trngl->n);
 	new_trngl->r = 0;
 	new_trngl->g = 0;
 	new_trngl->b = 0;
 	new_trngl->nxt = NULL;
-	//ft_lstadd_front(&nscn->n_trngl, ft_lstnew(new_trngl));
 	if (nscn->n_cntr.trngl == 0)
 		nscn->n_trngl = ft_lstnew(new_trngl);
 	else
@@ -198,20 +199,22 @@ void	make_t_cntr(t_scn *nscn)
 	nscn->n_cntr.trngl = 0;
 }
 
-t_scn	make_t_scn(void)
+t_scn	*make_t_scn(void)
 {
-    t_scn   nscn;
+    t_scn   *nscn;
 
-	make_t_cntr(&nscn);
-	make_t_rsltn(&nscn);
-	make_t_ambnt(&nscn);
-	//make_t_cam(&nscn);
-	// make_t_lght(&nscn);
-	// make_t_pln(&nscn);
-	// make_t_sphr(&nscn);
-	// make_t_cyl(&nscn);
-	// make_t_sqr(&nscn);
-	// make_t_trngl(&nscn);
+	if (!(nscn = (t_scn*)malloc(1 * sizeof(t_scn))))
+		return (NULL);
+	make_t_cntr(nscn);
+	make_t_rsltn(nscn);
+	make_t_ambnt(nscn);
+	// make_t_cam(nscn);
+	// make_t_lght(nscn);
+	// make_t_pln(nscn);
+	// make_t_sphr(nscn);
+	// make_t_cyl(nscn);
+	// make_t_sqr(nscn);
+	// make_t_trngl(nscn);
 	
 	return (nscn);
 }
@@ -272,18 +275,21 @@ t_prsr	make_t_prsr(void)
 
 void	strct_node(char **scn_arr, int size)
 {
-	t_scn   nscn;
+	t_scn   *nscn;
 	t_prsr  np;
 
 	nscn = make_t_scn();
 	np = make_t_prsr();
 
-	prsr(scn_arr, size, &nscn, &np);
-	rays_node(&nscn);
+	prsr(scn_arr, size, nscn, &np);
+	//rays_node(&nscn);
+	//v_node();
+	//print_node(nscn);
+	lookat_node(nscn);
 	
 }
 
-//v_node();
+	//v_node();
 	//cnvs_node(&nscn);
 	//print_node(&nscn);
 	//mlx_node();

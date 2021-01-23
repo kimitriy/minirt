@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/18 20:47:05 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/21 22:55:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	draw_sqr(t_data *data, t_draw_sqr *sqr)
 
 void	draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr)
 {
-	int		x;
-	int		y;
+	unsigned int	x;
+	unsigned int	y;
 
 	x = 0;
 	y = 0;
