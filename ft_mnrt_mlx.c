@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/21 22:55:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 19:38:18 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr)
 	y = 0;
 	while (y < nscn->n_rsltn.y)
 	{
-		while (x < 1920)
+		while (x < nscn->n_rsltn.x)
 		{
 			my_mlx_pixel_put(data, x, y, (unsigned int)arr[y][x]);
 			x++;
@@ -151,8 +151,8 @@ void	img2win(t_scn *nscn, unsigned int **arr)
 	// make_new_crcl(&new_crcl);
 	
 	mlx = mlx_init(); //initialises mlx instance
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello, world!"); //initialises new window
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	mlx_win = mlx_new_window(mlx, nscn->n_rsltn.x, nscn->n_rsltn.y, "Hello, world!"); //initialises new window
+	img.img = mlx_new_image(mlx, nscn->n_rsltn.x, nscn->n_rsltn.y);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pix, &img.line_lngth, &img.endian);
 	//draw_sqr(&img, &new_sqr);
 	//draw_crcl(&img, &new_crcl);

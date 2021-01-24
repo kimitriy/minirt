@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 15:17:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/23 23:23:52 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 22:47:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ void	cnvrse2ncrtsn(t_scn *lscn, t_2d_point *xy)
 
 void	cnvrse2xyz(t_point *out, t_scn *lscn, t_2d_point *xy)
 {
-	t_cam	*tmp;
+	t_cam	*cam;
 	float	viewport_w;
 	float	viewport_h;
 	float	k;
 
 	p_make(out, 0, 0, 1);
-	tmp = lscn->n_cam->content;
-	viewport_w = 2 * tanf((tmp->fov * M_PI / 180) / 2);
+	cam = lscn->n_cam->content;
+	viewport_w = 2 * tanf((cam->fov * M_PI / 180) / 2);
 	out->x = xy->x * (viewport_w / lscn->n_rsltn.x);
 	k = (float)lscn->n_rsltn.y / (float)lscn->n_rsltn.x;
 	viewport_h = viewport_w * k;

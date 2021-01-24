@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/24 02:12:02 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 21:00:49 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	v_xyz(t_vxyz *out, t_point *tail, t_point *head)
 
 void	v_lngth(t_vctr *nvctr)
 {
-	if (nvctr->xyz.x != 0 || nvctr->xyz.y != 0 || nvctr->xyz.y != 0)
-		nvctr->lngth = sqrtf(powf(nvctr->xyz.x, 2) + powf(nvctr->xyz.y, 2) + powf(nvctr->xyz.z, 2));
-	else if (nvctr->nxyz.x != 0 || nvctr->nxyz.y != 0 || nvctr->nxyz.z != 0)
-		nvctr->lngth = 1;
+	nvctr->lngth = sqrtf(powf(nvctr->xyz.x, 2) + powf(nvctr->xyz.y, 2) + powf(nvctr->xyz.z, 2));
 }
 
 void	v_n(t_vctr *nvctr)
@@ -45,18 +42,9 @@ void	v_n(t_vctr *nvctr)
 	float	lngth_invrsn;
 
 	lngth_invrsn = 1 / nvctr->lngth;
-	if (nvctr->xyz.x != 0 || nvctr->xyz.y != 0 || nvctr->xyz.y != 0)
-	{
-		nvctr->nxyz.x = nvctr->xyz.x * lngth_invrsn;
-		nvctr->nxyz.y = nvctr->xyz.y * lngth_invrsn;
-		nvctr->nxyz.z = nvctr->xyz.z * lngth_invrsn;
-	}
-	else if (nvctr->nxyz.x != 0 || nvctr->nxyz.y != 0 || nvctr->nxyz.z != 0)
-	{
-		nvctr->xyz.x = nvctr->nxyz.x * lngth_invrsn;
-		nvctr->xyz.y = nvctr->nxyz.y * lngth_invrsn;
-		nvctr->xyz.z = nvctr->nxyz.z * lngth_invrsn;
-	}
+	nvctr->nxyz.x = nvctr->xyz.x * lngth_invrsn;
+	nvctr->nxyz.y = nvctr->xyz.y * lngth_invrsn;
+	nvctr->nxyz.z = nvctr->xyz.z * lngth_invrsn;
 }
 
 void	v_null(t_vctr *nvctr)
@@ -72,8 +60,18 @@ void	v_null(t_vctr *nvctr)
 
 void	v_fill(t_vctr *nvctr)
 {
-	v_lngth(nvctr);
-	v_n(nvctr);
+	if (nvctr->xyz.x == 0 && nvctr->xyz.y == 0 && nvctr->xyz.z == 0)
+	{
+		nvctr->xyz.x = nvctr->nxyz.x;
+		nvctr->xyz.y = nvctr->nxyz.y;
+		nvctr->xyz.z = nvctr->nxyz.z;
+		v_lngth(nvctr);
+	}
+	else
+	{
+		v_lngth(nvctr);
+		v_n(nvctr);
+	}
 }
 
 void	v_make(t_vctr *out, t_point *tail, t_point *head)

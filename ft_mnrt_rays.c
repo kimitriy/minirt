@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/24 02:18:41 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 22:54:33 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,23 @@ void	trace_ray_segment(t_ray *ray, t_scn *lscn)
 
 	tmp = lscn->n_sphr->content;
 	sphr_intrsct(ray, tmp);
-	if (ray->dst != 0)
-	{
-		ray->r = tmp->r;
-		ray->g = tmp->g;
-		ray->b = tmp->b;
-	}
+	// if (ray->dist != 0)
+	// {
+	// 	ray->r = tmp->r;
+	// 	ray->g = tmp->g;
+	// 	ray->b = tmp->b;
+	// }
 }
 
 void	trace_ray(t_scn *lscn, t_ray *ray, t_2d_point *xy)
 {
 	cnvrse2crtsn(lscn, xy);
-    cnvrse2xyz(&ray->hd_p, lscn, xy);
-	while (ray->s < 1) //3
+    cnvrse2xyz(&ray->head_p, lscn, xy);
+	while (ray->sgm < 1) //3
 	{
-		if (ray->s == 0)
+		if (ray->sgm == 0)
 		{	
-			v_make(&ray->v[ray->s], &ray->tl_p, &ray->hd_p);
+			v_make(&ray->vctr[ray->sgm], &ray->tail_p, &ray->head_p);
 			trace_ray_segment(ray, lscn);
 		
 			// ray->r = 0;
@@ -64,23 +64,23 @@ void	trace_ray(t_scn *lscn, t_ray *ray, t_2d_point *xy)
 		// 	//func that calculates reflected vctr
 		// }
 		//trace_ray_segment(ray, lscn);
-		ray->s++;
+		ray->sgm++;
 	}
 	//printf("ray(tail(%f, %f, %f), head(%f, %f, %f), vctr(%f, %f, %f), length:%f, nrmlsd(%f, %f, %f), dstnc:%f, h_point(%f, %f, %f))\n", nray->tail_point->x, nray->tail_point->y, nray->tail_point->z, nray->head_point->x, nray->head_point->y, nray->head_point->z, nray->vctr->x, nray->vctr->y, nray->vctr->z, nray->vctr->lngth, nray->vctr->nx, nray->vctr->ny, nray->vctr->nz, nray->dstnce, nray->hit_point[0].x, nray->hit_point[0].y, nray->hit_point[0].z);
 }
 
 void	ray_null(t_ray *ray)
 {
-	ray->s = 0;
-	p_make(&ray->tl_p, 0, 0, 0);
-	p_make(&ray->hd_p, 0, 0, 0);
-	v_null(&ray->v[0]);
-	v_null(&ray->v[1]);
-	v_null(&ray->v[2]);
+	ray->sgm = 0;
+	p_make(&ray->tail_p, 0, 0, 0);
+	p_make(&ray->head_p, 0, 0, 0);
+	v_null(&ray->vctr[0]);
+	v_null(&ray->vctr[1]);
+	v_null(&ray->vctr[2]);
 	p_make(&ray->hit_p[0], 0, 0, 0);
 	p_make(&ray->hit_p[1], 0, 0, 0);
 	p_make(&ray->hit_p[2], 0, 0, 0);
-	ray->dst = 0;
+	ray->dist = 0;
 	ray->a = 0;
 	ray->r = 0;
 	ray->g = 0;
@@ -130,18 +130,22 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr)
 	t_ray		ray;
 
 	ray_null(&ray);
-	x = 0;
-	y = 0;
-	while (y < lscn->n_rsltn.y)
+	x = 183;
+	y = 183;
+	// while (y < lscn->n_rsltn.y)
+	while (y < 384)
 	{
-		while (x < lscn->n_rsltn.x)
+		// while (x < lscn->n_rsltn.x)
+		while (x < 384)
 		{
+			// x = 183;
+			// y = 183;
 			p2d_make(&xy, x, y);
 			trace_ray(lscn, &ray, &xy);
 			rays_arr[y][x] = (unsigned int)cnvrse2argb(ray.a, ray.r, ray.g, ray.b);
 			x++;
 		}
-		x = 0;
+		x = 183;
 		y++;
 	}
 }

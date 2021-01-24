@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/24 02:06:02 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 20:27:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ typedef struct 		s_vctr
 
 typedef struct 		s_ray
 {
-	int				s;
-	t_point			tl_p;
-	t_point			hd_p;
-	t_vctr			v[3];
+	int				sgm;
+	t_point			tail_p;
+	t_point			head_p;
+	t_vctr			vctr[3];
 	t_point			hit_p[3];
-	float			dst;
+	float			dist;
 	unsigned int	a;
 	unsigned int	r;
 	unsigned int	g;
@@ -399,7 +399,7 @@ void				mtrx4_x_vctr(t_vxyz *out, t_mtrx4x4 *mtrx, t_vxyz *in);
 void				mtrx4_x_point(t_point *out, t_mtrx4x4 *mtrx, t_point *in);
 
 //ft_mnrt_lookat.c
-void				look_at_mtrx(t_vctr *vF, t_point *o, t_look_at *lookat);
+void				look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p);
 void				get_cam_fov(t_scn *nscn, t_scn *lscn);
 void				cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
 void				cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
@@ -407,7 +407,7 @@ void				cnvrse_sphr(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
 void				cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
 void				cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
 void				cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
-t_scn				*cnvrse2local(t_scn *nscn);
+void				cnvrse2local(t_scn *lscn, t_scn *nscn);
 void				lookat_node(t_scn *nscn);
 
 //ft_mnrt_intrsct.c

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/24 02:07:35 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/24 21:11:24 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	null_lookat(t_look_at *lookat)
 	v_null(&lookat->vUP);
 }
 
-void	look_at_mtrx(t_vctr *vF, t_point *p, t_look_at *lookat)
+void	look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p)
 {
 	null_lookat(lookat);
 	lookat->vF.nxyz.x = -vF->nxyz.x;
@@ -31,9 +31,9 @@ void	look_at_mtrx(t_vctr *vF, t_point *p, t_look_at *lookat)
 	lookat->vTMP.xyz.y = 1;
 	lookat->vTMP.xyz.z = 0;
 	v_fill(&lookat->vTMP);
-	v_crss_prdct(&lookat->vR.xyz, &lookat->vTMP.nxyz, &lookat->vF.nxyz);
+	v_crss_prdct(&lookat->vR.xyz, &lookat->vF.nxyz, &lookat->vTMP.nxyz);
 	v_fill(&lookat->vR);
-	v_crss_prdct(&lookat->vUP.xyz, &lookat->vF.nxyz, &lookat->vR.nxyz);
+	v_crss_prdct(&lookat->vUP.xyz, &lookat->vR.nxyz, &lookat->vF.nxyz);
 	v_fill(&lookat->vUP);
 	lookat->m.m[0][0] = lookat->vR.nxyz.x;
 	lookat->m.m[0][1] = lookat->vR.nxyz.y;
@@ -228,15 +228,14 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	}
 }
 
-t_scn	*cnvrse2local(t_scn *nscn)
+void	cnvrse2local(t_scn *lscn, t_scn *nscn)
 {
-	t_scn		*lscn;
 	t_cam		*cam;
 	t_look_at 	lookat;
 
 	cam = nscn->n_cam->content;
-	lscn = make_t_scn();
-	look_at_mtrx(&cam->v, &cam->p, &lookat);
+	look_at_mtrx(&lookat, &cam->v, &cam->p);
+	
 	lscn->n_rsltn = nscn->n_rsltn;
 	lscn->n_ambnt = nscn->n_ambnt;
 	get_cam_fov(nscn, lscn);
@@ -246,8 +245,6 @@ t_scn	*cnvrse2local(t_scn *nscn)
 	cnvrse_cyl(nscn, lscn, &lookat);
 	cnvrse_sqr(nscn, lscn, &lookat);
 	cnvrse_trngl(nscn, lscn, &lookat);
-
-	return (lscn);
 }
 
 void	lookat_node(t_scn *nscn)
@@ -255,8 +252,9 @@ void	lookat_node(t_scn *nscn)
 	t_scn	*cam1scn;
 
 	//cam1scn = NULL;
+	cam1scn = make_t_scn();
 
-	cam1scn = cnvrse2local(nscn);
+	cnvrse2local(cam1scn, nscn);
 	//print_node(cam1scn);
 	rays_node(cam1scn);
 }
