@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/24 20:27:47 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/25 17:45:11 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct 		s_ray
 	t_point			head_p;
 	t_vctr			vctr[3];
 	t_point			hit_p[3];
-	float			dist;
+	float			dist[3];
 	unsigned int	a;
 	unsigned int	r;
 	unsigned int	g;
