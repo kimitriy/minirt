@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/25 17:45:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/27 18:58:55 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 # include <math.h>
 # include <mlx.h>
 //# include <stdarg.h>
+
+//color
+typedef struct		s_color
+{
+	unsigned int	t;
+	unsigned int	r;
+	unsigned int	g;
+	unsigned int	b;
+}					t_color;
 
 //geometry
 typedef struct 		s_point
@@ -54,14 +63,46 @@ typedef struct 		s_ray
 	int				sgm;
 	t_point			tail_p;
 	t_point			head_p;
-	t_vctr			vctr[3];
-	t_point			hit_p[3];
-	float			dist[3];
-	unsigned int	a;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_vctr			vctr[2];
+	t_point			hit_p[2];
+	float			dist[2];
+	char			obj;
+	t_color			trgb;
+	// unsigned int	a;
+	// unsigned int	r;
+	// unsigned int	g;
+	// unsigned int	b;
 }					t_ray;
+
+/*
+obj types:
+p - pln;
+s - sphr;
+c - cyl;
+q - sqr;
+t - trngl;
+*/
+
+//lum
+typedef struct 		s_lum
+{
+	float			alvl;
+	float			lvl;
+	t_vctr			op;
+	t_vctr			nrml;
+	t_vctr			ldir;
+	t_vctr			hvctr;
+	float			angl;
+	float			dst;
+	int				p;
+	float			ka;
+	float			kd;
+	float			ks;
+	float			la;
+	float			ld;
+	float			ls;
+	float			l;
+}					t_lum;
 
 //mtrx
 typedef struct		s_mtrx4x4
@@ -89,9 +130,7 @@ typedef struct		s_rsltn
 typedef struct		s_ambnt
 {
 	float			lvl;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_color			trgb;
 }					t_ambnt;
 
 typedef struct		s_cam
@@ -106,9 +145,7 @@ typedef struct		s_lght
 {
 	t_point			p;
 	float			lvl;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_color			trgb;
 	struct s_lght	*nxt;
 }					t_lght;
 
@@ -116,9 +153,7 @@ typedef struct		s_pln
 {
 	t_point			p;
 	t_vctr			v;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_color			trgb;
 	struct s_pln	*nxt;
 }					t_pln;
 
@@ -126,9 +161,7 @@ typedef struct		s_sphr
 {
 	t_point			p;
 	float			d;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_color			trgb;
 	struct s_sphr	*nxt;
 }					t_sphr;
 
@@ -138,9 +171,7 @@ typedef struct		s_cyl
 	t_vctr			v;
 	float			d;
 	float			h;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_color			trgb;
 	struct s_cyl	*nxt;
 }					t_cyl;
 
@@ -149,9 +180,7 @@ typedef struct		s_sqr
 	t_point			p;
 	t_vctr			v;
 	float			side;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_color			trgb;
 	struct s_sqr	*nxt;
 }					t_sqr;
 
@@ -161,9 +190,7 @@ typedef struct		s_trngl
 	t_point			p2;
 	t_point			p3;
 	t_vctr			n;
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	t_color			trgb;
 	struct s_trngl	*nxt;
 }					t_trngl;
 
@@ -188,12 +215,19 @@ typedef struct		s_scn
 {
 	t_rsltn			n_rsltn;
 	t_ambnt			n_ambnt;
+	t_list			*frst_cam;
 	t_list			*n_cam;
+	t_list			*frst_lght;
 	t_list			*n_lght;
+	t_list			*frst_pln;
 	t_list			*n_pln;
+	t_list			*frst_sphr;
 	t_list			*n_sphr;
+	t_list			*frst_cyl;
 	t_list			*n_cyl;
+	t_list			*frst_sqr;
 	t_list			*n_sqr;
+	t_list			*frst_trngl;
 	t_list			*n_trngl;
 	t_cntr			n_cntr;
 }					t_scn;
@@ -268,9 +302,6 @@ typedef struct 		s_draw_crcl
 	int				root2;
 }					t_draw_crcl;
 
-
-
-
 //ft_mnrt_main.c
 void				make_scn_arr(t_list **head, int size);
 
@@ -334,6 +365,8 @@ int					get_next_line(int fd, char **line);
 int					ft_atoi(const char *str);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
+float				max(float f1, float f2);
+
 
 //ft_mnrt_list.c
 t_list				*ft_lstnew(void *content);
@@ -363,15 +396,16 @@ void    			print_trngl(t_scn *nscn);
 //ft_mnrt_vctr.c
 void				p2d_make(t_2d_point *out, int x, int y);
 void				p_make(t_point *output, float x, float y, float z);
+void				p_calc(t_point *out, t_vctr *vctr, t_point *tail);
 void				v_xyz(t_vxyz *out, t_point *tail, t_point *head);
 void				v_lngth(t_vctr *vctr);
 void				v_n(t_vctr *vctr);
 void				v_null(t_vctr *nvctr);
 void				v_fill(t_vctr *nvctr);
 void				v_make(t_vctr *out, t_point *tail, t_point *head);
-void				v_sum(t_vctr *out, t_vctr *vctr1, t_vctr *vctr2);
-void    			v_n_prdct(t_vctr *vctr, float num);
-void    			nv_n_prdct(t_vctr *vctr, float num);
+void				v_sum(t_vxyz *out, t_vxyz *vctr1, t_vxyz *vctr2);
+void    			v_n_prdct(t_vxyz *out, t_vxyz *vxyz, float num);
+//void    			nv_n_prdct(t_vctr *vctr, float num);
 float				v_d_prdct(t_vxyz *xyz1, t_vxyz *xyz2);
 float				v_x_point_prdct(t_vxyz *xyz, t_point *p);
 void				v_crss_prdct(t_vxyz *out, t_vxyz *xyz1, t_vxyz *xyz2);
@@ -389,9 +423,9 @@ void				rays_node(t_scn *lscn);
 void				trace_ray_segment(t_ray *ray, t_scn *lscn);
 void				trace_ray(t_scn *lscn, t_ray *ray, t_2d_point *xy);
 void				ray_null(t_ray *ray);
-unsigned long 		cnvrse2argb(unsigned int a, unsigned int r, unsigned int g, unsigned int b);
+unsigned long 		cnvrse2trgb(t_color *trgb);
 unsigned int		**make_rays_array(t_scn *lscn);
-void				launch_rays(t_scn *lscn, unsigned int **rays_arr);
+void				launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray);
 
 
 //ft_mnrt_mtrx.c
@@ -411,6 +445,26 @@ void				cnvrse2local(t_scn *lscn, t_scn *nscn);
 void				lookat_node(t_scn *nscn);
 
 //ft_mnrt_intrsct.c
-void				sphr_intrsct(t_ray *r, t_sphr *s);
+void				intrsct_node(t_scn *lscn, t_ray *ray);
+void 				check_sphrs(t_scn *lscn, t_ray *ray);
+float				q_equation(float *root, float a, float b, float c);
+float				sphr_intrsct(t_ray *r, t_sphr *s);
+
+//ft_mnrt_lum.c
+void				l_ambnt(t_lum *lum);
+void				l_dffse(t_lum *lum);
+void				l_spclr(t_lum *lum);
+void				l_all(t_lum *lum);
+void    			lum_sphr(t_scn *lscn, t_sphr *sphr, t_ray *ray);
+
+
+//ft_mnrt_nrml.c
+void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
+void				nrml_trngl(t_trngl *trn);
+
+//ft_mnrt_color.c
+void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);
+void				color_modify(t_color *color, t_lum *lum);
+void				color_copy(t_color *to, t_color *from);
 
 #endif

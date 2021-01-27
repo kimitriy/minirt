@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:46:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/24 19:44:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/27 01:10:09 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ void    print_light(t_scn *scn)
         printf("scn->n_lght->y:%f\n", lght->p.y);
         printf("scn->n_lght->z:%f\n", lght->p.z);
         printf("scn->n_lght->lvl:%f\n", lght->lvl);
-        printf("scn->n_lght->r:%d\n", lght->r);
-        printf("scn->n_lght->g:%d\n", lght->g);
-        printf("scn->n_lght->b:%d\n", lght->b);
+        printf("scn->n_lght->t:%d\n", lght->trgb.t);
+        printf("scn->n_lght->r:%d\n", lght->trgb.r);
+        printf("scn->n_lght->g:%d\n", lght->trgb.g);
+        printf("scn->n_lght->b:%d\n", lght->trgb.b);
         scn->n_lght = scn->n_lght->next;
         i++;
     }
@@ -72,9 +73,10 @@ void    print_pln(t_scn *scn)
         printf("scn->n_pln->nx:%f\n", pln->v.nxyz.x);
         printf("scn->n_pln->ny:%f\n", pln->v.nxyz.y);
         printf("scn->n_pln->nz:%f\n", pln->v.nxyz.z);
-        printf("scn->n_pln->r:%d\n", pln->r);
-        printf("scn->n_pln->g:%d\n", pln->g);
-        printf("scn->n_pln->b:%d\n", pln->b);
+        printf("scn->n_pln->t:%d\n", pln->trgb.t);
+        printf("scn->n_pln->r:%d\n", pln->trgb.r);
+        printf("scn->n_pln->g:%d\n", pln->trgb.g);
+        printf("scn->n_pln->b:%d\n", pln->trgb.b);
         scn->n_pln = scn->n_pln->next;
         i++;
     }
@@ -95,9 +97,10 @@ void    print_sphr(t_scn *scn)
         printf("scn->n_sphr->y:%f\n", sphr->p.y);
         printf("scn->n_sphr->z:%f\n", sphr->p.z);
         printf("scn->n_sphr->d:%f\n", sphr->d);
-        printf("scn->n_sphr->r:%d\n", sphr->r);
-        printf("scn->n_sphr->g:%d\n", sphr->g);
-        printf("scn->n_sphr->b:%d\n", sphr->b);
+        printf("scn->n_sphr->r:%d\n", sphr->trgb.t);
+        printf("scn->n_sphr->r:%d\n", sphr->trgb.r);
+        printf("scn->n_sphr->g:%d\n", sphr->trgb.g);
+        printf("scn->n_sphr->b:%d\n", sphr->trgb.b);
         scn->n_sphr = scn->n_sphr->next;
         i++;
     }
@@ -122,9 +125,10 @@ void    print_cyl(t_scn *scn)
         printf("scn->n_cyl->nz:%f\n", cyl->v.nxyz.z);
         printf("scn->n_cyl->d:%f\n", cyl->d);
         printf("scn->n_cyl->h:%f\n", cyl->h);
-        printf("scn->n_cyl->r:%d\n", cyl->r);
-        printf("scn->n_cyl->g:%d\n", cyl->g);
-        printf("scn->n_cyl->b:%d\n", cyl->b);
+        printf("scn->n_cyl->t:%d\n", cyl->trgb.t);
+        printf("scn->n_cyl->r:%d\n", cyl->trgb.r);
+        printf("scn->n_cyl->g:%d\n", cyl->trgb.g);
+        printf("scn->n_cyl->b:%d\n", cyl->trgb.b);
         scn->n_cyl = scn->n_cyl->next;
         i++;
     }
@@ -148,9 +152,10 @@ void    print_sqr(t_scn *scn)
         printf("scn->n_sqr->ny:%f\n", sqr->v.nxyz.y);
         printf("scn->n_sqr->nz:%f\n", sqr->v.nxyz.z);
         printf("scn->n_sqr->side:%f\n", sqr->side);
-        printf("scn->n_sqr->r:%d\n", sqr->r);
-        printf("scn->n_sqr->g:%d\n", sqr->g);
-        printf("scn->n_sqr->b:%d\n", sqr->b);
+        printf("scn->n_sqr->t:%d\n", sqr->trgb.t);
+        printf("scn->n_sqr->r:%d\n", sqr->trgb.r);
+        printf("scn->n_sqr->g:%d\n", sqr->trgb.g);
+        printf("scn->n_sqr->b:%d\n", sqr->trgb.b);
         scn->n_sqr = scn->n_sqr->next;
         i++;
     }
@@ -176,9 +181,10 @@ void    print_trngl(t_scn *scn)
         printf("scn->n_trngl->x3:%f\n", trngl->p3.x);
         printf("scn->n_trngl->y3:%f\n", trngl->p3.y);
         printf("scn->n_trngl->z3:%f\n", trngl->p3.z);
-        printf("scn->n_trngl->r:%d\n", trngl->r);
-        printf("scn->n_trngl->g:%d\n", trngl->g);
-        printf("scn->n_trngl->b:%d\n", trngl->b);
+        printf("scn->n_trngl->t:%d\n", trngl->trgb.t);
+        printf("scn->n_trngl->r:%d\n", trngl->trgb.r);
+        printf("scn->n_trngl->g:%d\n", trngl->trgb.g);
+        printf("scn->n_trngl->b:%d\n", trngl->trgb.b);
         scn->n_trngl = scn->n_trngl->next;
         i++;
     }

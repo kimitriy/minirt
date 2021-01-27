@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/24 21:11:24 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/27 18:53:07 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	get_cam_fov(t_scn *nscn, t_scn *lscn)
 	t_cam	*lcam;
 
 	make_t_cam(lscn);
+	lscn->frst_cam = lscn->n_cam;
 	cam = nscn->n_cam->content;
 	lcam = lscn->n_cam->content;
 	lcam->fov = cam->fov;
@@ -74,14 +75,16 @@ void	cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.lght < nscn->n_cntr.lght)
 	{
 		make_t_lght(lscn);
+		lscn->frst_lght = lscn->n_lght;
 		lght = nscn->n_lght->content;
 		llght = lscn->n_lght->content;
 		llght->p.x = lght->p.x;
 		llght->p.y = lght->p.y;
 		llght->p.z = lght->p.z;
-		llght->r = lght->r;
-		llght->g = lght->g;
-		llght->b = lght->b;
+		llght->trgb.t = lght->trgb.t;
+		llght->trgb.r = lght->trgb.r;
+		llght->trgb.g = lght->trgb.g;
+		llght->trgb.b = lght->trgb.b;
 		llght->lvl = lght->lvl;
 		mtrx4_x_point(&llght->p, &lookat->m, &lght->p);
 		nscn->n_lght = nscn->n_lght->next;
@@ -97,6 +100,7 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.pln < nscn->n_cntr.pln)
 	{
 		make_t_pln(lscn);
+		lscn->frst_pln = lscn->n_pln;
 		pln = nscn->n_pln->content;
 		lpln = lscn->n_pln->content;
 		lpln->p.x = pln->p.x;
@@ -105,9 +109,10 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lpln->v.nxyz.x = pln->v.nxyz.x;
 		lpln->v.nxyz.y = pln->v.nxyz.y;
 		lpln->v.nxyz.z = pln->v.nxyz.z;
-		lpln->r = pln->r;
-		lpln->g = pln->g;
-		lpln->b = pln->b;
+		lpln->trgb.t = pln->trgb.t;
+		lpln->trgb.r = pln->trgb.r;
+		lpln->trgb.g = pln->trgb.g;
+		lpln->trgb.b = pln->trgb.b;
 		mtrx4_x_point(&lpln->p, &lookat->m, &pln->p);
 		mtrx4_x_vctr(&lpln->v.nxyz, &lookat->m, &pln->v.nxyz);
 		v_fill(&lpln->v);
@@ -121,18 +126,21 @@ void	cnvrse_sphr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	t_sphr	*sphr;
 	t_sphr	*lsphr;
 
+	nscn->n_sphr = nscn->frst_sphr;
 	while (lscn->n_cntr.sphr < nscn->n_cntr.sphr)
 	{
 		make_t_sphr(lscn);
+		lscn->frst_sphr = lscn->n_sphr;
 		sphr = nscn->n_sphr->content;
 		lsphr = lscn->n_sphr->content;
 		lsphr->p.x = sphr->p.x;
 		lsphr->p.y = sphr->p.y;
 		lsphr->p.z = sphr->p.z;
 		lsphr->d = sphr->d;
-		lsphr->r = sphr->r;
-		lsphr->g = sphr->g;
-		lsphr->b = sphr->b;
+		lsphr->trgb.t = sphr->trgb.t;
+		lsphr->trgb.r = sphr->trgb.r;
+		lsphr->trgb.g = sphr->trgb.g;
+		lsphr->trgb.b = sphr->trgb.b;
 		mtrx4_x_point(&lsphr->p, &lookat->m, &sphr->p);
 		nscn->n_sphr = nscn->n_sphr->next;
 		lscn->n_cntr.sphr++;
@@ -147,6 +155,7 @@ void	cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.cyl < nscn->n_cntr.cyl)
 	{
 		make_t_cyl(lscn);
+		lscn->frst_cyl = lscn->n_cyl;
 		cyl = nscn->n_cyl->content;
 		lcyl = lscn->n_cyl->content;
 		lcyl->p.x = cyl->p.x;
@@ -157,9 +166,10 @@ void	cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lcyl->v.nxyz.z = cyl->v.nxyz.z;
 		lcyl->h = cyl->h;
 		lcyl->d = cyl->d;
-		lcyl->r = cyl->r;
-		lcyl->g = cyl->g;
-		lcyl->b = cyl->b;
+		lcyl->trgb.t = cyl->trgb.t;
+		lcyl->trgb.r = cyl->trgb.r;
+		lcyl->trgb.g = cyl->trgb.g;
+		lcyl->trgb.b = cyl->trgb.b;
 		mtrx4_x_point(&lcyl->p, &lookat->m, &cyl->p);
 		mtrx4_x_vctr(&lcyl->v.nxyz, &lookat->m, &cyl->v.nxyz);
 		v_fill(&lcyl->v);
@@ -176,6 +186,7 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.sqr < nscn->n_cntr.sqr)
 	{
 		make_t_sqr(lscn);
+		lscn->frst_sqr = lscn->n_sqr;
 		sqr = nscn->n_sqr->content;
 		lsqr = lscn->n_sqr->content;
 		lsqr->p.x = sqr->p.x;
@@ -185,9 +196,10 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lsqr->v.nxyz.y = sqr->v.nxyz.y;
 		lsqr->v.nxyz.z = sqr->v.nxyz.z;
 		lsqr->side = sqr->side;
-		lsqr->r = sqr->r;
-		lsqr->g = sqr->g;
-		lsqr->b = sqr->b;
+		lsqr->trgb.t = sqr->trgb.t;
+		lsqr->trgb.r = sqr->trgb.r;
+		lsqr->trgb.g = sqr->trgb.g;
+		lsqr->trgb.b = sqr->trgb.b;
 		mtrx4_x_point(&lsqr->p, &lookat->m, &sqr->p);
 		mtrx4_x_vctr(&lsqr->v.nxyz, &lookat->m, &sqr->v.nxyz);
 		v_fill(&lsqr->v);
@@ -204,6 +216,7 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.trngl < nscn->n_cntr.trngl)
 	{
 		make_t_trngl(lscn);
+		lscn->frst_trngl = lscn->n_trngl;
 		trngl = nscn->n_trngl->content;
 		ltrngl = lscn->n_trngl->content;
 		ltrngl->p1.x = trngl->p1.x;
@@ -218,6 +231,10 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		ltrngl->n.nxyz.x = trngl->n.nxyz.x;
 		ltrngl->n.nxyz.y = trngl->n.nxyz.y;
 		ltrngl->n.nxyz.z = trngl->n.nxyz.z;
+		ltrngl->trgb.t = trngl->trgb.t;
+		ltrngl->trgb.r = trngl->trgb.r;
+		ltrngl->trgb.g = trngl->trgb.g;
+		ltrngl->trgb.b = trngl->trgb.b;
 		mtrx4_x_point(&ltrngl->p1, &lookat->m, &trngl->p1);
 		mtrx4_x_point(&ltrngl->p2, &lookat->m, &trngl->p2);
 		mtrx4_x_point(&ltrngl->p3, &lookat->m, &trngl->p3);

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/12 20:33:43 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/26 22:58:16 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,4 +154,12 @@ int		ft_isdigit(int c)
 		return (1);
 	else
 		return (0);
+}
+
+float	max(float f1, float f2)
+{
+	if (f1 >= f2)
+		return (f1);
+	else
+		return (f2);
 }

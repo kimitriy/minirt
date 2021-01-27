@@ -6,7 +6,7 @@
 #    By: rburton <rburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/28 11:32:38 by rburton           #+#    #+#              #
-#    Updated: 2021/01/24 02:05:34 by rburton          ###   ########.fr        #
+#    Updated: 2021/01/27 01:42:50 by rburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,9 @@ SRC 		= 	ft_mnrt_main.c \
 				ft_mnrt_print_nscn.c \
 				ft_mnrt_rays.c \
 				ft_mnrt_intrsct.c \
+				ft_mnrt_lum.c \
+				ft_mnrt_nrml.c \
+				ft_mnrt_color.c \
 				ft_mnrt_mlx.c \
 
 

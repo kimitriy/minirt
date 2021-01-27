@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/24 21:00:49 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/27 21:02:58 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ void	p_make(t_point *out, float x, float y, float z)
 	out->x = x;
 	out->y = y;
 	out->z = z;
+}
+
+void	p_calc(t_point *out, t_vctr *vctr, t_point *tail)
+{
+	out->x = tail->x + vctr->xyz.x;
+	out->y = tail->y + vctr->xyz.y;
+	out->z = tail->z + vctr->xyz.z;
 }
 
 void	v_xyz(t_vxyz *out, t_point *tail, t_point *head)
@@ -80,29 +87,20 @@ void	v_make(t_vctr *out, t_point *tail, t_point *head)
 	v_fill(out);
 }
 
-void	v_sum(t_vctr *out, t_vctr *vctr1, t_vctr *vctr2)
+void	v_sum(t_vxyz *out, t_vxyz *vctr1, t_vxyz *vctr2)
 {
-	out->xyz.x = vctr1->xyz.x + vctr2->xyz.x;
-	out->xyz.y = vctr1->xyz.y + vctr2->xyz.y;
-	out->xyz.z = vctr1->xyz.z + vctr2->xyz.z;
-	v_fill(out);
+	out->x = vctr1->x + vctr2->x;
+	out->y = vctr1->y + vctr2->y;
+	out->z = vctr1->z + vctr2->z;
 }
 
-void    v_n_prdct(t_vctr *vctr, float num)
+void    v_n_prdct(t_vxyz *out, t_vxyz *vxyz, float num)
 {
-	vctr->xyz.x = vctr->xyz.x * num;
-	vctr->xyz.y = vctr->xyz.y * num;
-	vctr->xyz.z = vctr->xyz.z * num;
-	v_fill(vctr);
+	out->x = vxyz->x * num;
+	out->y = vxyz->y * num;
+	out->z = vxyz->z * num;
 }
 
-void    nv_n_prdct(t_vctr *vctr, float num)
-{
-	vctr->xyz.x = vctr->nxyz.x * num;
-	vctr->xyz.y = vctr->nxyz.y * num;
-	vctr->xyz.z = vctr->nxyz.z * num;
-	v_fill(vctr);
-}
 
 float	v_d_prdct(t_vxyz *xyz1, t_vxyz *xyz2)
 {
@@ -135,23 +133,6 @@ float	v_angle(t_vctr *vctr1, t_vctr *vctr2)
 	dt_prdct = v_d_prdct(&vctr1->xyz, &vctr2->xyz);
 	angle = acosf(dt_prdct / (vctr1->lngth * vctr2->lngth));
 	return (angle);
-}
-
-void	v_nrml2trngl(t_trngl *trn)
-{
-	t_vctr	a;
-	t_vctr	b;
-	t_vctr	nrml;
-
-	v_make(&a, &trn->p1, &trn->p2);
-	v_make(&b, &trn->p1, &trn->p3);
-	v_crss_prdct(&nrml.xyz, &a.xyz, &b.xyz);
-	trn->n = nrml;
-	v_fill(&trn->n);
-	printf("vAB(%f, %f, %f)\n", a.xyz.x, a.xyz.y, a.xyz.z);
-	printf("nvAB(%f, %f, %f)\n", a.nxyz.x, a.nxyz.y, a.nxyz.z);
-	printf("vAC(%f, %f, %f)\n", b.xyz.x, b.xyz.y, b.xyz.z);
-	printf("nvAC(%f, %f, %f)\n", b.nxyz.x, b.nxyz.y, b.nxyz.z);
 }
 
 void	v_node(void)

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/23 17:12:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/27 18:53:08 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ void	write_rsltn(t_scn *nscn, t_prsr *np)
 void	write_ambnt(t_scn *nscn, t_prsr *np)
 {
 	nscn->n_ambnt.lvl = ft_atof(np->lvl);
-	nscn->n_ambnt.r = ft_atoi(np->r);
-	nscn->n_ambnt.g = ft_atoi(np->g);
-	nscn->n_ambnt.b = ft_atoi(np->b);
+	nscn->n_ambnt.trgb.t = 0;
+	nscn->n_ambnt.trgb.r = ft_atoi(np->r);
+	nscn->n_ambnt.trgb.g = ft_atoi(np->g);
+	nscn->n_ambnt.trgb.b = ft_atoi(np->b);
 }
 
 void	write_cam(t_scn *nscn, t_prsr *np)
@@ -54,6 +55,7 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 
 	tmp = NULL;
 	make_t_cam(nscn);
+	nscn->frst_cam = nscn->n_cam;
 	tmp = nscn->n_cam->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -64,7 +66,6 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 	tmp->fov = ft_atoi(np->fov);
 	v_fill(&tmp->v);
 	nscn->n_cntr.cam++;
-	//nscn->n_cam = nscn->n_cam->next;
 }
 
 void	write_lght(t_scn *nscn, t_prsr *np)
@@ -73,14 +74,16 @@ void	write_lght(t_scn *nscn, t_prsr *np)
 	
 	tmp = NULL;
 	make_t_lght(nscn);
+	nscn->frst_lght = nscn->n_lght;
 	tmp = nscn->n_lght->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
 	tmp->p.z = ft_atof(np->z);
 	tmp->lvl = ft_atof(np->lvl);
-	tmp->r = ft_atoi(np->r);
-	tmp->g = ft_atoi(np->g);
-	tmp->b = ft_atoi(np->b);
+	tmp->trgb.t = 0;
+	tmp->trgb.r = ft_atoi(np->r);
+	tmp->trgb.g = ft_atoi(np->g);
+	tmp->trgb.b = ft_atoi(np->b);
 	nscn->n_cntr.lght++;
 }
 
@@ -90,6 +93,7 @@ void	write_pln(t_scn *nscn, t_prsr *np)
 
 	tmp = NULL;
 	make_t_pln(nscn);
+	nscn->frst_pln = nscn->n_pln;
 	tmp = nscn->n_pln->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -97,9 +101,10 @@ void	write_pln(t_scn *nscn, t_prsr *np)
 	tmp->v.nxyz.x = ft_atof(np->nx);
 	tmp->v.nxyz.y = ft_atof(np->ny);
 	tmp->v.nxyz.z = ft_atof(np->nz);
-	tmp->r = ft_atoi(np->r);
-	tmp->g = ft_atoi(np->g);
-	tmp->b = ft_atoi(np->b);
+	tmp->trgb.t = 0;
+	tmp->trgb.r = ft_atoi(np->r);
+	tmp->trgb.g = ft_atoi(np->g);
+	tmp->trgb.b = ft_atoi(np->b);
 	v_fill(&tmp->v);
 	nscn->n_cntr.pln++;
 }
@@ -108,16 +113,17 @@ void	write_sphr(t_scn *nscn, t_prsr *np)
 {
 	t_sphr *tmp;
 
-	tmp = NULL;
 	make_t_sphr(nscn);
+	nscn->frst_sphr = nscn->n_sphr;
 	tmp = nscn->n_sphr->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
 	tmp->p.z = ft_atof(np->z);
 	tmp->d = ft_atof(np->d);
-	tmp->r = ft_atoi(np->r);
-	tmp->g = ft_atoi(np->g);
-	tmp->b = ft_atoi(np->b);
+	tmp->trgb.t = 0;
+	tmp->trgb.r = ft_atoi(np->r);
+	tmp->trgb.g = ft_atoi(np->g);
+	tmp->trgb.b = ft_atoi(np->b);
 	nscn->n_cntr.sphr++;
 }
 
@@ -127,6 +133,7 @@ void	write_cyl(t_scn *nscn, t_prsr *np)
 
 	tmp = NULL;
 	make_t_cyl(nscn);
+	nscn->frst_cyl = nscn->n_cyl;
 	tmp = nscn->n_cyl->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -136,9 +143,10 @@ void	write_cyl(t_scn *nscn, t_prsr *np)
 	tmp->v.nxyz.z = ft_atof(np->nz);
 	tmp->d = ft_atof(np->d);
 	tmp->h = ft_atof(np->h);
-	tmp->r = ft_atoi(np->r);
-	tmp->g = ft_atoi(np->g);
-	tmp->b = ft_atoi(np->b);
+	tmp->trgb.t = 0;
+	tmp->trgb.r = ft_atoi(np->r);
+	tmp->trgb.g = ft_atoi(np->g);
+	tmp->trgb.b = ft_atoi(np->b);
 	v_fill(&tmp->v);
 	nscn->n_cntr.cyl++;
 }
@@ -149,6 +157,7 @@ void	write_sqr(t_scn *nscn, t_prsr *np)
 
 	tmp = NULL;
 	make_t_sqr(nscn);
+	nscn->frst_sqr = nscn->n_sqr;
 	tmp = nscn->n_sqr->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -157,9 +166,10 @@ void	write_sqr(t_scn *nscn, t_prsr *np)
 	tmp->v.nxyz.y = ft_atof(np->ny);
 	tmp->v.nxyz.z = ft_atof(np->nz);
 	tmp->side = ft_atof(np->side);
-	tmp->r = ft_atoi(np->r);
-	tmp->g = ft_atoi(np->g);
-	tmp->b = ft_atoi(np->b);
+	tmp->trgb.t = 0;
+	tmp->trgb.r = ft_atoi(np->r);
+	tmp->trgb.g = ft_atoi(np->g);
+	tmp->trgb.b = ft_atoi(np->b);
 	v_fill(&tmp->v);
 	nscn->n_cntr.sqr++;
 }
@@ -170,8 +180,8 @@ void	write_trngl(t_scn *nscn, t_prsr *np)
 
 	tmp = NULL;
 	make_t_trngl(nscn);
+	nscn->frst_trngl = nscn->n_trngl;
 	tmp = nscn->n_trngl->content;
-
 	tmp->p1.x = ft_atof(np->x);
 	tmp->p1.y = ft_atof(np->y);
 	tmp->p1.z = ft_atof(np->z);
@@ -181,10 +191,10 @@ void	write_trngl(t_scn *nscn, t_prsr *np)
 	tmp->p3.x = ft_atof(np->x3);
 	tmp->p3.y = ft_atof(np->y3);
 	tmp->p3.z = ft_atof(np->z3);
-	tmp->r = ft_atoi(np->r);
-	tmp->g = ft_atoi(np->g);
-	tmp->b = ft_atoi(np->b);
-
+	tmp->trgb.t = 0;
+	tmp->trgb.r = ft_atoi(np->r);
+	tmp->trgb.g = ft_atoi(np->g);
+	tmp->trgb.b = ft_atoi(np->b);
 	nscn->n_cntr.trngl++;
 }
 
