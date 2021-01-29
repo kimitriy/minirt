@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/27 18:53:08 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/29 20:52:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 
 	tmp = NULL;
 	make_t_cam(nscn);
-	nscn->frst_cam = nscn->n_cam;
+	if (nscn->n_cntr.cam == 0)
+		nscn->frst_cam = nscn->n_cam;
 	tmp = nscn->n_cam->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -66,6 +67,8 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 	tmp->fov = ft_atoi(np->fov);
 	v_fill(&tmp->v);
 	nscn->n_cntr.cam++;
+	if (nscn->n_cntr.cam > 1)
+		nscn->frst_cam->next = nscn->n_cam;
 }
 
 void	write_lght(t_scn *nscn, t_prsr *np)
@@ -114,6 +117,7 @@ void	write_sphr(t_scn *nscn, t_prsr *np)
 	t_sphr *tmp;
 
 	make_t_sphr(nscn);
+	//if (nscn->n_cntr.sphr == 0)
 	nscn->frst_sphr = nscn->n_sphr;
 	tmp = nscn->n_sphr->content;
 	tmp->p.x = ft_atof(np->x);

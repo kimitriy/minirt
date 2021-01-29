@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 01:36:19 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/27 16:51:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 00:30:23 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	color_modify(t_color *color, t_lum *lum)
 {
 	int		f;
 
-	f = 200;
+	f = 55;
     color->t = 0;
-    if (lum->l >= 0.75)
+    if (lum->l >= 0.95)
     {
         if (color->r < f * lum->l)
             color->r = f * lum->l;

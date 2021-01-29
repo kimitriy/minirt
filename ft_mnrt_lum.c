@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/27 16:54:13 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 02:41:48 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,15 @@ void	l_ambnt(t_lum *lum)
 	lum->ka = (lum->angl >= 0 && lum->angl < 90) ? cos(lum->angl * pi / 180) : 0;
 	lum->la = lum->alvl * lum->ka;
 }
+
+// void	l_ambnt(t_lum *lum)
+// {
+// 	t_vxyz new;
+// 	new.x = 0;
+// 	new.y = 1;
+// 	new.z = 0;
+// 	lum->la = 0.5 + lum->alvl * v_d_prdct(&lum->nrml.nxyz, &new);
+// }
 
 //Ld
 void	l_dffse(t_lum *lum)
@@ -42,8 +51,8 @@ void	l_spclr(t_lum *lum)
 	float	fade;
 	float	mx;
 
-	lum->ks = 35;
-	lum->p = 8;
+	lum->ks = 30;
+	lum->p = 64;
 	fade = lum->lvl / powf(lum->dst, 2);
 	mx = max(0, v_d_prdct(&lum->nrml.nxyz, &lum->hvctr.nxyz));
 	lum->ls = lum->ks * fade * pow(mx, lum->p);
@@ -58,19 +67,14 @@ void	l_all(t_lum *lum)
 	lum->l = lum->l >= 1 ? 1 : lum->l;
 }
 
-
-
-void    lum_sphr(t_scn *lscn, t_sphr *sphr, t_ray *ray)
-//void    lght_sphr(t_sphr *sphr, t_ray *ray)
+void    lum_sphr(t_scn *lscn, t_ray *ray)
 {
-    // ray->a = 0;
-    // ray->r = sphr->r;
-    // ray->g = sphr->g;
-    // ray->b = sphr->b;
     t_lght  *lght;
     t_lum   lum;
     t_vctr  minus_op;
+	t_sphr	*sphr;
 
+	sphr = ray->nrst->content;
     lght = lscn->n_lght->content;
     lum.alvl = lscn->n_ambnt.lvl;
     lum.lvl = lght->lvl;
@@ -83,10 +87,32 @@ void    lum_sphr(t_scn *lscn, t_sphr *sphr, t_ray *ray)
     minus_op.nxyz.y = (-1) * lum.op.nxyz.y;
     minus_op.nxyz.z = (-1) * lum.op.nxyz.z;
     v_fill(&minus_op);
-	//v_null(&lum.hvctr);
     v_sum(&lum.hvctr.xyz, &lum.ldir.nxyz, &minus_op.nxyz);
     v_fill(&lum.hvctr);
 	l_all(&lum);
 	color_copy(&ray->trgb, &sphr->trgb);
 	color_modify(&ray->trgb, &lum);
+}
+
+/*
+obj types:
+p - pln;
+s - sphr;
+c - cyl;
+q - sqr;
+t - trngl;
+*/
+
+void	lum_node(t_scn *lscn, t_ray *ray)
+{
+	if (ray->obj == 's')
+		lum_sphr(lscn, ray);
+	// if (ray->obj = 'p')
+	// 	lum_pln(lscn, ray);
+	// if (ray->obj = 'c')
+	// 	lum_cyl(lscn, ray);
+	// if (ray->obj = 'q')
+	// 	lum_sqr(lscn, ray);
+	// if (ray->obj = 't')
+	// 	lum_trngl(lscn, ray);
 }

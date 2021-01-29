@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/27 18:53:05 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 02:42:11 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,13 @@ void	ray_null(t_ray *ray)
 	v_null(&ray->vctr[1]);
 	p_make(&ray->hit_p[0], 0, 0, 0);
 	p_make(&ray->hit_p[1], 0, 0, 0);
-	ray->dist[0] = 0;
-	ray->dist[1] = 0;
+	ray->dist[0] = INFINITY;
+	ray->dist[1] = INFINITY;
 	ray->trgb.t = 100;
 	ray->trgb.r = 100;
 	ray->trgb.g = 100;
 	ray->trgb.b = 100;
+	ray->nrst = NULL;
 }
 
 unsigned long cnvrse2trgb(t_color *trgb)
@@ -119,7 +120,7 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	}
 }
 
-void	rays_node(t_scn *lscn)
+void	rays_node(t_scn *lscn, t_scn *nscn)
 {
 	unsigned int	**rays_arr;
 	t_ray			ray;
@@ -127,5 +128,6 @@ void	rays_node(t_scn *lscn)
 	rays_arr = make_rays_array(lscn);
 	ray_null(&ray);
 	launch_rays(lscn, rays_arr, &ray);
-	img2win(lscn, rays_arr);
+	//img2win(lscn, rays_arr);
+	mlx_node(nscn, rays_arr);
 }

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/27 18:53:07 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 02:42:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		llght->trgb.b = lght->trgb.b;
 		llght->lvl = lght->lvl;
 		mtrx4_x_point(&llght->p, &lookat->m, &lght->p);
-		nscn->n_lght = nscn->n_lght->next;
+		if (nscn->n_lght->next != NULL)
+			nscn->n_lght = nscn->n_lght->next;
 		lscn->n_cntr.lght++;
 	}
 }
@@ -116,7 +117,8 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		mtrx4_x_point(&lpln->p, &lookat->m, &pln->p);
 		mtrx4_x_vctr(&lpln->v.nxyz, &lookat->m, &pln->v.nxyz);
 		v_fill(&lpln->v);
-		nscn->n_pln = nscn->n_pln->next;
+		if (nscn->n_pln->next != NULL)
+			nscn->n_pln = nscn->n_pln->next;
 		lscn->n_cntr.pln++;
 	}
 }
@@ -130,6 +132,7 @@ void	cnvrse_sphr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.sphr < nscn->n_cntr.sphr)
 	{
 		make_t_sphr(lscn);
+		//if (lscn->n_cntr.sphr == 0)
 		lscn->frst_sphr = lscn->n_sphr;
 		sphr = nscn->n_sphr->content;
 		lsphr = lscn->n_sphr->content;
@@ -142,7 +145,8 @@ void	cnvrse_sphr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lsphr->trgb.g = sphr->trgb.g;
 		lsphr->trgb.b = sphr->trgb.b;
 		mtrx4_x_point(&lsphr->p, &lookat->m, &sphr->p);
-		nscn->n_sphr = nscn->n_sphr->next;
+		if (nscn->n_sphr->next != NULL)
+			nscn->n_sphr = nscn->n_sphr->next;
 		lscn->n_cntr.sphr++;
 	}
 }
@@ -173,7 +177,8 @@ void	cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		mtrx4_x_point(&lcyl->p, &lookat->m, &cyl->p);
 		mtrx4_x_vctr(&lcyl->v.nxyz, &lookat->m, &cyl->v.nxyz);
 		v_fill(&lcyl->v);
-		nscn->n_cyl = nscn->n_cyl->next;
+		if (nscn->n_cyl->next != NULL)
+			nscn->n_cyl = nscn->n_cyl->next;
 		lscn->n_cntr.cyl++;
 	}
 }
@@ -203,7 +208,8 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		mtrx4_x_point(&lsqr->p, &lookat->m, &sqr->p);
 		mtrx4_x_vctr(&lsqr->v.nxyz, &lookat->m, &sqr->v.nxyz);
 		v_fill(&lsqr->v);
-		nscn->n_sqr = nscn->n_sqr->next;
+		if (nscn->n_sqr->next != NULL)
+			nscn->n_sqr = nscn->n_sqr->next;
 		lscn->n_cntr.sqr++;
 	}
 }
@@ -240,7 +246,8 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		mtrx4_x_point(&ltrngl->p3, &lookat->m, &trngl->p3);
 		mtrx4_x_vctr(&ltrngl->n.nxyz, &lookat->m, &trngl->n.nxyz);
 		v_fill(&ltrngl->n);
-		nscn->n_trngl = nscn->n_trngl->next;
+		if (nscn->n_trngl->next != NULL)
+			nscn->n_trngl = nscn->n_trngl->next;
 		lscn->n_cntr.trngl++;
 	}
 }
@@ -266,12 +273,11 @@ void	cnvrse2local(t_scn *lscn, t_scn *nscn)
 
 void	lookat_node(t_scn *nscn)
 {
-	t_scn	*cam1scn;
+	t_scn	*lscn;
 
-	//cam1scn = NULL;
-	cam1scn = make_t_scn();
+	lscn = make_t_scn();
 
-	cnvrse2local(cam1scn, nscn);
-	//print_node(cam1scn);
-	rays_node(cam1scn);
+	cnvrse2local(lscn, nscn);
+	print_node(lscn);
+	rays_node(lscn, nscn);
 }

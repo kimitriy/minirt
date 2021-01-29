@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/27 18:43:21 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 02:42:09 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,17 @@ void	make_t_cntr(t_scn *scn)
 	scn->n_cntr.trngl = 0;
 }
 
+void	null_frst(t_scn *scn)
+{
+	scn->frst_cam = NULL;
+	scn->frst_cyl = NULL;
+	scn->frst_lght = NULL;
+	scn->frst_pln = NULL;
+	scn->frst_sphr = NULL;
+	scn->frst_sqr = NULL;
+	scn->frst_trngl = NULL;
+}
+
 t_scn	*make_t_scn(void)
 {
     t_scn   *scn;
@@ -194,6 +205,7 @@ t_scn	*make_t_scn(void)
 	make_t_cntr(scn);
 	make_t_rsltn(scn);
 	make_t_ambnt(scn);
+	null_frst(scn);
 	return (scn);
 }
 
@@ -262,7 +274,7 @@ void	strct_node(char **scn_arr, int size)
 	prsr(scn_arr, size, scn, &np);
 	//rays_node(&scn);
 	//v_node();
-	//print_node(scn);
+	print_node(scn);
 	lookat_node(scn);
 	
 }

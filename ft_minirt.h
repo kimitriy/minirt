@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/27 18:58:55 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 02:14:52 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <math.h>
 # include <mlx.h>
 //# include <stdarg.h>
+
+//t_list
+typedef struct		s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;
 
 //color
 typedef struct		s_color
@@ -68,10 +75,7 @@ typedef struct 		s_ray
 	float			dist[2];
 	char			obj;
 	t_color			trgb;
-	// unsigned int	a;
-	// unsigned int	r;
-	// unsigned int	g;
-	// unsigned int	b;
+	t_list			*nrst;
 }					t_ray;
 
 /*
@@ -119,6 +123,22 @@ typedef struct		s_look_at
 	t_vctr			vUP;
 	t_mtrx4x4		m;
 }					t_look_at;
+
+//mlx
+
+typedef struct  s_vars {
+    void			*mlx; //pointer for mlx instance
+    void			*win; //pointer for mlx window instance
+}               t_vars;
+
+typedef struct 		s_data
+{
+	void			*img;
+	char			*addr;
+	int				bits_per_pix;
+	int				line_lngth;
+	int				endian;
+}					t_data;
 
 //prsr
 typedef struct		s_rsltn
@@ -205,12 +225,6 @@ typedef struct		s_cntr
 	int				trngl;
 }					t_cntr;
 
-typedef struct		s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
-
 typedef struct		s_scn
 {
 	t_rsltn			n_rsltn;
@@ -230,6 +244,8 @@ typedef struct		s_scn
 	t_list			*frst_trngl;
 	t_list			*n_trngl;
 	t_cntr			n_cntr;
+	t_vars			vrs;
+	t_data			dt;
 }					t_scn;
 
 typedef struct		s_prsr
@@ -274,34 +290,6 @@ typedef struct		s_atof
 	double			rv;
 }					t_atof;
 
-//mlx
-typedef struct 		s_data
-{
-	void			*img;
-	char			*addr;
-	int				bits_per_pix;
-	int				line_lngth;
-	int				endian;
-}					t_data;
-
-typedef struct 		s_draw_sqr
-{
-	int				start_x;
-	int				start_y;
-	int				side;
-	int				color;
-}					t_draw_sqr;
-
-typedef struct 		s_draw_crcl
-{
-	int				start_x;
-	int				start_y;
-	int				r;
-	int				color;
-	int				root1;
-	int				root2;
-}					t_draw_crcl;
-
 //ft_mnrt_main.c
 void				make_scn_arr(t_list **head, int size);
 
@@ -316,6 +304,7 @@ void				make_t_cyl(t_scn *nscn);
 void				make_t_sqr(t_scn *nscn);
 void				make_t_trngl(t_scn *nscn);
 void				make_t_cntr(t_scn *nscn);
+void				null_frst(t_scn *scn);
 t_scn				*make_t_scn(void);
 void				nprsr_reset_counters(t_prsr *nprsr);
 void				nprsr_nullt_fields(t_prsr *nprsr);
@@ -376,12 +365,12 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 int					ft_lstsize(t_list *lst);
 
 //ft_mnrt_mlx.c
-void				call_node(void);
+void				mlx_node(t_scn *lscn, unsigned int **arr);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void				draw_sqr(t_data *data, t_draw_sqr *sqr);
-void				make_new_sqr(t_draw_sqr *new_sqr);
 void				draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr);
 void				img2win(t_scn *nscn, unsigned int **arr);
+int					key_hook(int keycode, t_scn *lscn);
+int					close_mlx_win(int keycode, t_vars *vrs);
 
 //ft_mnrt_print_nscn.c
 void				print_node(t_scn *nscn);
@@ -419,7 +408,7 @@ void				cnvrse2ncrtsn(t_scn *lscn,t_2d_point *xy);
 void				cnvrse2xyz(t_point *out, t_scn *lscn, t_2d_point *xy);
 
 //ft_mnrt_rays.c
-void				rays_node(t_scn *lscn);
+void				rays_node(t_scn *lscn, t_scn *nscn);
 void				trace_ray_segment(t_ray *ray, t_scn *lscn);
 void				trace_ray(t_scn *lscn, t_ray *ray, t_2d_point *xy);
 void				ray_null(t_ray *ray);
@@ -448,15 +437,15 @@ void				lookat_node(t_scn *nscn);
 void				intrsct_node(t_scn *lscn, t_ray *ray);
 void 				check_sphrs(t_scn *lscn, t_ray *ray);
 float				q_equation(float *root, float a, float b, float c);
-float				sphr_intrsct(t_ray *r, t_sphr *s);
+void				sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray);
 
 //ft_mnrt_lum.c
 void				l_ambnt(t_lum *lum);
 void				l_dffse(t_lum *lum);
 void				l_spclr(t_lum *lum);
 void				l_all(t_lum *lum);
-void    			lum_sphr(t_scn *lscn, t_sphr *sphr, t_ray *ray);
-
+void    			lum_sphr(t_scn *lscn, t_ray *ray);
+void				lum_node(t_scn *lscn, t_ray *ray);
 
 //ft_mnrt_nrml.c
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
