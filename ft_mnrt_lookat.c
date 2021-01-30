@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 02:42:10 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 22:48:12 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,14 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lpln->v.nxyz.x = pln->v.nxyz.x;
 		lpln->v.nxyz.y = pln->v.nxyz.y;
 		lpln->v.nxyz.z = pln->v.nxyz.z;
+		v_fill(&lpln->v);
 		lpln->trgb.t = pln->trgb.t;
 		lpln->trgb.r = pln->trgb.r;
 		lpln->trgb.g = pln->trgb.g;
 		lpln->trgb.b = pln->trgb.b;
 		mtrx4_x_point(&lpln->p, &lookat->m, &pln->p);
-		mtrx4_x_vctr(&lpln->v.nxyz, &lookat->m, &pln->v.nxyz);
-		v_fill(&lpln->v);
+		//mtrx4_x_vctr(&lpln->v.xyz, &lookat->m, &pln->v.nxyz);
+		//v_fill(&lpln->v);
 		if (nscn->n_pln->next != NULL)
 			nscn->n_pln = nscn->n_pln->next;
 		lscn->n_cntr.pln++;

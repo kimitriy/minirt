@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/30 02:14:52 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 19:18:35 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,8 +436,10 @@ void				lookat_node(t_scn *nscn);
 //ft_mnrt_intrsct.c
 void				intrsct_node(t_scn *lscn, t_ray *ray);
 void 				check_sphrs(t_scn *lscn, t_ray *ray);
+void 				check_plns(t_scn *lscn, t_ray *ray);
 float				q_equation(float *root, float a, float b, float c);
 void				sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray);
+void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
 
 //ft_mnrt_lum.c
 void				l_ambnt(t_lum *lum);
@@ -445,11 +447,13 @@ void				l_dffse(t_lum *lum);
 void				l_spclr(t_lum *lum);
 void				l_all(t_lum *lum);
 void    			lum_sphr(t_scn *lscn, t_ray *ray);
+void				lum_pln(t_scn *lscn, t_ray *ray);
 void				lum_node(t_scn *lscn, t_ray *ray);
 
 //ft_mnrt_nrml.c
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
 void				nrml_trngl(t_trngl *trn);
+void				nrml_pln_sqr(t_vctr *nrml, t_vxyz *xyz);
 
 //ft_mnrt_color.c
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);

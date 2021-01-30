@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 02:42:09 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 22:33:18 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,45 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 	}
 }
 
+void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
+{
+	t_vctr	oc; //vctr from the O(0,0,0) to the C(x,y,z), that is the projection of the O point on the pln
+
+	//t = - oc * vN / vD * vN;
+	//vD - unit vctr of the ray, it is given
+	//vN - unit nrml vctr of the pln, it is given
+	//oc - vctr from O(0,0,0) to pln, it is orthogonal to the pln and required to calculate
+	//to calc oc vctr we need pln equation:
+
+	float	dst; //it is the solution and it is the distance from arbitrary point to the pln
+	t_point	ap; //arbitrary point
+	p_make(&ap, 0, 0, 0); //which is the O(0,0,0) point in this particular case
+
+	dst =  pln->v.nxyz.x * (pln->p.x - ap.x) + pln->v.nxyz.y * (pln->p.y - ap.y) + pln->v.nxyz.z * (pln->p.z - ap.z);
+
+	v_n_prdct(&oc.xyz, &pln->v.nxyz, dst); //calc oc vctr
+	v_fill(&oc);
+	
+	float 	t; //point of intersection
+	float	tmp1;
+	float	tmp2;
+	tmp1 = v_d_prdct(&oc.xyz, &pln->v.nxyz);
+	tmp2 = v_d_prdct(&ray->vctr->nxyz, &pln->v.nxyz);
+	t = v_d_prdct(&oc.xyz, &pln->v.nxyz) / v_d_prdct(&ray->vctr->nxyz, &pln->v.nxyz); //deleted -1
+	if (t > 0 && t < ray->dist[ray->sgm])
+	{
+		ray->dist[ray->sgm] = t;
+		ray->obj = 'p';
+		ray->nrst = lscn->n_pln;
+		v_n_prdct(&ray->vctr[ray->sgm].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist[ray->sgm]);
+		v_fill(&ray->vctr[ray->sgm]);
+		p_calc(&ray->hit_p[ray->sgm], &ray->vctr[ray->sgm], &ray->tail_p);
+	}
+}
+
 void 	check_sphrs(t_scn *lscn, t_ray *ray)
 {
 	int		i;
-	//float	dscr;
 	t_sphr	*sphr;
 
 	i = 0;
@@ -77,10 +112,27 @@ void 	check_sphrs(t_scn *lscn, t_ray *ray)
 	}
 }
 
+void 	check_plns(t_scn *lscn, t_ray *ray)
+{
+	int		i;
+	t_pln	*pln;
+
+	i = 0;
+	lscn->n_pln = lscn->frst_pln;
+	while (i < lscn->n_cntr.pln)
+	{
+		pln = lscn->n_pln->content;
+		pln_intrsct(lscn, pln, ray);
+		if (lscn->n_pln->next != NULL)
+			lscn->n_pln = lscn->n_pln->next;
+		i++;
+	}
+}
+
 void	intrsct_node(t_scn *lscn, t_ray *ray)
 {
 	check_sphrs(lscn, ray);
-	// check_plns(lscn, ray);
+	check_plns(lscn, ray);
 	// check_cyls(lscn, ray);
 	// check_sqrs(lscn, ray);
 	// check_trngls(lscn, ray);

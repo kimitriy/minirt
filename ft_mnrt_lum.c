@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 02:41:48 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 19:34:03 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,80 @@ void	l_all(t_lum *lum)
 	lum->l = lum->l >= 1 ? 1 : lum->l;
 }
 
+void	make_lum(t_lum *lum, t_scn *lscn, t_ray *ray)
+{
+	t_lght  *lght;
+	t_vctr  minus_op;
+
+	lght = lscn->n_lght->content;
+	lum->alvl = lscn->n_ambnt.lvl;
+    lum->lvl = lght->lvl;
+    lum->op = ray->vctr[ray->sgm]; //op vctr which is already calculated and stored in the ray struct
+	v_make(&lum->ldir, &ray->hit_p[ray->sgm], &lght->p); //makes light direction vctr
+    lum->dst = lum->ldir.lngth;
+    v_null(&minus_op);
+	minus_op.nxyz.x = (-1) * lum->op.nxyz.x;
+    minus_op.nxyz.y = (-1) * lum->op.nxyz.y;
+    minus_op.nxyz.z = (-1) * lum->op.nxyz.z;
+    v_fill(&minus_op);
+    v_sum(&lum->hvctr.xyz, &lum->ldir.nxyz, &minus_op.nxyz);
+    v_fill(&lum->hvctr);
+}
+
 void    lum_sphr(t_scn *lscn, t_ray *ray)
 {
-    t_lght  *lght;
     t_lum   lum;
-    t_vctr  minus_op;
 	t_sphr	*sphr;
 
 	sphr = ray->nrst->content;
-    lght = lscn->n_lght->content;
-    lum.alvl = lscn->n_ambnt.lvl;
-    lum.lvl = lght->lvl;
-    lum.op = ray->vctr[ray->sgm]; //op vctr which is already calculated and stored in the ray struct
     nrml_sphr(&lum.nrml, ray, sphr); //makes nrml vctr
-    v_make(&lum.ldir, &ray->hit_p[ray->sgm], &lght->p); //makes light direction vctr
-    lum.dst = lum.ldir.lngth;
-    v_null(&minus_op);
-	minus_op.nxyz.x = (-1) * lum.op.nxyz.x;
-    minus_op.nxyz.y = (-1) * lum.op.nxyz.y;
-    minus_op.nxyz.z = (-1) * lum.op.nxyz.z;
-    v_fill(&minus_op);
-    v_sum(&lum.hvctr.xyz, &lum.ldir.nxyz, &minus_op.nxyz);
-    v_fill(&lum.hvctr);
+    make_lum(&lum, lscn, ray);
 	l_all(&lum);
 	color_copy(&ray->trgb, &sphr->trgb);
 	color_modify(&ray->trgb, &lum);
 }
+
+void	lum_pln(t_scn *lscn, t_ray *ray)
+{
+    t_lum   lum;
+	t_pln	*pln;
+
+	pln = ray->nrst->content;
+	nrml_pln_sqr(&lum.nrml, &pln->v.nxyz);
+	make_lum(&lum, lscn, ray);
+	l_all(&lum);
+	color_copy(&ray->trgb, &pln->trgb);
+	color_modify(&ray->trgb, &lum);
+}
+
+// void    lum_sphr(t_scn *lscn, t_ray *ray)
+// {
+//     t_lght  *lght;
+//     t_lum   lum;
+//     t_vctr  minus_op;
+// 	t_sphr	*sphr;
+
+// 	sphr = ray->nrst->content;
+//     lght = lscn->n_lght->content;
+// 	lum.alvl = lscn->n_ambnt.lvl;
+//     lum.lvl = lght->lvl;
+//     lum.op = ray->vctr[ray->sgm]; //op vctr which is already calculated and stored in the ray struct
+//     nrml_sphr(&lum.nrml, ray, sphr); //makes nrml vctr
+//     v_make(&lum.ldir, &ray->hit_p[ray->sgm], &lght->p); //makes light direction vctr
+//     lum.dst = lum.ldir.lngth;
+//     v_null(&minus_op);
+// 	minus_op.nxyz.x = (-1) * lum.op.nxyz.x;
+//     minus_op.nxyz.y = (-1) * lum.op.nxyz.y;
+//     minus_op.nxyz.z = (-1) * lum.op.nxyz.z;
+//     v_fill(&minus_op);
+//     v_sum(&lum.hvctr.xyz, &lum.ldir.nxyz, &minus_op.nxyz);
+//     v_fill(&lum.hvctr);
+// 	l_all(&lum);
+// 	color_copy(&ray->trgb, &sphr->trgb);
+// 	color_modify(&ray->trgb, &lum);
+// }
+
+
 
 /*
 obj types:
@@ -107,12 +155,12 @@ void	lum_node(t_scn *lscn, t_ray *ray)
 {
 	if (ray->obj == 's')
 		lum_sphr(lscn, ray);
-	// if (ray->obj = 'p')
-	// 	lum_pln(lscn, ray);
-	// if (ray->obj = 'c')
+	if (ray->obj == 'p')
+		lum_pln(lscn, ray);
+	// if (ray->obj == 'c')
 	// 	lum_cyl(lscn, ray);
-	// if (ray->obj = 'q')
+	// if (ray->obj == 'q')
 	// 	lum_sqr(lscn, ray);
-	// if (ray->obj = 't')
+	// if (ray->obj == 't')
 	// 	lum_trngl(lscn, ray);
 }

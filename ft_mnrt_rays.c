@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 02:42:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/30 22:33:38 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	{
 		while (x < lscn->n_rsltn.x)
 		{
-			// x = 960;
-			// y = 540;
+			// x = 1060;
+			// y = 640;
 			p2d_make(&xy, x, y);
 			trace_ray(lscn, ray, &xy);
 			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->trgb);
