@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 19:34:03 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/31 20:26:00 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,16 @@ void	l_spclr(t_lum *lum)
 
 void	l_all(t_lum *lum)
 {
-	l_ambnt(lum);
-	l_dffse(lum);
-	l_spclr(lum);
-	lum->l = lum->la + lum->ld + lum->ls;
-	lum->l = lum->l >= 1 ? 1 : lum->l;
+	if (lum->shdw == 'y')
+		l_ambnt(lum);
+	else
+	{	
+		l_ambnt(lum);
+		l_dffse(lum);
+		l_spclr(lum);
+		lum->l = lum->la + lum->ld + lum->ls;
+		lum->l = lum->l >= 1 ? 1 : lum->l;
+	}
 }
 
 void	make_lum(t_lum *lum, t_scn *lscn, t_ray *ray)
@@ -73,10 +78,12 @@ void	make_lum(t_lum *lum, t_scn *lscn, t_ray *ray)
 	t_vctr  minus_op;
 
 	lght = lscn->n_lght->content;
+	lum->shdw = ray->shdw;
 	lum->alvl = lscn->n_ambnt.lvl;
     lum->lvl = lght->lvl;
-    lum->op = ray->vctr[ray->sgm]; //op vctr which is already calculated and stored in the ray struct
-	v_make(&lum->ldir, &ray->hit_p[ray->sgm], &lght->p); //makes light direction vctr
+    lum->op = ray->vctr[0]; //op vctr which is already calculated and stored in the ray struct
+	lum->ldir = ray->vctr[1];
+	//v_make(&lum->ldir, &ray->hit_p[ray->sgm], &lght->p); //makes light direction vctr
     lum->dst = lum->ldir.lngth;
     v_null(&minus_op);
 	minus_op.nxyz.x = (-1) * lum->op.nxyz.x;

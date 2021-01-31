@@ -6,16 +6,16 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 22:33:38 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/31 22:42:00 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
 
-void	trace_ray(t_scn *lscn, t_ray *ray, t_2d_point *xy)
+void	trace_ray(t_scn *lscn, t_ray *ray)
 {
-	cnvrse2crtsn(lscn, xy);
-    cnvrse2xyz(&ray->head_p, lscn, xy);
+	// cnvrse2crtsn(lscn, xy);
+    // cnvrse2xyz(&ray->head_p, lscn, xy);
 	v_make(&ray->vctr[ray->sgm], &ray->tail_p, &ray->head_p);
 	intrsct_node(lscn, ray);
 	
@@ -43,6 +43,7 @@ void	ray_null(t_ray *ray)
 {
 	ray->sgm = 0;
 	ray->obj = '\0';
+	ray->shdw = '\0';
 	p_make(&ray->tail_p, 0, 0, 0);
 	p_make(&ray->head_p, 0, 0, 0);
 	v_null(&ray->vctr[0]);
@@ -107,10 +108,12 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	{
 		while (x < lscn->n_rsltn.x)
 		{
-			// x = 1060;
-			// y = 640;
+			// x = 905;
+			// y = 485;
 			p2d_make(&xy, x, y);
-			trace_ray(lscn, ray, &xy);
+			cnvrse2crtsn(lscn, &xy);
+    		cnvrse2xyz(&ray->head_p, lscn, &xy);
+			trace_ray(lscn, ray);
 			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->trgb);
 			ray_null(ray);
 			x++;
@@ -128,6 +131,5 @@ void	rays_node(t_scn *lscn, t_scn *nscn)
 	rays_arr = make_rays_array(lscn);
 	ray_null(&ray);
 	launch_rays(lscn, rays_arr, &ray);
-	//img2win(lscn, rays_arr);
 	mlx_node(nscn, rays_arr);
 }

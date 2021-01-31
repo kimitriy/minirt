@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 22:48:12 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/31 14:48:35 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lpln->trgb.g = pln->trgb.g;
 		lpln->trgb.b = pln->trgb.b;
 		mtrx4_x_point(&lpln->p, &lookat->m, &pln->p);
-		//mtrx4_x_vctr(&lpln->v.xyz, &lookat->m, &pln->v.nxyz);
-		//v_fill(&lpln->v);
+		mtrx4_x_vctr(&lpln->v, &lookat->m, &pln->v.nxyz);
+		v_fill(&lpln->v);
 		if (nscn->n_pln->next != NULL)
 			nscn->n_pln = nscn->n_pln->next;
 		lscn->n_cntr.pln++;
@@ -176,7 +176,7 @@ void	cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lcyl->trgb.g = cyl->trgb.g;
 		lcyl->trgb.b = cyl->trgb.b;
 		mtrx4_x_point(&lcyl->p, &lookat->m, &cyl->p);
-		mtrx4_x_vctr(&lcyl->v.nxyz, &lookat->m, &cyl->v.nxyz);
+		mtrx4_x_vctr(&lcyl->v, &lookat->m, &cyl->v.nxyz);
 		v_fill(&lcyl->v);
 		if (nscn->n_cyl->next != NULL)
 			nscn->n_cyl = nscn->n_cyl->next;
@@ -207,7 +207,7 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		lsqr->trgb.g = sqr->trgb.g;
 		lsqr->trgb.b = sqr->trgb.b;
 		mtrx4_x_point(&lsqr->p, &lookat->m, &sqr->p);
-		mtrx4_x_vctr(&lsqr->v.nxyz, &lookat->m, &sqr->v.nxyz);
+		mtrx4_x_vctr(&lsqr->v, &lookat->m, &sqr->v.nxyz);
 		v_fill(&lsqr->v);
 		if (nscn->n_sqr->next != NULL)
 			nscn->n_sqr = nscn->n_sqr->next;
@@ -245,7 +245,7 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		mtrx4_x_point(&ltrngl->p1, &lookat->m, &trngl->p1);
 		mtrx4_x_point(&ltrngl->p2, &lookat->m, &trngl->p2);
 		mtrx4_x_point(&ltrngl->p3, &lookat->m, &trngl->p3);
-		mtrx4_x_vctr(&ltrngl->n.nxyz, &lookat->m, &trngl->n.nxyz);
+		mtrx4_x_vctr(&ltrngl->n, &lookat->m, &trngl->n.nxyz);
 		v_fill(&ltrngl->n);
 		if (nscn->n_trngl->next != NULL)
 			nscn->n_trngl = nscn->n_trngl->next;

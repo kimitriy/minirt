@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/30 19:18:35 by rburton          ###   ########.fr       */
+/*   Updated: 2021/01/31 17:16:55 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,21 @@ typedef struct 		s_ray
 	t_point			hit_p[2];
 	float			dist[2];
 	char			obj;
+	char			shdw;
 	t_color			trgb;
 	t_list			*nrst;
 }					t_ray;
 
 /*
-obj types:
+obj:
 p - pln;
 s - sphr;
 c - cyl;
 q - sqr;
 t - trngl;
+shdw:
+y - yes;
+\0 - no;
 */
 
 //lum
@@ -106,6 +110,7 @@ typedef struct 		s_lum
 	float			ld;
 	float			ls;
 	float			l;
+	char			shdw;
 }					t_lum;
 
 //mtrx
@@ -409,8 +414,7 @@ void				cnvrse2xyz(t_point *out, t_scn *lscn, t_2d_point *xy);
 
 //ft_mnrt_rays.c
 void				rays_node(t_scn *lscn, t_scn *nscn);
-void				trace_ray_segment(t_ray *ray, t_scn *lscn);
-void				trace_ray(t_scn *lscn, t_ray *ray, t_2d_point *xy);
+void				trace_ray(t_scn *lscn, t_ray *ray);
 void				ray_null(t_ray *ray);
 unsigned long 		cnvrse2trgb(t_color *trgb);
 unsigned int		**make_rays_array(t_scn *lscn);
@@ -418,7 +422,7 @@ void				launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray);
 
 
 //ft_mnrt_mtrx.c
-void				mtrx4_x_vctr(t_vxyz *out, t_mtrx4x4 *mtrx, t_vxyz *in);
+void				mtrx4_x_vctr(t_vctr *out, t_mtrx4x4 *mtrx, t_vxyz *in);
 void				mtrx4_x_point(t_point *out, t_mtrx4x4 *mtrx, t_point *in);
 
 //ft_mnrt_lookat.c
