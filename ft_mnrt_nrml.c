@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 18:28:48 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/31 19:43:59 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/01 17:07:14 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr)
 {
-    v_make(nrml, &sphr->p, &ray->hit_p[0]);
+    v_make(nrml, &sphr->p, &ray->hit_p);
 }
 
 void	nrml_pln_sqr(t_vctr *nrml, t_vxyz *xyz)

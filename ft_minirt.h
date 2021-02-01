@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/01/31 17:16:55 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 00:41:35 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,13 @@ typedef struct 		s_ray
 	t_point			tail_p;
 	t_point			head_p;
 	t_vctr			vctr[2];
-	t_point			hit_p[2];
-	float			dist[2];
+	t_point			hit_p;
+	float			dist;
+	float			l;
 	char			obj;
 	char			shdw;
-	t_color			trgb;
+	t_color			obj_trgb;
+	t_color			p_trgb;
 	t_list			*nrst;
 }					t_ray;
 
@@ -111,6 +113,7 @@ typedef struct 		s_lum
 	float			ls;
 	float			l;
 	char			shdw;
+	t_color			l_trgb;
 }					t_lum;
 
 //mtrx
@@ -450,9 +453,10 @@ void				l_ambnt(t_lum *lum);
 void				l_dffse(t_lum *lum);
 void				l_spclr(t_lum *lum);
 void				l_all(t_lum *lum);
-void    			lum_sphr(t_scn *lscn, t_ray *ray);
-void				lum_pln(t_scn *lscn, t_ray *ray);
-void				lum_node(t_scn *lscn, t_ray *ray);
+void				make_lum(t_lum *lum, t_scn *lscn, t_lght *lght, t_ray *ray);
+void    			lum_sphr(t_scn *lscn, t_lght *lght, t_ray *ray);
+void				lum_pln(t_scn *lscn, t_lght *lght, t_ray *ray);
+void				lum_node(t_scn *lscn, t_lght *lght, t_ray *ray);
 
 //ft_mnrt_nrml.c
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
@@ -461,7 +465,10 @@ void				nrml_pln_sqr(t_vctr *nrml, t_vxyz *xyz);
 
 //ft_mnrt_color.c
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);
-void				color_modify(t_color *color, t_lum *lum);
+void				color_null(t_color *color);
+//void				color_modify(t_color *color, t_lum *lum);
+void				color_calc(t_color *out, t_color *in, t_lum *lum);
 void				color_copy(t_color *to, t_color *from);
+void    			color_node(t_ray *ray, t_lum *lum);
 
 #endif

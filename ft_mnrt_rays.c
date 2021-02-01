@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/31 22:42:00 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 00:51:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,16 @@ void	ray_null(t_ray *ray)
 	p_make(&ray->head_p, 0, 0, 0);
 	v_null(&ray->vctr[0]);
 	v_null(&ray->vctr[1]);
-	p_make(&ray->hit_p[0], 0, 0, 0);
-	p_make(&ray->hit_p[1], 0, 0, 0);
-	ray->dist[0] = INFINITY;
-	ray->dist[1] = INFINITY;
-	ray->trgb.t = 100;
-	ray->trgb.r = 100;
-	ray->trgb.g = 100;
-	ray->trgb.b = 100;
+	p_make(&ray->hit_p, 0, 0, 0);
+	ray->dist = INFINITY;
+	ray->obj_trgb.t = '\0';
+	ray->obj_trgb.r = '\0';
+	ray->obj_trgb.g = '\0';
+	ray->obj_trgb.b = '\0';
+	ray->p_trgb.t = 100;
+	ray->p_trgb.r = 100;
+	ray->p_trgb.g = 100;
+	ray->p_trgb.b = 100;
 	ray->nrst = NULL;
 }
 
@@ -98,9 +100,9 @@ unsigned int	**make_rays_array(t_scn *lscn)
 
 void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 {
-	int			x;
-	int			y;
-	t_2d_point	xy;
+	unsigned int	x;
+	unsigned int	y;
+	t_2d_point		xy;
 	
 	x = 0;
 	y = 0;
@@ -108,19 +110,28 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	{
 		while (x < lscn->n_rsltn.x)
 		{
-			// x = 905;
-			// y = 485;
 			p2d_make(&xy, x, y);
 			cnvrse2crtsn(lscn, &xy);
     		cnvrse2xyz(&ray->head_p, lscn, &xy);
 			trace_ray(lscn, ray);
-			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->trgb);
+			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
 			ray_null(ray);
 			x++;
 		}
 		x = 0;
 		y++;
 	}
+	
+	
+	// x = 960;
+	// y = 540;
+	// p2d_make(&xy, x, y);
+	// cnvrse2crtsn(lscn, &xy);
+	// cnvrse2xyz(&ray->head_p, lscn, &xy);
+	// trace_ray(lscn, ray);
+	// rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	// ray_null(ray);
+	
 }
 
 void	rays_node(t_scn *lscn, t_scn *nscn)

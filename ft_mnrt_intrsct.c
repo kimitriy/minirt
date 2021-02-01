@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/31 22:41:12 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 00:52:56 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,20 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 	a = v_d_prdct(&ray->vctr[ray->sgm].nxyz,&ray->vctr[ray->sgm].nxyz);
 	b = 2 * v_d_prdct(&oc.xyz, &ray->vctr[ray->sgm].nxyz);
 	c = v_d_prdct(&oc.xyz, &oc.xyz) - powf(sphr->d, 2);
-	root = q_equation(&dscr, a, b, c);
-	if (dscr >= 0 && root < ray->dist[ray->sgm] && root > 0)
+	root = q_equation(&dscr, a, b, c) * 1.0001;
+	if (dscr >= 0 && root < ray->dist && root > 0 && ray->sgm == 0)
 	{
-		ray->dist[ray->sgm] = root;
+		ray->dist = root;
 		ray->obj = 's';
 		ray->nrst = lscn->n_sphr;
-		v_n_prdct(&ray->vctr[ray->sgm].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist[ray->sgm]); //makes a ray from the cam point to the intersection point
+		v_n_prdct(&ray->vctr[ray->sgm].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist); //makes a ray from the cam point to the intersection point
 		v_fill(&ray->vctr[ray->sgm]);
-		p_calc(&ray->hit_p[ray->sgm], &ray->vctr[ray->sgm], &ray->tail_p); //calculates the hit point
+		p_calc(&ray->hit_p, &ray->vctr[ray->sgm], &ray->tail_p); //calculates the hit point
 	}
+	if (ray->sgm > 0 && dscr >= 0 && root > 0)
+		ray->shdw = 'y';
+	else if (ray->sgm > 0 && dscr < 0)
+		ray->shdw = '\0';
 }
 
 void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
@@ -82,17 +86,21 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 	float	tmp1;
 	float	tmp2;
 	tmp1 = v_d_prdct(&oc.xyz, &pln->v.nxyz);
-	tmp2 = v_d_prdct(&ray->vctr->nxyz, &pln->v.nxyz);
-	t = v_d_prdct(&oc.xyz, &pln->v.nxyz) / v_d_prdct(&ray->vctr->nxyz, &pln->v.nxyz); //deleted -1
-	if (t > 0 && t < ray->dist[ray->sgm])
+	tmp2 = v_d_prdct(&ray->vctr[ray->sgm].nxyz, &pln->v.nxyz);
+	t = v_d_prdct(&oc.xyz, &pln->v.nxyz) / v_d_prdct(&ray->vctr[ray->sgm].nxyz, &pln->v.nxyz); //deleted -1
+	if (t > 0 && t < ray->dist && t > 0 && ray->sgm == 0) //!!!!
 	{
-		ray->dist[ray->sgm] = t;
+		ray->dist = t;
 		ray->obj = 'p';
 		ray->nrst = lscn->n_pln;
-		v_n_prdct(&ray->vctr[ray->sgm].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist[ray->sgm]);
+		v_n_prdct(&ray->vctr[ray->sgm].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist);
 		v_fill(&ray->vctr[ray->sgm]);
-		p_calc(&ray->hit_p[ray->sgm], &ray->vctr[ray->sgm], &ray->tail_p);
+		p_calc(&ray->hit_p, &ray->vctr[ray->sgm], &ray->tail_p);
 	}
+	if (ray->sgm > 0 && t > 0)
+		ray->shdw = 'y';
+	else if (ray->sgm > 0 && t <= 0)
+		ray->shdw = '\0';
 }
 
 void 	check_sphrs(t_scn *lscn, t_ray *ray)
@@ -129,28 +137,45 @@ void 	check_plns(t_scn *lscn, t_ray *ray)
 	}
 }
 
-void	intrsct_node(t_scn *lscn, t_ray *ray)
-{
-	t_lght	*lght;
-
+void	check_objcts(t_scn *lscn, t_ray *ray)
+{	
 	check_sphrs(lscn, ray);
 	check_plns(lscn, ray);
 	// check_cyls(lscn, ray);
 	// check_sqrs(lscn, ray);
 	// check_trngls(lscn, ray);
-	if (ray->dist[0] < INFINITY && ray->sgm == 0)
+}
+
+void	check_lghts(t_scn *lscn, t_ray *ray)
+{
+	int		i;
+	t_lght	*lght;
+
+	lscn->n_lght = lscn->frst_lght;
+	i = 0;
+	color_null(&ray->p_trgb);
+	while (i < lscn->n_cntr.lght)
 	{
 		lght = lscn->n_lght->content;
-		ray->tail_p = ray->hit_p[ray->sgm];
-		ray->head_p = lght->p;
-		ray->sgm++;
-		trace_ray(lscn, ray);
+		if (ray->dist < INFINITY)
+		{
+			ray->tail_p = ray->hit_p;
+			ray->head_p = lght->p;
+			ray->sgm++;
+			v_make(&ray->vctr[1], &ray->tail_p, &ray->head_p);
+			check_objcts(lscn, ray);
+		}
+		if (ray->dist < INFINITY && ray->sgm > 0)
+			lum_node(lscn, lght, ray);
+		if (lscn->n_lght->next != NULL)
+			lscn->n_lght = lscn->n_lght->next;
+		i++;
 	}
-	if (ray->dist[1] < INFINITY && ray->sgm == 1)
-	{
-		ray->shdw = 'y';
-		lum_node(lscn, ray);
-	}
-	else if (ray->dist[0] < INFINITY && ray->sgm == 1)
-		lum_node(lscn, ray);
+	ray->sgm = 0;
+}
+
+void	intrsct_node(t_scn *lscn, t_ray *ray)
+{
+	check_objcts(lscn, ray);
+	check_lghts(lscn, ray);
 }
