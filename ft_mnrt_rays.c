@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 17:43:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 00:08:09 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,13 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 		y++;
 	}
 	
+	//x1240y640 shadow on the blue sphr from the left light
+	//x280y810 shadow on the pln from the right lght and white sphr
+	//x480y860 shadow on the pln from the right lght and green sphr
+	//x1440y860 shadow on the pln from the left lght and green sphr
 	
-	// x = 960;
-	// y = 540;
+	// x = 1440;
+	// y = 860;
 	// p2d_make(&xy, x, y);
 	// cnvrse2crtsn(lscn, &xy);
 	// cnvrse2xyz(&ray->head_p, lscn, &xy);

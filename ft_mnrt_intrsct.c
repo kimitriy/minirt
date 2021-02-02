@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 17:43:10 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 00:07:46 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 		v_fill(&ray->vctr[ray->sgm]);
 		p_calc(&ray->hit_p, &ray->vctr[ray->sgm], &ray->tail_p); //calculates the hit point
 	}
-	if (ray->sgm > 0 && dscr >= 0 && root > 0)
+	if (ray->sgm > 0 && dscr >= 0 && root > 0 && ray->shdw != 'y')
 		ray->shdw = 'y';
-	else if (ray->sgm > 0 && dscr < 0)
+	else if (ray->sgm > 0 && dscr < 0 && ray->shdw != 'y')
 		ray->shdw = '\0';
 }
 
@@ -97,9 +97,9 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 		v_fill(&ray->vctr[ray->sgm]);
 		p_calc(&ray->hit_p, &ray->vctr[ray->sgm], &ray->tail_p);
 	}
-	if (ray->sgm > 0 && t > 0)
+	if (ray->sgm > 0 && t > 0 && ray->shdw != 'y')
 		ray->shdw = 'y';
-	else if (ray->sgm > 0 && t <= 0)
+	else if (ray->sgm > 0 && t <= 0 && ray->shdw != 'y')
 		ray->shdw = '\0';
 }
 
@@ -161,7 +161,7 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 		{
 			ray->tail_p = ray->hit_p;
 			ray->head_p = lght->p;
-			ray->sgm++;
+			ray->sgm = 1;
 			v_make(&ray->vctr[1], &ray->tail_p, &ray->head_p);
 			check_objcts(lscn, ray);
 		}
@@ -169,6 +169,7 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 			lum_node(lscn, lght, ray);
 		if (lscn->n_lght->next != NULL)
 			lscn->n_lght = lscn->n_lght->next;
+		ray->shdw = '\0';
 		i++;
 	}
 	ray->sgm = 0;
