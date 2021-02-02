@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/31 14:48:36 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 14:10:21 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	v_node(void)
 	delta.p2 = b;
 	delta.p3 = c;
 
-	nrml_trngl(&delta);
+	//nrml_trngl(&delta);
 
 	printf("A(%f, %f, %f)\n", a.x, a.y, a.z);
 	printf("B(%f, %f, %f)\n", b.x, b.y, b.z);

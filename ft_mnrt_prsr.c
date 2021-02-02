@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/29 20:52:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:43:12 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 	make_t_cam(nscn);
 	if (nscn->n_cntr.cam == 0)
 		nscn->frst_cam = nscn->n_cam;
+	if (nscn->n_cam->next != NULL)
+		nscn->n_cam = nscn->n_cam->next;
 	tmp = nscn->n_cam->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -67,8 +69,6 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 	tmp->fov = ft_atoi(np->fov);
 	v_fill(&tmp->v);
 	nscn->n_cntr.cam++;
-	if (nscn->n_cntr.cam > 1)
-		nscn->frst_cam->next = nscn->n_cam;
 }
 
 void	write_lght(t_scn *nscn, t_prsr *np)
@@ -77,7 +77,10 @@ void	write_lght(t_scn *nscn, t_prsr *np)
 	
 	tmp = NULL;
 	make_t_lght(nscn);
-	nscn->frst_lght = nscn->n_lght;
+	if (nscn->n_cntr.lght == 0)
+		nscn->frst_lght = nscn->n_lght;
+	if (nscn->n_lght->next != NULL)
+		nscn->n_lght = nscn->n_lght->next;
 	tmp = nscn->n_lght->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -96,7 +99,10 @@ void	write_pln(t_scn *nscn, t_prsr *np)
 
 	tmp = NULL;
 	make_t_pln(nscn);
-	nscn->frst_pln = nscn->n_pln;
+	if (nscn->n_cntr.pln == 0)
+		nscn->frst_pln = nscn->n_pln;
+	if (nscn->n_pln->next != NULL)
+		nscn->n_pln = nscn->n_pln->next;
 	tmp = nscn->n_pln->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -117,8 +123,10 @@ void	write_sphr(t_scn *nscn, t_prsr *np)
 	t_sphr *tmp;
 
 	make_t_sphr(nscn);
-	//if (nscn->n_cntr.sphr == 0)
-	nscn->frst_sphr = nscn->n_sphr;
+	if (nscn->n_cntr.sphr == 0)
+		nscn->frst_sphr = nscn->n_sphr;
+	if (nscn->n_sphr->next != NULL)
+		nscn->n_sphr = nscn->n_sphr->next;
 	tmp = nscn->n_sphr->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -135,9 +143,11 @@ void	write_cyl(t_scn *nscn, t_prsr *np)
 {
 	t_cyl *tmp;
 
-	tmp = NULL;
 	make_t_cyl(nscn);
-	nscn->frst_cyl = nscn->n_cyl;
+	if (nscn->n_cntr.cyl == 0)
+		nscn->frst_cyl = nscn->n_cyl;
+	if (nscn->n_cyl->next != NULL)
+		nscn->n_cyl = nscn->n_cyl->next;
 	tmp = nscn->n_cyl->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -159,9 +169,11 @@ void	write_sqr(t_scn *nscn, t_prsr *np)
 {
 	t_sqr *tmp;
 
-	tmp = NULL;
 	make_t_sqr(nscn);
-	nscn->frst_sqr = nscn->n_sqr;
+	if (nscn->n_cntr.sqr == 0)
+		nscn->frst_sqr = nscn->n_sqr;
+	if (nscn->n_sqr->next != NULL)
+		nscn->n_sqr = nscn->n_sqr->next;
 	tmp = nscn->n_sqr->content;
 	tmp->p.x = ft_atof(np->x);
 	tmp->p.y = ft_atof(np->y);
@@ -182,9 +194,11 @@ void	write_trngl(t_scn *nscn, t_prsr *np)
 {
 	t_trngl *tmp;
 
-	tmp = NULL;
 	make_t_trngl(nscn);
-	nscn->frst_trngl = nscn->n_trngl;
+	if (nscn->n_cntr.trngl == 0)
+		nscn->frst_trngl = nscn->n_trngl;
+	if (nscn->n_trngl->next != NULL)
+		nscn->n_trngl = nscn->n_trngl->next;
 	tmp = nscn->n_trngl->content;
 	tmp->p1.x = ft_atof(np->x);
 	tmp->p1.y = ft_atof(np->y);

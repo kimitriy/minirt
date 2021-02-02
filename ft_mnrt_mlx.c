@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 02:42:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:43:07 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int		key_hook(int keycode, t_scn *nscn)
 	{
 		if (nscn->n_cam->next != NULL)
 			nscn->n_cam = nscn->n_cam->next;
+		else
+			nscn->n_cam = nscn->frst_cam;
 		mlx_destroy_window(nscn->vrs.mlx, nscn->vrs.win);
 		lookat_node(nscn);
 	}

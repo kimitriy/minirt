@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 11:39:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:43:12 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,13 @@ void	get_cam_fov(t_scn *nscn, t_scn *lscn)
 	t_cam	*lcam;
 
 	make_t_cam(lscn);
-	lscn->frst_cam = lscn->n_cam;
+	if (lscn->n_cntr.cam == 0)
+		lscn->frst_cam = lscn->n_cam;
+	if (lscn->n_cam->next != NULL)
+		lscn->n_cam = lscn->n_cam->next;
 	cam = nscn->n_cam->content;
 	lcam = lscn->n_cam->content;
 	lcam->fov = cam->fov;
-	nscn->n_cam = nscn->n_cam->next;
 	lscn->n_cntr.cam++;
 }
 
@@ -75,7 +77,10 @@ void	cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.lght < nscn->n_cntr.lght)
 	{
 		make_t_lght(lscn);
-		lscn->frst_lght = lscn->n_lght;
+		if (lscn->n_cntr.lght == 0)
+			lscn->frst_lght = lscn->n_lght;
+		if (lscn->n_lght->next != NULL)
+			lscn->n_lght = lscn->n_lght->next;
 		lght = nscn->n_lght->content;
 		llght = lscn->n_lght->content;
 		llght->p.x = lght->p.x;
@@ -102,7 +107,10 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.pln < nscn->n_cntr.pln)
 	{
 		make_t_pln(lscn);
-		lscn->frst_pln = lscn->n_pln;
+		if (lscn->n_cntr.pln == 0)
+			lscn->frst_pln = lscn->n_pln;
+		if (lscn->n_pln->next != NULL)
+			lscn->n_pln = lscn->n_pln->next;
 		pln = nscn->n_pln->content;
 		lpln = lscn->n_pln->content;
 		lpln->p.x = pln->p.x;
@@ -134,8 +142,10 @@ void	cnvrse_sphr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.sphr < nscn->n_cntr.sphr)
 	{
 		make_t_sphr(lscn);
-		//if (lscn->n_cntr.sphr == 0)
-		lscn->frst_sphr = lscn->n_sphr;
+		if (lscn->n_cntr.sphr == 0)
+			lscn->frst_sphr = lscn->n_sphr;
+		if (lscn->n_sphr->next != NULL)
+			lscn->n_sphr = lscn->n_sphr->next;
 		sphr = nscn->n_sphr->content;
 		lsphr = lscn->n_sphr->content;
 		lsphr->p.x = sphr->p.x;
@@ -162,7 +172,10 @@ void	cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.cyl < nscn->n_cntr.cyl)
 	{
 		make_t_cyl(lscn);
-		lscn->frst_cyl = lscn->n_cyl;
+		if (lscn->n_cntr.cyl == 0)
+			lscn->frst_cyl = lscn->n_cyl;
+		if (lscn->n_cyl->next != NULL)
+			lscn->n_cyl = lscn->n_cyl->next;
 		cyl = nscn->n_cyl->content;
 		lcyl = lscn->n_cyl->content;
 		lcyl->p.x = cyl->p.x;
@@ -195,7 +208,10 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.sqr < nscn->n_cntr.sqr)
 	{
 		make_t_sqr(lscn);
-		lscn->frst_sqr = lscn->n_sqr;
+		if (lscn->n_cntr.sqr == 0)
+			lscn->frst_sqr = lscn->n_sqr;
+		if (lscn->n_sqr->next != NULL)
+			lscn->n_sqr = lscn->n_sqr->next;
 		sqr = nscn->n_sqr->content;
 		lsqr = lscn->n_sqr->content;
 		lsqr->p.x = sqr->p.x;
@@ -227,7 +243,10 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	while (lscn->n_cntr.trngl < nscn->n_cntr.trngl)
 	{
 		make_t_trngl(lscn);
-		lscn->frst_trngl = lscn->n_trngl;
+		if (lscn->n_cntr.trngl == 0)
+			lscn->frst_trngl = lscn->n_trngl;
+		if (lscn->n_trngl->next != NULL)
+			lscn->n_trngl = lscn->n_trngl->next;
 		trngl = nscn->n_trngl->content;
 		ltrngl = lscn->n_trngl->content;
 		ltrngl->p1.x = trngl->p1.x;
@@ -262,6 +281,7 @@ void	cnvrse2local(t_scn *lscn, t_scn *nscn)
 	t_cam		*cam;
 	t_look_at 	lookat;
 
+	//nscn->n_cam = nscn->frst_cam;
 	cam = nscn->n_cam->content;
 	look_at_mtrx(&lookat, &cam->v, &cam->p);
 	

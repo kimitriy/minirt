@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/30 02:42:09 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:43:13 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	make_t_cam(t_scn *scn)
 	v_null(&new_cam->v);
 	new_cam->fov = 0;
 	new_cam->nxt = NULL;
-	ft_lstadd_front(&scn->n_cam, ft_lstnew(new_cam));
+	ft_lstadd_back(&scn->n_cam, ft_lstnew(new_cam));
 }
 
 void	make_t_lght(t_scn *scn)
@@ -60,7 +60,7 @@ void	make_t_lght(t_scn *scn)
 	new_lght->trgb.g = 0;
 	new_lght->trgb.b = 0;
 	new_lght->nxt = NULL;
-	ft_lstadd_front(&scn->n_lght, ft_lstnew(new_lght));
+	ft_lstadd_back(&scn->n_lght, ft_lstnew(new_lght));
 }
 
 void	make_t_pln(t_scn *scn)
@@ -81,7 +81,7 @@ void	make_t_pln(t_scn *scn)
 	new_pln->trgb.g = 0;
 	new_pln->trgb.b = 0;
 	new_pln->nxt = NULL;
-	ft_lstadd_front(&scn->n_pln, ft_lstnew(new_pln));
+	ft_lstadd_back(&scn->n_pln, ft_lstnew(new_pln));
 }
 
 void	make_t_sphr(t_scn *scn)
@@ -99,7 +99,7 @@ void	make_t_sphr(t_scn *scn)
 	new_sphr->trgb.g = 0;
 	new_sphr->trgb.b = 0;
 	new_sphr->nxt = NULL;
-	ft_lstadd_front(&scn->n_sphr, ft_lstnew(new_sphr));
+	ft_lstadd_back(&scn->n_sphr, ft_lstnew(new_sphr));
 }
 
 void	make_t_cyl(t_scn *scn)
@@ -122,7 +122,7 @@ void	make_t_cyl(t_scn *scn)
 	new_cyl->trgb.g = 0;
 	new_cyl->trgb.b = 0;
 	new_cyl->nxt = NULL;
-	ft_lstadd_front(&scn->n_cyl, ft_lstnew(new_cyl));
+	ft_lstadd_back(&scn->n_cyl, ft_lstnew(new_cyl));
 }
 
 void	make_t_sqr(t_scn *scn)
@@ -144,7 +144,7 @@ void	make_t_sqr(t_scn *scn)
 	new_sqr->trgb.g = 0;
 	new_sqr->trgb.b = 0;
 	new_sqr->nxt = NULL;
-	ft_lstadd_front(&scn->n_sqr, ft_lstnew(new_sqr));
+	ft_lstadd_back(&scn->n_sqr, ft_lstnew(new_sqr));
 }
 
 void	make_t_trngl(t_scn *scn)
@@ -171,7 +171,7 @@ void	make_t_trngl(t_scn *scn)
 	new_trngl->trgb.g = 0;
 	new_trngl->trgb.b = 0;
 	new_trngl->nxt = NULL;
-	ft_lstadd_front(&scn->n_trngl, ft_lstnew(new_trngl));
+	ft_lstadd_back(&scn->n_trngl, ft_lstnew(new_trngl));
 }
 
 void	make_t_cntr(t_scn *scn)
@@ -206,6 +206,13 @@ t_scn	*make_t_scn(void)
 	make_t_rsltn(scn);
 	make_t_ambnt(scn);
 	null_frst(scn);
+	scn->n_cam = NULL;
+	scn->n_lght = NULL;
+	scn->n_pln = NULL;
+	scn->n_sphr = NULL;
+	scn->n_sqr = NULL;
+	scn->n_trngl = NULL;
+	scn->n_cyl = NULL;
 	return (scn);
 }
 

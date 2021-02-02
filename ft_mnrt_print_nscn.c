@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:46:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/29 14:27:57 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:43:14 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void    print_cam(t_scn *scn)
     t_cam   *cam;
 
     i = 0;
+    scn->n_cam = scn->frst_cam;
     while (i < scn->n_cntr.cam)
     {
     	cam = scn->n_cam->content;
@@ -34,6 +35,7 @@ void    print_light(t_scn *scn)
     t_lght	*lght;
 
     i = 0;
+    scn->n_lght = scn->frst_lght;
     while (i < scn->n_cntr.lght)
     {
         lght = scn->n_lght->content;
@@ -50,6 +52,7 @@ void    print_pln(t_scn *scn)
     t_pln	*pln;
     
     i = 0;
+    scn->n_pln = scn->frst_pln;
     while (i < scn->n_cntr.pln)
     {
         pln = scn->n_pln->content;
@@ -66,6 +69,7 @@ void    print_sphr(t_scn *scn)
     t_sphr	*sphr;
 
     i = 0;
+    scn->n_sphr = scn->frst_sphr;
     while (i < scn->n_cntr.sphr)
     {
         sphr = scn->n_sphr->content;
@@ -82,6 +86,7 @@ void    print_cyl(t_scn *scn)
     t_cyl	*cyl;
 
     i = 0;
+    scn->n_cyl = scn->frst_cyl;
     while (i < scn->n_cntr.cyl)
     {
         cyl = scn->n_cyl->content;
@@ -98,6 +103,7 @@ void    print_sqr(t_scn *scn)
     t_sqr	*sqr;
 
     i = 0;
+    scn->n_sqr = scn->frst_sqr;
     while (i < scn->n_cntr.sqr)
     {
         sqr = scn->n_sqr->content;
@@ -114,6 +120,7 @@ void    print_trngl(t_scn *scn)
     t_trngl	*trngl;
 
     i = 0;
+    scn->n_trngl = scn->frst_trngl;
     while (i < scn->n_cntr.trngl)
     {
         trngl = scn->n_trngl->content;
