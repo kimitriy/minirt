@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 00:52:56 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 12:11:50 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,6 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 void	intrsct_node(t_scn *lscn, t_ray *ray)
 {
 	check_objcts(lscn, ray);
-	check_lghts(lscn, ray);
+	if (ray->dist < INFINITY)
+		check_lghts(lscn, ray);
 }

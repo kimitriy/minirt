@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/31 14:48:35 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 11:39:51 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	t_pln	*pln;
 	t_pln	*lpln;
 
+	nscn->n_pln = nscn->frst_pln;
 	while (lscn->n_cntr.pln < nscn->n_cntr.pln)
 	{
 		make_t_pln(lscn);
@@ -157,6 +158,7 @@ void	cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	t_cyl	*cyl;
 	t_cyl	*lcyl;
 
+	nscn->n_cyl = nscn->frst_cyl;
 	while (lscn->n_cntr.cyl < nscn->n_cntr.cyl)
 	{
 		make_t_cyl(lscn);
@@ -189,6 +191,7 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	t_sqr	*sqr;
 	t_sqr	*lsqr;
 
+	nscn->n_sqr = nscn->frst_sqr;
 	while (lscn->n_cntr.sqr < nscn->n_cntr.sqr)
 	{
 		make_t_sqr(lscn);
@@ -220,6 +223,7 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	t_trngl	*trngl;
 	t_trngl	*ltrngl;
 
+	nscn->n_sqr = nscn->frst_sqr;
 	while (lscn->n_cntr.trngl < nscn->n_cntr.trngl)
 	{
 		make_t_trngl(lscn);

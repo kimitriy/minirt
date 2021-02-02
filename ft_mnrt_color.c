@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 01:36:19 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 00:53:00 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/02 11:19:18 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	color_calc(t_color *out, t_color *in, t_lum *lum)
 	// }
 	// else
 	// {
-	out->r += in->r * lum->l;
-	out->g += in->g * lum->l;
-	out->b += in->b * lum->l;
+	out->r = out->r + in->r * lum->l > 255 ? 255 : out->r + in->r * lum->l;
+	out->g = out->g + in->g * lum->l > 255 ? 255 : out->g + in->g * lum->l;
+	out->b = out->b + in->b * lum->l > 255 ? 255 : out->b + in->b * lum->l;
 	// }
 }
 
