@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/03 15:24:00 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 18:48:42 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,6 +314,7 @@ void				make_scn_arr(t_list **head, int size);
 void				make_t_rsltn(t_scn *nscn);
 void				make_t_ambnt(t_scn *nscn);
 void				make_t_cam(t_scn *nscn);
+void				t_lght_null(t_lght *lght);
 void				make_t_lght(t_scn *nscn);
 void				make_t_pln(t_scn *nscn);
 void				make_t_sphr(t_scn *nscn);
@@ -463,7 +464,7 @@ void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
 void				l_ambnt(t_lum *lum);
 void				l_dffse(t_lum *lum);
 void				l_spclr(t_lum *lum);
-void				l_all(t_lum *lum);
+void				l_all(t_scn *lscn, t_lum *lum);
 void				make_lum(t_lum *lum, t_scn *lscn, t_lght *lght, t_ray *ray);
 void    			lum_sphr(t_scn *lscn, t_lght *lght, t_ray *ray);
 void				lum_pln(t_scn *lscn, t_lght *lght, t_ray *ray);
@@ -480,6 +481,6 @@ void				color_null(t_color *color);
 //void				color_modify(t_color *color, t_lum *lum);
 void				color_calc(t_color *out, t_color *in, t_lum *lum);
 void				color_copy(t_color *to, t_color *from);
-void    			color_node(t_ray *ray, t_lum *lum);
+void    			color_node(t_scn *lscn, t_ray *ray, t_lum *lum);
 
 #endif

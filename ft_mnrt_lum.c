@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 15:39:05 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 18:49:23 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	l_spclr(t_lum *lum)
 	lum->ls = lum->ks * fade * pow(mx, lum->p);
 }
 
-void	l_all(t_lum *lum)
+void	l_all(t_scn *lscn, t_lum *lum)
 {
-	if (lum->shdw == 'y')
+	if (lum->shdw == 'y' || lscn->n_cntr.lght == 0)
 	{
 		l_ambnt(lum);
 		lum->ld = 0;
@@ -75,9 +75,9 @@ void	make_lum(t_lum *lum, t_scn *lscn, t_lght *lght, t_ray *ray)
 	//lght = lscn->n_lght->content;
 	lum->shdw = ray->shdw;
 	lum->alvl = lscn->n_ambnt.lvl;
-    lum->lvl = lght->lvl;
+	lum->lvl = lght->lvl;
 	color_copy(&lum->l_trgb, &lght->trgb);
-    lum->op = ray->vctr[0]; //op vctr which is already calculated and stored in the ray struct
+	lum->op = ray->vctr[0]; //op vctr which is already calculated and stored in the ray struct
 	lum->ldir = ray->vctr[1];
 	//v_make(&lum->ldir, &ray->hit_p[ray->sgm], &lght->p); //makes light direction vctr
     lum->dst = lum->ldir.lngth;
@@ -98,9 +98,9 @@ void    lum_sphr(t_scn *lscn, t_lght *lght, t_ray *ray)
 	sphr = ray->nrst->content;
     nrml_sphr(&lum.nrml, ray, sphr); //makes nrml vctr
     make_lum(&lum, lscn, lght, ray);
-	l_all(&lum);
+	l_all(lscn, &lum);
 	color_copy(&ray->obj_trgb, &sphr->trgb);
-	color_node(ray, &lum);
+	color_node(lscn, ray, &lum);
 	//color_modify(&ray->trgb, &lum);
 }
 
@@ -112,9 +112,9 @@ void	lum_pln(t_scn *lscn, t_lght *lght, t_ray *ray)
 	pln = ray->nrst->content;
 	nrml_pln_sqr(&lum.nrml, &pln->v.nxyz);
 	make_lum(&lum, lscn, lght, ray);
-	l_all(&lum);
+	l_all(lscn, &lum);
 	color_copy(&ray->obj_trgb, &pln->trgb);
-	color_node(ray, &lum);
+	color_node(lscn, ray, &lum);
 	//color_modify(&ray->trgb, &lum);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 01:36:19 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 15:27:27 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 18:48:14 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,11 @@ void	lvl_apply(t_color *out, t_color *in, t_lum *lum)
 	// }
 }
 
-void    color_node(t_ray *ray, t_lum *lum)
+void    color_node(t_scn *lscn, t_ray *ray, t_lum *lum)
 {
-    sum_color(&ray->sum_trgb, &ray->obj_trgb, &lum->l_trgb);
+    if (lscn->n_cntr.lght > 0)
+		sum_color(&ray->sum_trgb, &ray->obj_trgb, &lum->l_trgb);
+	else
+		sum_color(&ray->sum_trgb, &ray->obj_trgb, &lscn->n_ambnt.trgb);
 	lvl_apply(&ray->p_trgb, &ray->sum_trgb, lum);
 }

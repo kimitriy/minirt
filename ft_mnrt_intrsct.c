@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 00:07:46 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 17:57:45 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 {
 	int		i;
 	t_lght	*lght;
-
+	
 	lscn->n_lght = lscn->frst_lght;
 	i = 0;
 	color_null(&ray->p_trgb);
@@ -177,7 +177,14 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 
 void	intrsct_node(t_scn *lscn, t_ray *ray)
 {
+	t_lght	nolght;
+
 	check_objcts(lscn, ray);
-	if (ray->dist < INFINITY)
+	if (ray->dist < INFINITY && lscn->n_cntr.lght > 0)
 		check_lghts(lscn, ray);
+	else if (ray->dist < INFINITY && lscn->n_cntr.lght == 0)
+	{
+		t_lght_null(&nolght);
+		lum_node(lscn, &nolght, ray);
+	}
 }

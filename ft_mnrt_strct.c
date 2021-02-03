@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 17:43:13 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 16:37:05 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,35 @@ void	make_t_cam(t_scn *scn)
 	ft_lstadd_back(&scn->n_cam, ft_lstnew(new_cam));
 }
 
+void	t_lght_null(t_lght *lght)
+{
+	lght->p.x = 0;
+	lght->p.y = 0;
+	lght->p.z = 0;
+	lght->lvl = 0;
+	lght->trgb.t = 0;
+	lght->trgb.r = 0;
+	lght->trgb.g = 0;
+	lght->trgb.b = 0;
+	lght->nxt = NULL;
+}
+
 void	make_t_lght(t_scn *scn)
 {
 	t_lght	*new_lght;
 
 	if (!(new_lght = (t_lght*)malloc(1 * sizeof(t_lght))))
 		new_lght = NULL;
-	new_lght->p.x = 0;
-	new_lght->p.y = 0;
-	new_lght->p.z = 0;
-	new_lght->lvl = 0;
-	new_lght->trgb.t = 0;
-	new_lght->trgb.r = 0;
-	new_lght->trgb.g = 0;
-	new_lght->trgb.b = 0;
-	new_lght->nxt = NULL;
+	t_lght_null(new_lght);
+	// new_lght->p.x = 0;
+	// new_lght->p.y = 0;
+	// new_lght->p.z = 0;
+	// new_lght->lvl = 0;
+	// new_lght->trgb.t = 0;
+	// new_lght->trgb.r = 0;
+	// new_lght->trgb.g = 0;
+	// new_lght->trgb.b = 0;
+	// new_lght->nxt = NULL;
 	ft_lstadd_back(&scn->n_lght, ft_lstnew(new_lght));
 }
 

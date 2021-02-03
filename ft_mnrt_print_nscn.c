@@ -6,11 +6,21 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:46:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 17:43:14 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 16:56:41 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
+
+void    print_res(t_scn *scn)
+{
+    printf("resolution: (%d, %d)\n", scn->n_rsltn.x, scn->n_rsltn.y);
+}
+
+void    print_ambnt(t_scn *scn)
+{
+    printf("ambient: lvl:%f, trgb(%d, %d, %d)\n", scn->n_ambnt.lvl, scn->n_ambnt.trgb.r, scn->n_ambnt.trgb.g, scn->n_ambnt.trgb.b);
+}
 
 void    print_cam(t_scn *scn)
 {
@@ -133,7 +143,9 @@ void    print_trngl(t_scn *scn)
 
 void	print_node(t_scn *scn)
 {
-	print_cam(scn);
+	print_res(scn);
+    print_ambnt(scn);
+    print_cam(scn);
 	print_light(scn);
     print_pln(scn);
     print_sphr(scn);

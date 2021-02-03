@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 15:27:58 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 18:51:43 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ray_null(t_ray *ray)
 	ray->dist = INFINITY;
 	color_make(&ray->obj_trgb, '\0', '\0', '\0');
 	color_make(&ray->sum_trgb, '\0', '\0', '\0');
-	color_make(&ray->p_trgb, 100, 100, 100);
+	color_make(&ray->p_trgb, 0, 0, 0);
 	// ray->obj_trgb.t = '\0';
 	// ray->obj_trgb.r = '\0';
 	// ray->obj_trgb.g = '\0';
