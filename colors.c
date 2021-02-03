@@ -46,7 +46,7 @@ void	to_rgb(t_color *out, t_cmyk *cmyk)
 	out->b = 255 * (1 - cmyk->y) * (1 - cmyk->k);
 }
 
-void	add_color(t_color *out, t_color *surface, t_color *light)
+void	sum_color(t_color *out, t_color *surface, t_color *light)
 {
 	t_cmyk	srfc;
 	t_cmyk	lght;
