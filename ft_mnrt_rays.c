@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 00:08:09 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 15:27:58 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,21 @@ void	ray_null(t_ray *ray)
 	v_null(&ray->vctr[1]);
 	p_make(&ray->hit_p, 0, 0, 0);
 	ray->dist = INFINITY;
-	ray->obj_trgb.t = '\0';
-	ray->obj_trgb.r = '\0';
-	ray->obj_trgb.g = '\0';
-	ray->obj_trgb.b = '\0';
-	ray->p_trgb.t = 100;
-	ray->p_trgb.r = 100;
-	ray->p_trgb.g = 100;
-	ray->p_trgb.b = 100;
+	color_make(&ray->obj_trgb, '\0', '\0', '\0');
+	color_make(&ray->sum_trgb, '\0', '\0', '\0');
+	color_make(&ray->p_trgb, 100, 100, 100);
+	// ray->obj_trgb.t = '\0';
+	// ray->obj_trgb.r = '\0';
+	// ray->obj_trgb.g = '\0';
+	// ray->obj_trgb.b = '\0';
+	// ray->sum_trgb.t = '\0';
+	// ray->sum_trgb.r = '\0';
+	// ray->sum_trgb.g = '\0';
+	// ray->sum_trgb.b = '\0';
+	// ray->p_trgb.t = 100;
+	// ray->p_trgb.r = 100;
+	// ray->p_trgb.g = 100;
+	// ray->p_trgb.b = 100;
 	ray->nrst = NULL;
 }
 
@@ -127,8 +134,8 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	//x480y860 shadow on the pln from the right lght and green sphr
 	//x1440y860 shadow on the pln from the left lght and green sphr
 	
-	// x = 1440;
-	// y = 860;
+	// x = 960;
+	// y = 540;
 	// p2d_make(&xy, x, y);
 	// cnvrse2crtsn(lscn, &xy);
 	// cnvrse2xyz(&ray->head_p, lscn, &xy);

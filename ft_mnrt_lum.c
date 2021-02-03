@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/02 19:23:58 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 15:39:05 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ void	l_ambnt(t_lum *lum)
 	lum->la = lum->alvl * lum->ka;
 }
 
-// void	l_ambnt(t_lum *lum)
-// {
-// 	t_vxyz new;
-// 	new.x = 0;
-// 	new.y = 1;
-// 	new.z = 0;
-// 	lum->la = 0.5 + lum->alvl * v_d_prdct(&lum->nrml.nxyz, &new);
-// }
-
 //Ld
 void	l_dffse(t_lum *lum)
 {
@@ -41,7 +32,7 @@ void	l_dffse(t_lum *lum)
 	
 	lum->kd = 30;
 	fade = lum->lvl / powf(lum->dst, 2);
-	mx = max(0, v_d_prdct(&lum->ldir.nxyz, &lum->nrml.nxyz));
+	mx = max_2floats(0, v_d_prdct(&lum->ldir.nxyz, &lum->nrml.nxyz));
 	lum->ld = lum->kd * fade * mx;
 }
 
@@ -54,7 +45,7 @@ void	l_spclr(t_lum *lum)
 	lum->ks = 30;
 	lum->p = 64;
 	fade = lum->lvl / powf(lum->dst, 2);
-	mx = max(0, v_d_prdct(&lum->nrml.nxyz, &lum->hvctr.nxyz));
+	mx = max_2floats(0, v_d_prdct(&lum->nrml.nxyz, &lum->hvctr.nxyz));
 	lum->ls = lum->ks * fade * pow(mx, lum->p);
 }
 

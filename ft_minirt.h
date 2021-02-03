@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/02 20:11:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 15:24:00 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@ typedef struct		s_color
 	unsigned int	g;
 	unsigned int	b;
 }					t_color;
+
+typedef struct		s_cmyk
+{
+	unsigned int	c;
+	unsigned int	m;
+	unsigned int	y;
+	unsigned int	k;
+}					t_cmyk;
 
 //geometry
 typedef struct 		s_point
@@ -77,6 +85,7 @@ typedef struct 		s_ray
 	char			obj;
 	char			shdw;
 	t_color			obj_trgb;
+	t_color			sum_trgb;
 	t_color			p_trgb;
 	t_list			*nrst;
 }					t_ray;
@@ -362,7 +371,9 @@ int					get_next_line(int fd, char **line);
 int					ft_atoi(const char *str);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
-float				max(float f1, float f2);
+float				max_2floats(float f1, float f2);
+unsigned int		max_3uints(unsigned int a, unsigned int b, unsigned int c);
+unsigned int		min_2uints(unsigned int a, unsigned int b);
 
 
 //ft_mnrt_list.c

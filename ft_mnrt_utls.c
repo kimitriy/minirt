@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/26 22:58:16 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 14:14:57 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,31 @@ int		ft_isdigit(int c)
 		return (0);
 }
 
-float	max(float f1, float f2)
+float	max_2floats(float f1, float f2)
 {
 	if (f1 >= f2)
 		return (f1);
 	else
 		return (f2);
+}
+
+unsigned int	max_3uints(unsigned int a, unsigned int b, unsigned int c)
+{
+	unsigned int	max;
+
+	if (a >= b && a >= c)
+		max = a;
+	if (b >= a && b >= c)
+		max = b;
+	if (c >= a && c >= b)
+		max = c;
+	return (max);
+}
+
+unsigned int	min_2uints(unsigned int a, unsigned int b)
+{
+	if (a <= b)
+		return (a);
+	else
+		return (b);
 }
