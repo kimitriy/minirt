@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 01:36:19 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 18:48:14 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/03 21:04:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	to_cmyk(t_cmyk *out, t_color *trgb)
 	float g_;
 	float b_;
 
-	r_ = trgb->r / 255;
-	g_ = trgb->g / 255;
-	b_ = trgb->b / 255;
+	r_ = (float)trgb->r / 255;
+	g_ = (float)trgb->g / 255;
+	b_ = (float)trgb->b / 255;
 	out->k = (int)(1 - max_3uints(r_, g_, b_)) * 100;
 	out->c = (int)((1 - r_ - out->k) / (1 - out->k)) * 100;
 	out->m = (int)((1 - g_ - out->k) / (1 - out->k)) * 100;

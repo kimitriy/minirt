@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 18:49:23 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/04 23:01:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	l_spclr(t_lum *lum)
 	lum->p = 64;
 	fade = lum->lvl / powf(lum->dst, 2);
 	mx = max_2floats(0, v_d_prdct(&lum->nrml.nxyz, &lum->hvctr.nxyz));
-	lum->ls = lum->ks * fade * pow(mx, lum->p);
+	lum->ls = lum->ks * fade * powf(mx, lum->p);
 }
 
 void	l_all(t_scn *lscn, t_lum *lum)
