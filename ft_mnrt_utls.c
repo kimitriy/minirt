@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 14:14:57 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/06 04:25:08 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int		get_next_line(int fd, char **line)
 	return (rv);
 }
 
-int		ft_atoi(const char *str)
+long int	ft_atoi(const char *str)
 {
 	size_t					i;
 	int						sign;
@@ -121,8 +121,7 @@ int		ft_atoi(const char *str)
 	i = 0;
 	number = 0;
 	sign = 1;
-	while (str[i] == 32 || str[i] == '\t' || str[i] == '\v'
-	|| str[i] == '\f' || str[i] == '\r' || str[i] == '\n')
+	while (str[i] == 32 || str[i] == '\t' || str[i] == '\v' || str[i] == '\f' || str[i] == '\r' || str[i] == '\n')
 		i++;
 	if (str[i] == 45 || str[i] == 43)
 	{
@@ -137,7 +136,7 @@ int		ft_atoi(const char *str)
 	}
 	number > 9223372036854775807 && sign > 0 ? number = -1 : 0;
 	number > 9223372036854775807 && sign < 0 ? number = 0 : 0;
-	return (sign * (int)number);
+	return (sign * (long int)number);
 }
 
 int		ft_isalpha(int c)
@@ -164,9 +163,9 @@ float	max_2floats(float f1, float f2)
 		return (f2);
 }
 
-unsigned int	max_3uints(unsigned int a, unsigned int b, unsigned int c)
+float	max_3floats(float a, float b, float c)
 {
-	unsigned int	max;
+	float	max;
 
 	if (a >= b && a >= c)
 		max = a;
@@ -177,9 +176,30 @@ unsigned int	max_3uints(unsigned int a, unsigned int b, unsigned int c)
 	return (max);
 }
 
-unsigned int	min_2uints(unsigned int a, unsigned int b)
+// unsigned int	max_3uints(unsigned int a, unsigned int b, unsigned int c)
+// {
+// 	unsigned int	max;
+
+// 	if (a >= b && a >= c)
+// 		max = a;
+// 	if (b >= a && b >= c)
+// 		max = b;
+// 	if (c >= a && c >= b)
+// 		max = c;
+// 	return (max);
+// }
+
+// unsigned int	min_2uints(unsigned int a, unsigned int b)
+// {
+// 	if (a <= b)
+// 		return (a);
+// 	else
+// 		return (b);
+// }
+
+float	min_2floats(float a, float b)
 {
-	if (a <= b)
+	if (a < b)
 		return (a);
 	else
 		return (b);

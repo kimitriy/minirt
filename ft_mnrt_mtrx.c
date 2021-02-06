@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 19:47:37 by rburton           #+#    #+#             */
-/*   Updated: 2021/01/31 14:48:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/06 06:41:29 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ void	mtrx4_x_point(t_point *out, t_mtrx4x4 *mtrx, t_point *in)
 void	mtrx4_x_vctr(t_vctr *out, t_mtrx4x4 *mtrx, t_vxyz *in)
 {
 	t_point		tail;
+	t_point		new_tail;
 	t_point		head;
+	t_point		new_head;
 
 	p_make(&tail, 0, 0, 0);
 	p_make(&head, tail.x + in->x, tail.y + in->y, tail.z + in->z);
-	mtrx4_x_point(&tail, mtrx, &tail);	
-	mtrx4_x_point(&head, mtrx, &head);
-	v_make(out, &tail, &head);
+	mtrx4_x_point(&new_tail, mtrx, &tail);
+	mtrx4_x_point(&new_head, mtrx, &head);
+	v_make(out, &new_tail, &new_head);
 }

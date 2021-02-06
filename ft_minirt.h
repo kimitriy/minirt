@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/04 23:01:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/06 06:44:14 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ typedef struct		s_color
 
 typedef struct		s_cmyk
 {
-	unsigned int	c;
-	unsigned int	m;
-	unsigned int	y;
-	unsigned int	k;
+	float			c;
+	float			m;
+	float			y;
+	float			k;
 }					t_cmyk;
 
 //geometry
@@ -294,19 +294,6 @@ typedef struct		s_prsr
 	char			h[42];
 }					t_prsr;
 
-typedef struct		s_atof
-{
-	unsigned int	i;
-	unsigned int	j;
-	double			r;
-	double			int_part;
-	int				fract_part;
-	int				sign;
-	char			digits[11];
-	char			dot;
-	double			rv;
-}					t_atof;
-
 //ft_mnrt_main.c
 void				make_scn_arr(t_list **head, int size);
 
@@ -354,11 +341,6 @@ void				write_trngl(t_scn *nscn, t_prsr *np);
 
 
 //ft_mnrt_atof.c
-void				reset_ns(t_atof *ns);
-t_atof				make_t_atof(void);
-void				atof_prsr(const char *str, t_atof *ns);
-int					nbr_length(long long int n, int base);
-int					ft_iterative_power(int nb, int power);
 float				ft_atof(const char *str);
 
 
@@ -369,12 +351,12 @@ void				*ft_calloc(size_t count, size_t size);
 char				*ft_strjoin(char const *s1, char const *s2);
 int					w2l(int fd, char *buf, char **line);
 int					get_next_line(int fd, char **line);
-int					ft_atoi(const char *str);
+long int			ft_atoi(const char *str);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 float				max_2floats(float f1, float f2);
-unsigned int		max_3uints(unsigned int a, unsigned int b, unsigned int c);
-unsigned int		min_2uints(unsigned int a, unsigned int b);
+float				max_3floats(float a, float b, float c);
+float				min_2floats(float a, float b);
 
 
 //ft_mnrt_list.c
@@ -414,7 +396,6 @@ void				v_fill(t_vctr *nvctr);
 void				v_make(t_vctr *out, t_point *tail, t_point *head);
 void				v_sum(t_vxyz *out, t_vxyz *vctr1, t_vxyz *vctr2);
 void    			v_n_prdct(t_vxyz *out, t_vxyz *vxyz, float num);
-//void    			nv_n_prdct(t_vctr *vctr, float num);
 float				v_d_prdct(t_vxyz *xyz1, t_vxyz *xyz2);
 float				v_x_point_prdct(t_vxyz *xyz, t_point *p);
 void				v_crss_prdct(t_vxyz *out, t_vxyz *xyz1, t_vxyz *xyz2);
@@ -478,7 +459,6 @@ void				nrml_pln_sqr(t_vctr *nrml, t_vxyz *xyz);
 //ft_mnrt_color.c
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);
 void				color_null(t_color *color);
-//void				color_modify(t_color *color, t_lum *lum);
 void				color_calc(t_color *out, t_color *in, t_lum *lum);
 void				color_copy(t_color *to, t_color *from);
 void    			color_node(t_scn *lscn, t_ray *ray, t_lum *lum);
