@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/06 04:24:58 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/07 00:59:09 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ void	p_calc(t_point *out, t_vctr *vctr, t_point *tail)
 	out->x = tail->x + vctr->xyz.x;
 	out->y = tail->y + vctr->xyz.y;
 	out->z = tail->z + vctr->xyz.z;
+}
+
+void	p_copy(t_point *out, t_point *in)
+{
+	out->x = in->x;
+	out->y = in->y;
+	out->z = in->z;
 }
 
 void	v_xyz(t_vxyz *out, t_point *tail, t_point *head)
@@ -85,6 +92,17 @@ void	v_make(t_vctr *out, t_point *tail, t_point *head)
 {
 	v_xyz(&out->xyz, tail, head);
 	v_fill(out);
+}
+
+void	v_copy(t_vctr *out, t_vctr *in)
+{
+	out->xyz.x = in->xyz.x;
+	out->xyz.y = in->xyz.y;
+	out->xyz.z = in->xyz.z;
+	out->nxyz.x = in->nxyz.x;
+	out->nxyz.y = in->nxyz.y;
+	out->nxyz.z = in->nxyz.z;
+	out->lngth = in->lngth;
 }
 
 void	v_sum(t_vxyz *out, t_vxyz *vctr1, t_vxyz *vctr2)

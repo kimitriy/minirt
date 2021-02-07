@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/06 06:44:14 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/07 02:31:00 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,33 @@ shdw:
 y - yes;
 \0 - no;
 */
+
+typedef struct 		s_polygon
+{
+	t_point			p;
+	t_point			a;
+	t_point			b;
+	t_point			c;
+	t_point			d;
+	t_vctr			cd_a;
+	t_vctr			a_b;
+	t_vctr			b_c;
+	t_vctr			c_d;
+	t_vctr			p_a;
+	t_vctr			p_b;
+	t_vctr			p_c;
+	t_vctr			p_d;
+	float			prmtr;
+	float			prmtr1;
+	float			prmtr2;
+	float			prmtr3;
+	float			prmtr4;
+	float			area;
+	float			area1;
+	float			area2;
+	float			area3;
+	float			area4;
+}					t_polygon;
 
 //lum
 typedef struct 		s_lum
@@ -388,12 +415,14 @@ void    			print_trngl(t_scn *nscn);
 void				p2d_make(t_2d_point *out, int x, int y);
 void				p_make(t_point *output, float x, float y, float z);
 void				p_calc(t_point *out, t_vctr *vctr, t_point *tail);
+void				p_copy(t_point *out, t_point *in);
 void				v_xyz(t_vxyz *out, t_point *tail, t_point *head);
 void				v_lngth(t_vctr *vctr);
 void				v_n(t_vctr *vctr);
 void				v_null(t_vctr *nvctr);
 void				v_fill(t_vctr *nvctr);
 void				v_make(t_vctr *out, t_point *tail, t_point *head);
+void				v_copy(t_vctr *out, t_vctr *in);
 void				v_sum(t_vxyz *out, t_vxyz *vctr1, t_vxyz *vctr2);
 void    			v_n_prdct(t_vxyz *out, t_vxyz *vxyz, float num);
 float				v_d_prdct(t_vxyz *xyz1, t_vxyz *xyz2);
@@ -439,6 +468,7 @@ void 				check_sphrs(t_scn *lscn, t_ray *ray);
 void 				check_plns(t_scn *lscn, t_ray *ray);
 float				q_equation(float *root, float a, float b, float c);
 void				sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray);
+float				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
 void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
 
 //ft_mnrt_lum.c
@@ -453,7 +483,7 @@ void				lum_node(t_scn *lscn, t_lght *lght, t_ray *ray);
 
 //ft_mnrt_nrml.c
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
-void				nrml_trngl(t_trngl *trn);
+void				nrml_trngl(t_polygon *plgn, t_trngl *trn);
 void				nrml_pln_sqr(t_vctr *nrml, t_vxyz *xyz);
 
 //ft_mnrt_color.c

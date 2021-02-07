@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/06 04:25:10 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/06 20:11:01 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,6 @@ void	make_t_lght(t_scn *scn)
 	if (!(new_lght = (t_lght*)malloc(1 * sizeof(t_lght))))
 		new_lght = NULL;
 	t_lght_null(new_lght);
-	// new_lght->p.x = 0;
-	// new_lght->p.y = 0;
-	// new_lght->p.z = 0;
-	// new_lght->lvl = 0;
-	// new_lght->trgb.t = 0;
-	// new_lght->trgb.r = 0;
-	// new_lght->trgb.g = 0;
-	// new_lght->trgb.b = 0;
-	// new_lght->nxt = NULL;
 	ft_lstadd_back(&scn->n_lght, ft_lstnew(new_lght));
 }
 
