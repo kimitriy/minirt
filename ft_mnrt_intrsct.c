@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/07 03:10:26 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/09 15:52:39 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,44 +81,6 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 		ray->shdw = 'y';
 }
 
-// void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
-// {
-// 	float	dist;
-// 	t_vctr	o_p0; //vctr from .o (tail point) to the pln
-// 	t_point	p0;	//point on the pln, projection of tail point to this pln
-
-// 	dist = (pln->p.x - ray->tail_p.x) * pln->v.nxyz.x + (pln->p.y - ray->tail_p.y) * pln->v.nxyz.y + (pln->p.z - ray->tail_p.z) * pln->v.nxyz.z; //1
-// 	dist = dist < 0 ? dist * (-1) : dist; //2
-	
-// 	v_n_prdct(&o_p0.xyz, &pln->v.nxyz, dist); //3
-// 	v_n_prdct(&o_p0.xyz, &o_p0.xyz, -1); //3 change the sign (direction)
-// 	v_fill(&o_p0);
-// 	p_calc(&p0, &o_p0, &ray->tail_p); //4
-	
-// 	float tmp1;
-// 	float tmp2;
-
-// 	tmp1 = v_d_prdct(&o_p0.xyz, &pln->v.nxyz); //6, 7
-// 	tmp2 = v_d_prdct(&ray->vctr[ray->sgm].nxyz, &pln->v.nxyz); //8
-	
-// 	float t;
-// 	t = 1.00001 * tmp1 / tmp2; //9
-	
-// 	if (t > 0 && t < ray->dist && ray->sgm == 0)
-// 	{
-// 		ray->dist = t;
-// 		ray->obj = 'p';
-// 		ray->nrst = lscn->n_pln;
-// 		v_n_prdct(&ray->vctr[0].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist);
-// 		v_fill(&ray->vctr[0]);
-// 		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p);
-// 	}
-// 	if (ray->sgm > 0 && t > 0 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
-// 		ray->shdw = 'y';
-// 	// else if (ray->sgm > 0 && t <= 0 && ray->shdw != 'y')
-// 	// 	ray->shdw = '\0';
-// }
-
 void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 {
 	float	t;
@@ -134,12 +96,13 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 		v_fill(&ray->vctr[0]);
 		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p);
 	}
-	if (ray->sgm > 0 && t > 0 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (ray->sgm == 1 && t > 0.0003 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 
 void	plgn_null(t_polygon *plgn)
 {
+	p_make(&plgn->p, 0, 0, 0);
 	p_make(&plgn->a, 0, 0, 0);
 	p_make(&plgn->b, 0, 0, 0);
 	p_make(&plgn->c, 0, 0, 0);
@@ -164,33 +127,51 @@ void	plgn_null(t_polygon *plgn)
 	plgn->area4 = 0;
 }
 
+void	plgn_prmtr(t_polygon *plgn)
+{
+	plgn->prmtr = (plgn->a_b.lngth + plgn->b_c.lngth + plgn->cd_a.lngth) / 2;
+	plgn->prmtr1 = (plgn->p_a.lngth + plgn->a_b.lngth + plgn->p_b.lngth) / 2;
+	plgn->prmtr2 = (plgn->p_b.lngth + plgn->b_c.lngth + plgn->p_c.lngth) / 2;
+	plgn->prmtr3 = (plgn->p_c.lngth + plgn->cd_a.lngth + plgn->p_a.lngth) / 2;
+}
+
+void	plgn_area(t_polygon *plgn)
+{
+	plgn->area = sqrtf(plgn->prmtr * (plgn->prmtr - plgn->a_b.lngth) * (plgn->prmtr - plgn->b_c.lngth) * (plgn->prmtr - plgn->cd_a.lngth));
+	plgn->area1 = sqrtf(plgn->prmtr1 * (plgn->prmtr1 - plgn->p_a.lngth) * (plgn->prmtr1 - plgn->a_b.lngth) * (plgn->prmtr1 - plgn->p_b.lngth));
+	plgn->area2 = sqrtf(plgn->prmtr2 * (plgn->prmtr2 - plgn->p_b.lngth) * (plgn->prmtr2 - plgn->b_c.lngth) * (plgn->prmtr2 - plgn->p_c.lngth));
+	plgn->area3 = sqrtf(plgn->prmtr3 * (plgn->prmtr3 - plgn->p_c.lngth) * (plgn->prmtr3 - plgn->cd_a.lngth) * (plgn->prmtr3 - plgn->p_a.lngth));
+}
+
+void	plgn_make(t_polygon *plgn, t_trngl *trngl)
+{
+	plgn_null(plgn);
+	p_copy(&plgn->a, &trngl->p1);
+	p_copy(&plgn->b, &trngl->p2);
+	p_copy(&plgn->c, &trngl->p3);
+	v_make(&plgn->cd_a, &plgn->c, &plgn->a);
+	v_make(&plgn->a_b, &plgn->a, &plgn->b);
+	v_make(&plgn->b_c, &plgn->b, &plgn->c);
+}
+
 void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 {
 	t_polygon	plgn;
 	t_vctr		o_p; //vctr from ray origin to the pln that is collinear to ray->vctr[0] and reaches p
 	float		t;
 	
-	plgn_null(&plgn);
-	p_copy(&plgn.a, &trngl->p1);
-	p_copy(&plgn.b, &trngl->p2);
-	p_copy(&plgn.c, &trngl->p3);
+	plgn_make(&plgn, trngl);
 	nrml_trngl(&plgn, trngl); //1, 2
-	v_make(&plgn.b_c, &plgn.b, &plgn.c);
 	t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]); //3, 4
-	v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from O(0,0,0) to p
+	t = ray->sgm == 1 ? -t : t;
+	v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
 	v_fill(&o_p);
 	p_calc(&plgn.p, &o_p, &ray->tail_p); //calculates p(x, y, z)
 	v_make(&plgn.p_a, &plgn.p, &plgn.a);
 	v_make(&plgn.p_b, &plgn.p, &plgn.b);
 	v_make(&plgn.p_c, &plgn.p, &plgn.c);
-	plgn.prmtr = (plgn.a_b.lngth + plgn.b_c.lngth + plgn.cd_a.lngth) / 2;
-	plgn.prmtr1 = (plgn.p_a.lngth + plgn.a_b.lngth + plgn.p_b.lngth) / 2;
-	plgn.prmtr2 = (plgn.p_b.lngth + plgn.b_c.lngth + plgn.p_c.lngth) / 2;
-	plgn.prmtr3 = (plgn.p_c.lngth + plgn.cd_a.lngth + plgn.p_a.lngth) / 2;
-	plgn.area = sqrtf(plgn.prmtr * (plgn.prmtr - plgn.a_b.lngth) * (plgn.prmtr - plgn.b_c.lngth) * (plgn.prmtr - plgn.cd_a.lngth));
-	plgn.area1 = sqrtf(plgn.prmtr1 * (plgn.prmtr1 - plgn.p_a.lngth) * (plgn.prmtr1 - plgn.a_b.lngth) * (plgn.prmtr1 - plgn.p_b.lngth));
-	plgn.area2 = sqrtf(plgn.prmtr2 * (plgn.prmtr2 - plgn.p_b.lngth) * (plgn.prmtr2 - plgn.b_c.lngth) * (plgn.prmtr2 - plgn.p_c.lngth));
-	plgn.area3 = sqrtf(plgn.prmtr3 * (plgn.prmtr3 - plgn.p_c.lngth) * (plgn.prmtr3 - plgn.cd_a.lngth) * (plgn.prmtr3 - plgn.p_a.lngth));
+	plgn_prmtr(&plgn);
+	plgn_area(&plgn);
 	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && t < ray->dist && ray->sgm == 0)
 	{
 		ray->dist = t;
@@ -198,11 +179,8 @@ void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 		ray->nrst = lscn->n_trngl;
 		v_copy(&ray->vctr[0], &o_p);
 		p_copy(&ray->hit_p, &plgn.p);
-		// v_n_prdct(&ray->vctr[0].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist);
-		// v_fill(&ray->vctr[0]);
-		// p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p);
 	}
-	if (ray->sgm > 0 && t > 0 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && ray->sgm == 1 && t > 0.00004 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 
@@ -257,14 +235,30 @@ void 	check_trngls(t_scn *lscn, t_ray *ray)
 	}
 }
 
+// void 	check_sqrs(t_scn *lscn, t_ray *ray)
+// {
+// 	int		i;
+// 	t_trngl	*sqr;
+
+// 	i = 0;
+// 	lscn->n_sqr = lscn->frst_trngl;
+// 	while (i < lscn->n_cntr.trngl)
+// 	{
+// 		trngl = lscn->n_trngl->content;
+// 		trngl_intrsct(lscn, trngl, ray);
+// 		if (lscn->n_trngl->next != NULL)
+// 			lscn->n_trngl = lscn->n_trngl->next;
+// 		i++;
+// 	}
+// }
+
 void	check_objcts(t_scn *lscn, t_ray *ray)
 {	
 	check_sphrs(lscn, ray);
-	check_plns(lscn, ray);
 	check_trngls(lscn, ray);
-	// check_cyls(lscn, ray);
 	// check_sqrs(lscn, ray);
-	// check_trngls(lscn, ray);
+	// check_cyls(lscn, ray);
+	check_plns(lscn, ray);
 }
 
 void	check_lghts(t_scn *lscn, t_ray *ray)
