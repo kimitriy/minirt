@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/07 00:59:09 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/09 20:29:40 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,13 @@ float	v_angle(t_vctr *vctr1, t_vctr *vctr2)
 	dt_prdct = v_d_prdct(&vctr1->xyz, &vctr2->xyz);
 	angle = acosf(dt_prdct / (vctr1->lngth * vctr2->lngth));
 	return (angle);
+}
+
+void	v_opposite(t_vctr *vctr)
+{
+	vctr->xyz.x = (-1) * vctr->xyz.x;
+	vctr->xyz.y = (-1) * vctr->xyz.y;
+	vctr->xyz.z = (-1) * vctr->xyz.z;
 }
 
 void	v_node(void)

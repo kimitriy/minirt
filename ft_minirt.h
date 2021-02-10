@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/07 02:31:00 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/10 20:20:44 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct 		s_ray
 	t_vctr			vctr[2];
 	t_point			hit_p;
 	float			dist;
-	float			l;
+	//float			l;
 	char			obj;
 	char			shdw;
 	t_color			obj_trgb;
@@ -127,6 +127,7 @@ typedef struct 		s_polygon
 	float			area2;
 	float			area3;
 	float			area4;
+	char			f;
 }					t_polygon;
 
 //lum
@@ -429,6 +430,7 @@ float				v_d_prdct(t_vxyz *xyz1, t_vxyz *xyz2);
 float				v_x_point_prdct(t_vxyz *xyz, t_point *p);
 void				v_crss_prdct(t_vxyz *out, t_vxyz *xyz1, t_vxyz *xyz2);
 float				v_angle(t_vctr *vctr1, t_vctr *vctr2);
+void				v_opposite(t_vctr *vctr);
 void				v_node(void);
 
 //ft_mnrt_cnvs.c
@@ -483,8 +485,8 @@ void				lum_node(t_scn *lscn, t_lght *lght, t_ray *ray);
 
 //ft_mnrt_nrml.c
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
-void				nrml_trngl(t_polygon *plgn, t_trngl *trn);
-void				nrml_pln_sqr(t_vctr *nrml, t_vxyz *xyz);
+void				nrml_trngl(t_polygon *plgn, t_trngl *trn, t_vctr *from_cam);
+void				nrml_pln_sqr(t_pln *pln, t_ray *ray);
 
 //ft_mnrt_color.c
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/08 13:19:49 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/10 20:55:24 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ray_null(t_ray *ray)
 	ray->dist = INFINITY;
 	color_make(&ray->obj_trgb, '\0', '\0', '\0');
 	color_make(&ray->sum_trgb, '\0', '\0', '\0');
-	color_make(&ray->p_trgb, 0, 0, 0);
+	color_make(&ray->p_trgb, 5, 5, 5);
 	// ray->obj_trgb.t = '\0';
 	// ray->obj_trgb.r = '\0';
 	// ray->obj_trgb.g = '\0';
@@ -111,38 +111,35 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	unsigned int	y;
 	t_2d_point		xy;
 	
-	x = 0;
-	y = 0;
-	while (y < lscn->n_rsltn.y)
-	{
-		while (x < lscn->n_rsltn.x)
-		{
-			p2d_make(&xy, x, y);
-			cnvrse2crtsn(lscn, &xy);
-    		cnvrse2xyz(&ray->head_p, lscn, &xy);
-			trace_ray(lscn, ray);
-			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
-			ray_null(ray);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
+	// x = 0;
+	// y = 0;
+	// while (y < lscn->n_rsltn.y)
+	// {
+	// 	while (x < lscn->n_rsltn.x)
+	// 	{
+	// 		p2d_make(&xy, x, y);
+	// 		cnvrse2crtsn(lscn, &xy);
+    // 		cnvrse2xyz(&ray->head_p, lscn, &xy);
+	// 		trace_ray(lscn, ray);
+	// 		rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	// 		ray_null(ray);
+	// 		x++;
+	// 	}
+	// 	x = 0;
+	// 	y++;
+	// }
 	
-	//x1240y640 shadow on the blue sphr from the left light
-	//x280y810 shadow on the pln from the right lght and white sphr
-	//x480y860 shadow on the pln from the right lght and green sphr
-	//x1440y860 shadow on the pln from the left lght and green sphr
+	//x100y500 левый край
+	//x900y500 правый край
 	
-	// x = 760;
-	// y = 540;
-	// p2d_make(&xy, x, y);
-	// cnvrse2crtsn(lscn, &xy);
-	// cnvrse2xyz(&ray->head_p, lscn, &xy);
-	// trace_ray(lscn, ray);
-	// rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
-	// ray_null(ray);
-	
+	x = 900;
+	y = 500;
+	p2d_make(&xy, x, y);
+	cnvrse2crtsn(lscn, &xy);
+	cnvrse2xyz(&ray->head_p, lscn, &xy);
+	trace_ray(lscn, ray);
+	rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	ray_null(ray);
 }
 
 void	rays_node(t_scn *lscn, t_scn *nscn)

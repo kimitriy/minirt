@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/09 15:52:39 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/10 20:20:03 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,16 @@ float	q_equation(float *dscr, float a, float b, float c)
 	{
 		r1 = (b + sqrtf(*dscr)) / (2 * a);
 		r2 = (b - sqrtf(*dscr)) / (2 * a);
-		if (r1 < r2)
+		if (r1 > 0 && r2 > 0)
+		{
+			if (r1 < r2)
+				root = r1;
+			else
+				root = r2;
+		}
+		else if (r1 > 0 && r2 < 0)
 			root = r1;
-		else
+		else if (r2 > 0 && r1 < 0)
 			root = r2;
 	}
 	return (root);
@@ -63,11 +70,12 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 	float	dscr;
 	float	root;
 	
+	v_null(&oc);
 	v_make(&oc, &ray->tail_p, &sphr->p);
 	a = v_d_prdct(&ray->vctr[ray->sgm].nxyz,&ray->vctr[ray->sgm].nxyz);
 	b = 2 * v_d_prdct(&oc.xyz, &ray->vctr[ray->sgm].nxyz);
-	c = v_d_prdct(&oc.xyz, &oc.xyz) - powf(sphr->d, 2);
-	root = q_equation(&dscr, a, b, c) * 1.0001;
+	c = v_d_prdct(&oc.xyz, &oc.xyz) - powf(sphr->d / 2, 2);
+	root = q_equation(&dscr, a, b, c) * 1.000001;
 	if (dscr >= 0 && root < ray->dist && root > 0 && ray->sgm == 0)
 	{
 		ray->dist = root;
@@ -77,7 +85,7 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 		v_fill(&ray->vctr[0]);
 		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p); //calculates the hit point
 	}
-	if (ray->sgm > 0 && dscr >= 0 && root > 0 && ray->shdw != 'y')
+	if (ray->sgm == 1 && dscr >= 0 && root > 0.0005 && ray->shdw != 'y')
 		ray->shdw = 'y';
 }
 
@@ -85,6 +93,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 {
 	float	t;
 
+	nrml_pln_sqr(pln, ray);
 	t = pln_equation(&pln->p, &ray->tail_p, &pln->v, &ray->vctr[ray->sgm]);
 	
 	if (t > 0 && t < ray->dist && ray->sgm == 0)
@@ -102,6 +111,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 
 void	plgn_null(t_polygon *plgn)
 {
+	plgn->f = '\0';
 	p_make(&plgn->p, 0, 0, 0);
 	p_make(&plgn->a, 0, 0, 0);
 	p_make(&plgn->b, 0, 0, 0);
@@ -143,15 +153,27 @@ void	plgn_area(t_polygon *plgn)
 	plgn->area3 = sqrtf(plgn->prmtr3 * (plgn->prmtr3 - plgn->p_c.lngth) * (plgn->prmtr3 - plgn->cd_a.lngth) * (plgn->prmtr3 - plgn->p_a.lngth));
 }
 
-void	plgn_make(t_polygon *plgn, t_trngl *trngl)
+void	plgn_make(t_polygon *plgn, t_trngl *trngl, t_ray *ray)
 {
-	plgn_null(plgn);
-	p_copy(&plgn->a, &trngl->p1);
-	p_copy(&plgn->b, &trngl->p2);
-	p_copy(&plgn->c, &trngl->p3);
-	v_make(&plgn->cd_a, &plgn->c, &plgn->a);
-	v_make(&plgn->a_b, &plgn->a, &plgn->b);
-	v_make(&plgn->b_c, &plgn->b, &plgn->c);
+	if (plgn->f != 'f')
+	{	
+		p_copy(&plgn->a, &trngl->p1);
+		p_copy(&plgn->b, &trngl->p2);
+		p_copy(&plgn->c, &trngl->p3);
+		v_make(&plgn->cd_a, &plgn->c, &plgn->a);
+		v_make(&plgn->a_b, &plgn->a, &plgn->b);
+		v_make(&plgn->b_c, &plgn->b, &plgn->c);
+		nrml_trngl(plgn, trngl, &ray->vctr[ray->sgm]); //1, 2
+		plgn->f = 'f';
+	}
+	else if (plgn->f == 'f')
+	{
+		v_make(&plgn->p_a, &plgn->p, &plgn->a);
+		v_make(&plgn->p_b, &plgn->p, &plgn->b);
+		v_make(&plgn->p_c, &plgn->p, &plgn->c);
+		plgn_prmtr(plgn);
+		plgn_area(plgn);
+	}
 }
 
 void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
@@ -160,19 +182,20 @@ void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 	t_vctr		o_p; //vctr from ray origin to the pln that is collinear to ray->vctr[0] and reaches p
 	float		t;
 	
-	plgn_make(&plgn, trngl);
-	nrml_trngl(&plgn, trngl); //1, 2
+	// if (ray->sgm == 0)
+	// 	plgn_null(&plgn);
+	plgn_null(&plgn);
+	plgn_make(&plgn, trngl, ray);
 	t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]); //3, 4
-	t = ray->sgm == 1 ? -t : t;
-	v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
-	v_fill(&o_p);
-	p_calc(&plgn.p, &o_p, &ray->tail_p); //calculates p(x, y, z)
-	v_make(&plgn.p_a, &plgn.p, &plgn.a);
-	v_make(&plgn.p_b, &plgn.p, &plgn.b);
-	v_make(&plgn.p_c, &plgn.p, &plgn.c);
-	plgn_prmtr(&plgn);
-	plgn_area(&plgn);
-	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && t < ray->dist && ray->sgm == 0)
+	if (fabsf(t) < INFINITY && t > 0.00006)
+	{
+		t = ray->sgm == 1 ? -t : t;
+		v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
+		v_fill(&o_p);
+		p_calc(&plgn.p, &o_p, &ray->tail_p); //calculates p(x, y, z)
+		plgn_make(&plgn, trngl, ray);
+	}
+	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && t > 0 && t < ray->dist && ray->sgm == 0)
 	{
 		ray->dist = t;
 		ray->obj = 't';
@@ -183,6 +206,21 @@ void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && ray->sgm == 1 && t > 0.00004 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
+
+// void	sqr_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
+// {
+	
+// 	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && t < ray->dist && ray->sgm == 0)
+// 	{
+// 		ray->dist = t;
+// 		ray->obj = 't';
+// 		ray->nrst = lscn->n_trngl;
+// 		v_copy(&ray->vctr[0], &o_p);
+// 		p_copy(&ray->hit_p, &plgn.p);
+// 	}
+// 	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && ray->sgm == 1 && t > 0.00004 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+// 		ray->shdw = 'y';
+// }
 
 void 	check_sphrs(t_scn *lscn, t_ray *ray)
 {
@@ -211,6 +249,10 @@ void 	check_plns(t_scn *lscn, t_ray *ray)
 	while (i < lscn->n_cntr.pln)
 	{
 		pln = lscn->n_pln->content;
+		pln->v.xyz.x = 0;
+		pln->v.xyz.y = 0;
+		pln->v.xyz.z = 0;
+		v_fill(&pln->v);
 		pln_intrsct(lscn, pln, ray);
 		if (lscn->n_pln->next != NULL)
 			lscn->n_pln = lscn->n_pln->next;
@@ -241,13 +283,13 @@ void 	check_trngls(t_scn *lscn, t_ray *ray)
 // 	t_trngl	*sqr;
 
 // 	i = 0;
-// 	lscn->n_sqr = lscn->frst_trngl;
-// 	while (i < lscn->n_cntr.trngl)
+// 	lscn->n_sqr = lscn->frst_sqr;
+// 	while (i < lscn->n_cntr.sqr)
 // 	{
-// 		trngl = lscn->n_trngl->content;
-// 		trngl_intrsct(lscn, trngl, ray);
-// 		if (lscn->n_trngl->next != NULL)
-// 			lscn->n_trngl = lscn->n_trngl->next;
+// 		sqr = lscn->n_sqr->content;
+// 		sqr_intrsct(lscn, sqr, ray);
+// 		if (lscn->n_sqr->next != NULL)
+// 			lscn->n_sqr = lscn->n_sqr->next;
 // 		i++;
 // 	}
 // }
@@ -287,7 +329,7 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 		ray->shdw = '\0';
 		i++;
 	}
-	ray->sgm = 0;
+	//ray->sgm = 0;
 }
 
 void	intrsct_node(t_scn *lscn, t_ray *ray)
