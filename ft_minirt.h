@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/10 20:20:44 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/11 21:11:27 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ typedef struct 		s_polygon
 	float			area2;
 	float			area3;
 	float			area4;
-	char			f;
+	char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
+	char			p_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
 }					t_polygon;
 
 //lum
@@ -485,8 +486,8 @@ void				lum_node(t_scn *lscn, t_lght *lght, t_ray *ray);
 
 //ft_mnrt_nrml.c
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
-void				nrml_trngl(t_polygon *plgn, t_trngl *trn, t_vctr *from_cam);
-void				nrml_pln_sqr(t_pln *pln, t_ray *ray);
+void				nrml_trngl(t_polygon *plgn, t_trngl *trngl, t_ray *ray);
+void				nrml_pln(t_pln *pln, t_ray *ray);
 
 //ft_mnrt_color.c
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);

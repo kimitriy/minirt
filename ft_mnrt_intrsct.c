@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/10 20:20:03 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/11 22:31:59 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,10 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 {
 	float	t;
+	t_vctr	*orth;
 
-	nrml_pln_sqr(pln, ray);
+	
+	nrml_pln(pln, ray);
 	t = pln_equation(&pln->p, &ray->tail_p, &pln->v, &ray->vctr[ray->sgm]);
 	
 	if (t > 0 && t < ray->dist && ray->sgm == 0)
@@ -112,6 +114,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 void	plgn_null(t_polygon *plgn)
 {
 	plgn->f = '\0';
+	plgn->p_in = '\0';
 	p_make(&plgn->p, 0, 0, 0);
 	p_make(&plgn->a, 0, 0, 0);
 	p_make(&plgn->b, 0, 0, 0);
@@ -163,7 +166,7 @@ void	plgn_make(t_polygon *plgn, t_trngl *trngl, t_ray *ray)
 		v_make(&plgn->cd_a, &plgn->c, &plgn->a);
 		v_make(&plgn->a_b, &plgn->a, &plgn->b);
 		v_make(&plgn->b_c, &plgn->b, &plgn->c);
-		nrml_trngl(plgn, trngl, &ray->vctr[ray->sgm]); //1, 2
+		nrml_trngl(plgn, trngl, ray); //1, 2
 		plgn->f = 'f';
 	}
 	else if (plgn->f == 'f')
@@ -176,20 +179,23 @@ void	plgn_make(t_polygon *plgn, t_trngl *trngl, t_ray *ray)
 	}
 }
 
+// void	is_in_trngl()
+// {
+
+// }
+
 void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 {
 	t_polygon	plgn;
 	t_vctr		o_p; //vctr from ray origin to the pln that is collinear to ray->vctr[0] and reaches p
 	float		t;
 	
-	// if (ray->sgm == 0)
-	// 	plgn_null(&plgn);
 	plgn_null(&plgn);
 	plgn_make(&plgn, trngl, ray);
 	t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]); //3, 4
 	if (fabsf(t) < INFINITY && t > 0.00006)
 	{
-		t = ray->sgm == 1 ? -t : t;
+		// t = ray->sgm == 1 ? -t : t;
 		v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
 		v_fill(&o_p);
 		p_calc(&plgn.p, &o_p, &ray->tail_p); //calculates p(x, y, z)
@@ -203,8 +209,9 @@ void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 		v_copy(&ray->vctr[0], &o_p);
 		p_copy(&ray->hit_p, &plgn.p);
 	}
-	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && ray->sgm == 1 && t > 0.00004 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && ray->sgm == 1 && t > 0 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
+	// if (ray->sgm == 1 && t > 0.0003 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 }
 
 // void	sqr_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
