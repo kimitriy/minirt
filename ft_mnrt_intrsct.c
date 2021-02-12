@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/11 22:31:59 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 12:14:51 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 	a = v_d_prdct(&ray->vctr[ray->sgm].nxyz,&ray->vctr[ray->sgm].nxyz);
 	b = 2 * v_d_prdct(&oc.xyz, &ray->vctr[ray->sgm].nxyz);
 	c = v_d_prdct(&oc.xyz, &oc.xyz) - powf(sphr->d / 2, 2);
-	root = q_equation(&dscr, a, b, c) * 1.000001;
+	root = q_equation(&dscr, a, b, c) * 1.00001;
 	if (dscr >= 0 && root < ray->dist && root > 0 && ray->sgm == 0)
 	{
 		ray->dist = root;
@@ -85,7 +85,7 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 		v_fill(&ray->vctr[0]);
 		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p); //calculates the hit point
 	}
-	if (ray->sgm == 1 && dscr >= 0 && root > 0.0005 && ray->shdw != 'y')
+	if (ray->sgm == 1 && dscr >= 0 && root > 0.0001 && root < ray->vctr[1].lngth && ray->shdw != 'y')
 		ray->shdw = 'y';
 }
 
