@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/09 20:29:40 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 15:33:57 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ void	p_copy(t_point *out, t_point *in)
 	out->x = in->x;
 	out->y = in->y;
 	out->z = in->z;
+}
+
+int		p_is_equal(t_point *p1, t_point *p2)
+{
+	if (p1->x == p2->x && p1->y == p2->y && p1->z == p2->z)
+		return (1);
+	else
+		return (0);
 }
 
 void	v_xyz(t_vxyz *out, t_point *tail, t_point *head)

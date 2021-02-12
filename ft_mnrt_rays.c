@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/12 12:12:33 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 19:23:37 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	//x900y500 правый край
 	//x325y500 обратная сторона треугольника
 	
-	// x = 500;
-	// y = 500;
+	// x = 475;
+	// y = 525;
 	// p2d_make(&xy, x, y);
 	// cnvrse2crtsn(lscn, &xy);
 	// cnvrse2xyz(&ray->head_p, lscn, &xy);

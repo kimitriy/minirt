@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/11 19:45:03 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 19:24:15 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	lum_pln(t_scn *lscn, t_lght *lght, t_ray *ray)
 	t_pln	*pln;
 
 	pln = ray->nrst->content;
-	// nrml_pln_sqr(pln, ray);
 	v_copy(&lum.nrml, &pln->v);
 	make_lum(&lum, lscn, lght, ray);
 	l_all(lscn, &lum);
@@ -122,6 +121,8 @@ void	lum_trngl(t_scn *lscn, t_lght *lght, t_ray *ray)
 	t_trngl	*trngl;
 
 	trngl = ray->nrst->content;
+	ray->sgm = 0;
+	nrml_trngl(trngl, ray);
 	v_copy(&lum.nrml, &trngl->n);
 	v_fill(&lum.nrml);
 	make_lum(&lum, lscn, lght, ray);

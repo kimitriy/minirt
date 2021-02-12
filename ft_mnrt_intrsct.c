@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/12 12:14:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 18:32:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 		v_fill(&ray->vctr[0]);
 		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p); //calculates the hit point
 	}
-	if (ray->sgm == 1 && dscr >= 0 && root > 0.0001 && root < ray->vctr[1].lngth && ray->shdw != 'y')
+	if (ray->sgm == 1 && dscr >= 0 && root > 0.01 && root < ray->vctr[1].lngth && ray->shdw != 'y')
 		ray->shdw = 'y';
 }
 
@@ -94,7 +94,6 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 	float	t;
 	t_vctr	*orth;
 
-	
 	nrml_pln(pln, ray);
 	t = pln_equation(&pln->p, &ray->tail_p, &pln->v, &ray->vctr[ray->sgm]);
 	
@@ -156,61 +155,65 @@ void	plgn_area(t_polygon *plgn)
 	plgn->area3 = sqrtf(plgn->prmtr3 * (plgn->prmtr3 - plgn->p_c.lngth) * (plgn->prmtr3 - plgn->cd_a.lngth) * (plgn->prmtr3 - plgn->p_a.lngth));
 }
 
-void	plgn_make(t_polygon *plgn, t_trngl *trngl, t_ray *ray)
+void	is_in_trngl(t_trngl *trngl)
 {
-	if (plgn->f != 'f')
-	{	
-		p_copy(&plgn->a, &trngl->p1);
-		p_copy(&plgn->b, &trngl->p2);
-		p_copy(&plgn->c, &trngl->p3);
-		v_make(&plgn->cd_a, &plgn->c, &plgn->a);
-		v_make(&plgn->a_b, &plgn->a, &plgn->b);
-		v_make(&plgn->b_c, &plgn->b, &plgn->c);
-		nrml_trngl(plgn, trngl, ray); //1, 2
-		plgn->f = 'f';
-	}
-	else if (plgn->f == 'f')
+	if (trngl->plgn.area >= 0.9999 * (trngl->plgn.area1 + trngl->plgn.area2 + trngl->plgn.area3))
+		trngl->plgn.p_in = '+';
+}
+
+void	plgn_make(t_trngl *trngl, t_ray *ray)
+{
+	if (trngl->plgn.f != 'f')
 	{
-		v_make(&plgn->p_a, &plgn->p, &plgn->a);
-		v_make(&plgn->p_b, &plgn->p, &plgn->b);
-		v_make(&plgn->p_c, &plgn->p, &plgn->c);
-		plgn_prmtr(plgn);
-		plgn_area(plgn);
+		p_copy(&trngl->plgn.a, &trngl->p1);
+		p_copy(&trngl->plgn.b, &trngl->p2);
+		p_copy(&trngl->plgn.c, &trngl->p3);
+		v_make(&trngl->plgn.cd_a, &trngl->plgn.c, &trngl->plgn.a);
+		v_make(&trngl->plgn.a_b, &trngl->plgn.a, &trngl->plgn.b);
+		v_make(&trngl->plgn.b_c, &trngl->plgn.b, &trngl->plgn.c);
+		// nrml_trngl(plgn, trngl, ray, '\0'); //1, 2
+		trngl->plgn.f = 'f';
+	}
+	else if (trngl->plgn.f == 'f')
+	{
+		v_make(&trngl->plgn.p_a, &trngl->plgn.p, &trngl->plgn.a);
+		v_make(&trngl->plgn.p_b, &trngl->plgn.p, &trngl->plgn.b);
+		v_make(&trngl->plgn.p_c, &trngl->plgn.p, &trngl->plgn.c);
+		plgn_prmtr(&trngl->plgn);
+		plgn_area(&trngl->plgn);
+		is_in_trngl(trngl);
 	}
 }
 
-// void	is_in_trngl()
-// {
-
-// }
-
 void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 {
-	t_polygon	plgn;
+	//t_polygon	plgn;
 	t_vctr		o_p; //vctr from ray origin to the pln that is collinear to ray->vctr[0] and reaches p
 	float		t;
 	
-	plgn_null(&plgn);
-	plgn_make(&plgn, trngl, ray);
+	plgn_null(&trngl->plgn);
+	plgn_make(trngl, ray);
+	nrml_trngl(trngl, ray);
 	t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]); //3, 4
 	if (fabsf(t) < INFINITY && t > 0.00006)
 	{
 		// t = ray->sgm == 1 ? -t : t;
 		v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
 		v_fill(&o_p);
-		p_calc(&plgn.p, &o_p, &ray->tail_p); //calculates p(x, y, z)
-		plgn_make(&plgn, trngl, ray);
+		p_calc(&trngl->plgn.p, &o_p, &ray->tail_p); //calculates p(x, y, z)
+		plgn_make(trngl, ray);
 	}
-	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && t > 0 && t < ray->dist && ray->sgm == 0)
+	if (trngl->plgn.p_in == '+' && t > 0 && t < ray->dist && ray->sgm == 0)
 	{
 		ray->dist = t;
 		ray->obj = 't';
 		ray->nrst = lscn->n_trngl;
 		v_copy(&ray->vctr[0], &o_p);
-		p_copy(&ray->hit_p, &plgn.p);
+		p_copy(&ray->hit_p, &trngl->plgn.p);
 	}
-	if (plgn.area >= 0.9999 * (plgn.area1 + plgn.area2 + plgn.area3) && ray->sgm == 1 && t > 0 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (trngl->plgn.p_in == '+' && ray->sgm == 1 && t > 0 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
+	
 	// if (ray->sgm == 1 && t > 0.0003 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 }
 

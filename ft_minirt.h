@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/11 21:11:27 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 18:24:40 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,7 @@ typedef struct		s_trngl
 	t_point			p3;
 	t_vctr			n;
 	t_color			trgb;
+	t_polygon		plgn;
 	struct s_trngl	*nxt;
 }					t_trngl;
 
@@ -418,6 +419,7 @@ void				p2d_make(t_2d_point *out, int x, int y);
 void				p_make(t_point *output, float x, float y, float z);
 void				p_calc(t_point *out, t_vctr *vctr, t_point *tail);
 void				p_copy(t_point *out, t_point *in);
+int					p_is_equal(t_point *p1, t_point *p2);
 void				v_xyz(t_vxyz *out, t_point *tail, t_point *head);
 void				v_lngth(t_vctr *vctr);
 void				v_n(t_vctr *vctr);
@@ -473,6 +475,11 @@ float				q_equation(float *root, float a, float b, float c);
 void				sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray);
 float				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
 void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
+void				plgn_null(t_polygon *plgn);
+void				plgn_prmtr(t_polygon *plgn);
+void				plgn_area(t_polygon *plgn);
+void				plgn_make(t_trngl *trngl, t_ray *ray);
+
 
 //ft_mnrt_lum.c
 void				l_ambnt(t_lum *lum);
@@ -486,7 +493,7 @@ void				lum_node(t_scn *lscn, t_lght *lght, t_ray *ray);
 
 //ft_mnrt_nrml.c
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
-void				nrml_trngl(t_polygon *plgn, t_trngl *trngl, t_ray *ray);
+void				nrml_trngl(t_trngl *trngl, t_ray *ray);
 void				nrml_pln(t_pln *pln, t_ray *ray);
 
 //ft_mnrt_color.c

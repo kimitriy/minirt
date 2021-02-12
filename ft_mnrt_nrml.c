@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 18:28:48 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/12 11:23:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 19:23:27 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,24 @@ void	nrml_pln(t_pln *pln, t_ray *ray)
 	}
 }
 
-void	nrml_trngl(t_polygon *plgn, t_trngl *trngl, t_ray *ray)
+void	nrml_trngl(t_trngl *trngl, t_ray *ray)
 {
-	t_point o;
-	t_vctr	oa; //vctr from .O(0,0,0) to .a of the trngl
 	float	d_prdct;
 
-	if (ray->sgm == 0)
+	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
 	{
-		p_make(&o, 0, 0, 0);
-		v_make(&oa, &o, &plgn->a);
-		v_crss_prdct(&trngl->n.xyz, &plgn->cd_a.xyz, &plgn->a_b.xyz);
+		v_crss_prdct(&trngl->n.xyz, &trngl->plgn.cd_a.xyz, &trngl->plgn.a_b.xyz);
 		v_fill(&trngl->n);
-		d_prdct = v_d_prdct(&trngl->n.nxyz, &oa.nxyz);
+		d_prdct = v_d_prdct(&trngl->n.nxyz, &ray->vctr[0].nxyz);
+		if (d_prdct > 0)
+		{
+			v_opposite(&trngl->n);
+			v_fill(&trngl->n);
+		}
+	}
+	else if (ray->sgm == 1)
+	{
+		d_prdct = v_d_prdct(&trngl->n.nxyz, &ray->vctr[1].nxyz);
 		if (d_prdct > 0)
 		{
 			v_opposite(&trngl->n);
