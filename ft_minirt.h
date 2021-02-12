@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/12 18:24:40 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 21:59:24 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,25 +108,25 @@ typedef struct 		s_polygon
 	t_point			a;
 	t_point			b;
 	t_point			c;
-	t_point			d;
-	t_vctr			cd_a;
+	// t_point			d;
+	t_vctr			c_a;
 	t_vctr			a_b;
 	t_vctr			b_c;
-	t_vctr			c_d;
+	// t_vctr			c_d;
 	t_vctr			p_a;
 	t_vctr			p_b;
 	t_vctr			p_c;
-	t_vctr			p_d;
+	// t_vctr			p_d;
 	float			prmtr;
 	float			prmtr1;
 	float			prmtr2;
 	float			prmtr3;
-	float			prmtr4;
+	// float			prmtr4;
 	float			area;
 	float			area1;
 	float			area2;
 	float			area3;
-	float			area4;
+	// float			area4;
 	char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
 	char			p_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
 }					t_polygon;

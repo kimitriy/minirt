@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/12 18:32:20 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/12 22:00:29 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,41 +118,41 @@ void	plgn_null(t_polygon *plgn)
 	p_make(&plgn->a, 0, 0, 0);
 	p_make(&plgn->b, 0, 0, 0);
 	p_make(&plgn->c, 0, 0, 0);
-	p_make(&plgn->d, 0, 0, 0);
+	// p_make(&plgn->d, 0, 0, 0);
 	v_null(&plgn->a_b);
 	v_null(&plgn->b_c);
-	v_null(&plgn->c_d);
-	v_null(&plgn->cd_a);
+	// v_null(&plgn->c_d);
+	v_null(&plgn->c_a);
 	v_null(&plgn->p_a);
 	v_null(&plgn->p_b);
 	v_null(&plgn->p_c);
-	v_null(&plgn->p_d);
+	// v_null(&plgn->p_d);
 	plgn->prmtr = 0;
 	plgn->prmtr1 = 0;
 	plgn->prmtr2 = 0;
 	plgn->prmtr3 = 0;
-	plgn->prmtr4 = 0;
+	// plgn->prmtr4 = 0;
 	plgn->area = 0;
 	plgn->area1 = 0;
 	plgn->area2 = 0;
 	plgn->area3 = 0;
-	plgn->area4 = 0;
+	// plgn->area4 = 0;
 }
 
 void	plgn_prmtr(t_polygon *plgn)
 {
-	plgn->prmtr = (plgn->a_b.lngth + plgn->b_c.lngth + plgn->cd_a.lngth) / 2;
+	plgn->prmtr = (plgn->a_b.lngth + plgn->b_c.lngth + plgn->c_a.lngth) / 2;
 	plgn->prmtr1 = (plgn->p_a.lngth + plgn->a_b.lngth + plgn->p_b.lngth) / 2;
 	plgn->prmtr2 = (plgn->p_b.lngth + plgn->b_c.lngth + plgn->p_c.lngth) / 2;
-	plgn->prmtr3 = (plgn->p_c.lngth + plgn->cd_a.lngth + plgn->p_a.lngth) / 2;
+	plgn->prmtr3 = (plgn->p_c.lngth + plgn->c_a.lngth + plgn->p_a.lngth) / 2;
 }
 
 void	plgn_area(t_polygon *plgn)
 {
-	plgn->area = sqrtf(plgn->prmtr * (plgn->prmtr - plgn->a_b.lngth) * (plgn->prmtr - plgn->b_c.lngth) * (plgn->prmtr - plgn->cd_a.lngth));
+	plgn->area = sqrtf(plgn->prmtr * (plgn->prmtr - plgn->a_b.lngth) * (plgn->prmtr - plgn->b_c.lngth) * (plgn->prmtr - plgn->c_a.lngth));
 	plgn->area1 = sqrtf(plgn->prmtr1 * (plgn->prmtr1 - plgn->p_a.lngth) * (plgn->prmtr1 - plgn->a_b.lngth) * (plgn->prmtr1 - plgn->p_b.lngth));
 	plgn->area2 = sqrtf(plgn->prmtr2 * (plgn->prmtr2 - plgn->p_b.lngth) * (plgn->prmtr2 - plgn->b_c.lngth) * (plgn->prmtr2 - plgn->p_c.lngth));
-	plgn->area3 = sqrtf(plgn->prmtr3 * (plgn->prmtr3 - plgn->p_c.lngth) * (plgn->prmtr3 - plgn->cd_a.lngth) * (plgn->prmtr3 - plgn->p_a.lngth));
+	plgn->area3 = sqrtf(plgn->prmtr3 * (plgn->prmtr3 - plgn->p_c.lngth) * (plgn->prmtr3 - plgn->c_a.lngth) * (plgn->prmtr3 - plgn->p_a.lngth));
 }
 
 void	is_in_trngl(t_trngl *trngl)
@@ -168,7 +168,7 @@ void	plgn_make(t_trngl *trngl, t_ray *ray)
 		p_copy(&trngl->plgn.a, &trngl->p1);
 		p_copy(&trngl->plgn.b, &trngl->p2);
 		p_copy(&trngl->plgn.c, &trngl->p3);
-		v_make(&trngl->plgn.cd_a, &trngl->plgn.c, &trngl->plgn.a);
+		v_make(&trngl->plgn.c_a, &trngl->plgn.c, &trngl->plgn.a);
 		v_make(&trngl->plgn.a_b, &trngl->plgn.a, &trngl->plgn.b);
 		v_make(&trngl->plgn.b_c, &trngl->plgn.b, &trngl->plgn.c);
 		// nrml_trngl(plgn, trngl, ray, '\0'); //1, 2
