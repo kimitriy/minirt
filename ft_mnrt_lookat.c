@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/06 04:25:00 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/19 20:25:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,32 @@ void	null_lookat(t_look_at *lookat)
 	v_null(&lookat->vUP);
 }
 
+void	v_tmp_make(t_vctr *vTMP, t_vctr *vF)
+{
+	vTMP->nxyz.x = 0;
+	if (vF->nxyz.y == 1)
+	{
+		vTMP->nxyz.y = 0;
+		vTMP->nxyz.z = -1;
+	}
+	else if (vF->nxyz.y == -1)
+	{
+		vTMP->nxyz.y = 0;
+		vTMP->nxyz.z = 1;
+	}
+	else
+	{
+		vTMP->nxyz.y = 1;
+		vTMP->nxyz.z = 0;
+	}
+}
+
 void	look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p)
 {
 	null_lookat(lookat);
-	lookat->vF.nxyz.x = -vF->nxyz.x;
-	lookat->vF.nxyz.y = -vF->nxyz.y;
-	lookat->vF.nxyz.z = -vF->nxyz.z;
+	v_n_prdct(&lookat->vF.nxyz, &vF->nxyz, -1);
 	v_fill(&lookat->vF);
-	lookat->vTMP.xyz.x = 0;
-	lookat->vTMP.xyz.y = 1;
-	lookat->vTMP.xyz.z = 0;
+	v_tmp_make(&lookat->vTMP, vF);
 	v_fill(&lookat->vTMP);
 	v_crss_prdct(&lookat->vR.xyz, &lookat->vF.nxyz, &lookat->vTMP.nxyz);
 	v_fill(&lookat->vR);
@@ -83,13 +99,15 @@ void	cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 			lscn->n_lght = lscn->n_lght->next;
 		lght = nscn->n_lght->content;
 		llght = lscn->n_lght->content;
-		llght->p.x = lght->p.x;
-		llght->p.y = lght->p.y;
-		llght->p.z = lght->p.z;
-		llght->trgb.t = lght->trgb.t;
-		llght->trgb.r = lght->trgb.r;
-		llght->trgb.g = lght->trgb.g;
-		llght->trgb.b = lght->trgb.b;
+		p_copy(&llght->p, &lght->p);
+		// llght->p.x = lght->p.x;
+		// llght->p.y = lght->p.y;
+		// llght->p.z = lght->p.z;
+		color_copy(&llght->trgb, &lght->trgb);
+		// llght->trgb.t = lght->trgb.t;
+		// llght->trgb.r = lght->trgb.r;
+		// llght->trgb.g = lght->trgb.g;
+		// llght->trgb.b = lght->trgb.b;
 		llght->lvl = lght->lvl;
 		mtrx4_x_point(&llght->p, &lookat->m, &lght->p);
 		if (nscn->n_lght->next != NULL)
@@ -113,17 +131,20 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 			lscn->n_pln = lscn->n_pln->next;
 		pln = nscn->n_pln->content;
 		lpln = lscn->n_pln->content;
-		lpln->p.x = pln->p.x;
-		lpln->p.y = pln->p.y;
-		lpln->p.z = pln->p.z;
-		lpln->v.nxyz.x = pln->v.nxyz.x;
-		lpln->v.nxyz.y = pln->v.nxyz.y;
-		lpln->v.nxyz.z = pln->v.nxyz.z;
+		p_copy(&lpln->p, &pln->p);
+		// lpln->p.x = pln->p.x;
+		// lpln->p.y = pln->p.y;
+		// lpln->p.z = pln->p.z;
+		v_copy(&lpln->v, &pln->v);
+		// lpln->v.nxyz.x = pln->v.nxyz.x;
+		// lpln->v.nxyz.y = pln->v.nxyz.y;
+		// lpln->v.nxyz.z = pln->v.nxyz.z;
 		v_fill(&lpln->v);
-		lpln->trgb.t = pln->trgb.t;
-		lpln->trgb.r = pln->trgb.r;
-		lpln->trgb.g = pln->trgb.g;
-		lpln->trgb.b = pln->trgb.b;
+		color_copy(&lpln->trgb, &pln->trgb);
+		// lpln->trgb.t = pln->trgb.t;
+		// lpln->trgb.r = pln->trgb.r;
+		// lpln->trgb.g = pln->trgb.g;
+		// lpln->trgb.b = pln->trgb.b;
 		mtrx4_x_point(&lpln->p, &lookat->m, &pln->p);
 		mtrx4_x_vctr(&lpln->v, &lookat->m, &pln->v.nxyz);
 		v_fill(&lpln->v);
@@ -148,14 +169,16 @@ void	cnvrse_sphr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 			lscn->n_sphr = lscn->n_sphr->next;
 		sphr = nscn->n_sphr->content;
 		lsphr = lscn->n_sphr->content;
-		lsphr->p.x = sphr->p.x;
-		lsphr->p.y = sphr->p.y;
-		lsphr->p.z = sphr->p.z;
+		p_copy(&lsphr->p, &sphr->p);
+		// lsphr->p.x = sphr->p.x;
+		// lsphr->p.y = sphr->p.y;
+		// lsphr->p.z = sphr->p.z;
 		lsphr->d = sphr->d;
-		lsphr->trgb.t = sphr->trgb.t;
-		lsphr->trgb.r = sphr->trgb.r;
-		lsphr->trgb.g = sphr->trgb.g;
-		lsphr->trgb.b = sphr->trgb.b;
+		color_copy(&lsphr->trgb, &sphr->trgb);
+		// lsphr->trgb.t = sphr->trgb.t;
+		// lsphr->trgb.r = sphr->trgb.r;
+		// lsphr->trgb.g = sphr->trgb.g;
+		// lsphr->trgb.b = sphr->trgb.b;
 		mtrx4_x_point(&lsphr->p, &lookat->m, &sphr->p);
 		if (nscn->n_sphr->next != NULL)
 			nscn->n_sphr = nscn->n_sphr->next;
@@ -178,18 +201,21 @@ void	cnvrse_cyl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 			lscn->n_cyl = lscn->n_cyl->next;
 		cyl = nscn->n_cyl->content;
 		lcyl = lscn->n_cyl->content;
-		lcyl->p.x = cyl->p.x;
-		lcyl->p.y = cyl->p.y;
-		lcyl->p.z = cyl->p.z;
-		lcyl->v.nxyz.x = cyl->v.nxyz.x;
-		lcyl->v.nxyz.y = cyl->v.nxyz.y;
-		lcyl->v.nxyz.z = cyl->v.nxyz.z;
+		p_copy(&lcyl->p, &cyl->p);
+		// lcyl->p.x = cyl->p.x;
+		// lcyl->p.y = cyl->p.y;
+		// lcyl->p.z = cyl->p.z;
+		v_copy(&lcyl->v, &cyl->v);
+		// lcyl->v.nxyz.x = cyl->v.nxyz.x;
+		// lcyl->v.nxyz.y = cyl->v.nxyz.y;
+		// lcyl->v.nxyz.z = cyl->v.nxyz.z;
 		lcyl->h = cyl->h;
 		lcyl->d = cyl->d;
-		lcyl->trgb.t = cyl->trgb.t;
-		lcyl->trgb.r = cyl->trgb.r;
-		lcyl->trgb.g = cyl->trgb.g;
-		lcyl->trgb.b = cyl->trgb.b;
+		color_copy(&lcyl->trgb, &cyl->trgb);
+		// lcyl->trgb.t = cyl->trgb.t;
+		// lcyl->trgb.r = cyl->trgb.r;
+		// lcyl->trgb.g = cyl->trgb.g;
+		// lcyl->trgb.b = cyl->trgb.b;
 		mtrx4_x_point(&lcyl->p, &lookat->m, &cyl->p);
 		mtrx4_x_vctr(&lcyl->v, &lookat->m, &cyl->v.nxyz);
 		v_fill(&lcyl->v);
@@ -214,17 +240,20 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 			lscn->n_sqr = lscn->n_sqr->next;
 		sqr = nscn->n_sqr->content;
 		lsqr = lscn->n_sqr->content;
-		lsqr->p.x = sqr->p.x;
-		lsqr->p.y = sqr->p.y;
-		lsqr->p.z = sqr->p.z;
-		lsqr->v.nxyz.x = sqr->v.nxyz.x;
-		lsqr->v.nxyz.y = sqr->v.nxyz.y;
-		lsqr->v.nxyz.z = sqr->v.nxyz.z;
+		p_copy(&lsqr->p, &sqr->p);
+		// lsqr->p.x = sqr->p.x;
+		// lsqr->p.y = sqr->p.y;
+		// lsqr->p.z = sqr->p.z;
+		v_copy(&lsqr->v, &sqr->v);
+		// lsqr->v.nxyz.x = sqr->v.nxyz.x;
+		// lsqr->v.nxyz.y = sqr->v.nxyz.y;
+		// lsqr->v.nxyz.z = sqr->v.nxyz.z;
 		lsqr->side = sqr->side;
-		lsqr->trgb.t = sqr->trgb.t;
-		lsqr->trgb.r = sqr->trgb.r;
-		lsqr->trgb.g = sqr->trgb.g;
-		lsqr->trgb.b = sqr->trgb.b;
+		color_copy(&lsqr->trgb, &sqr->trgb);
+		// lsqr->trgb.t = sqr->trgb.t;
+		// lsqr->trgb.r = sqr->trgb.r;
+		// lsqr->trgb.g = sqr->trgb.g;
+		// lsqr->trgb.b = sqr->trgb.b;
 		mtrx4_x_point(&lsqr->p, &lookat->m, &sqr->p);
 		mtrx4_x_vctr(&lsqr->v, &lookat->m, &sqr->v.nxyz);
 		v_fill(&lsqr->v);
@@ -249,22 +278,27 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 			lscn->n_trngl = lscn->n_trngl->next;
 		trngl = nscn->n_trngl->content;
 		ltrngl = lscn->n_trngl->content;
-		ltrngl->p1.x = trngl->p1.x;
-		ltrngl->p1.y = trngl->p1.y;
-		ltrngl->p1.z = trngl->p1.z;
-		ltrngl->p2.x = trngl->p2.x;
-		ltrngl->p2.y = trngl->p2.y;
-		ltrngl->p2.z = trngl->p2.z;
-		ltrngl->p3.x = trngl->p3.x;
-		ltrngl->p3.y = trngl->p3.y;
-		ltrngl->p3.z = trngl->p3.z;
-		ltrngl->n.nxyz.x = trngl->n.nxyz.x;
-		ltrngl->n.nxyz.y = trngl->n.nxyz.y;
-		ltrngl->n.nxyz.z = trngl->n.nxyz.z;
-		ltrngl->trgb.t = trngl->trgb.t;
-		ltrngl->trgb.r = trngl->trgb.r;
-		ltrngl->trgb.g = trngl->trgb.g;
-		ltrngl->trgb.b = trngl->trgb.b;
+		p_copy(&ltrngl->p1, &trngl->p1);
+		// ltrngl->p1.x = trngl->p1.x;
+		// ltrngl->p1.y = trngl->p1.y;
+		// ltrngl->p1.z = trngl->p1.z;
+		p_copy(&ltrngl->p2, &trngl->p2);
+		// ltrngl->p2.x = trngl->p2.x;
+		// ltrngl->p2.y = trngl->p2.y;
+		// ltrngl->p2.z = trngl->p2.z;
+		p_copy(&ltrngl->p3, &trngl->p3);
+		// ltrngl->p3.x = trngl->p3.x;
+		// ltrngl->p3.y = trngl->p3.y;
+		// ltrngl->p3.z = trngl->p3.z;
+		v_copy(&ltrngl->n, &trngl->n);
+		// ltrngl->n.nxyz.x = trngl->n.nxyz.x;
+		// ltrngl->n.nxyz.y = trngl->n.nxyz.y;
+		// ltrngl->n.nxyz.z = trngl->n.nxyz.z;
+		color_copy(&ltrngl->trgb, &trngl->trgb);
+		// ltrngl->trgb.t = trngl->trgb.t;
+		// ltrngl->trgb.r = trngl->trgb.r;
+		// ltrngl->trgb.g = trngl->trgb.g;
+		// ltrngl->trgb.b = trngl->trgb.b;
 		mtrx4_x_point(&ltrngl->p1, &lookat->m, &trngl->p1);
 		mtrx4_x_point(&ltrngl->p2, &lookat->m, &trngl->p2);
 		mtrx4_x_point(&ltrngl->p3, &lookat->m, &trngl->p3);

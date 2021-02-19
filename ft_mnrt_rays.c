@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/12 19:23:37 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/19 15:55:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,8 @@
 
 void	trace_ray(t_scn *lscn, t_ray *ray)
 {
-	// cnvrse2crtsn(lscn, xy);
-    // cnvrse2xyz(&ray->head_p, lscn, xy);
 	v_make(&ray->vctr[ray->sgm], &ray->tail_p, &ray->head_p);
 	intrsct_node(lscn, ray);
-	
-	// while (ray->sgm < 1) //2
-	// {
-	// 	if (ray->sgm == 0)
-	// 	{	
-	// 		v_make(&ray->vctr[ray->sgm], &ray->tail_p, &ray->head_p);
-	// 		trace_ray_segment(ray, lscn);
-		
-	// 		// ray->r = 0;
-	// 		// ray->g = 0;
-	// 		// ray->b = 255;
-	// 	}
-	// 	// else
-	// 	// {
-	// 	// 	//func that calculates reflected vctr
-	// 	// }
-	// 	//trace_ray_segment(ray, lscn);
-	// 	ray->sgm++;
-	// }
 }
 
 void	ray_null(t_ray *ray)
@@ -53,18 +32,6 @@ void	ray_null(t_ray *ray)
 	color_make(&ray->obj_trgb, '\0', '\0', '\0');
 	color_make(&ray->sum_trgb, '\0', '\0', '\0');
 	color_make(&ray->p_trgb, 7, 7, 7);
-	// ray->obj_trgb.t = '\0';
-	// ray->obj_trgb.r = '\0';
-	// ray->obj_trgb.g = '\0';
-	// ray->obj_trgb.b = '\0';
-	// ray->sum_trgb.t = '\0';
-	// ray->sum_trgb.r = '\0';
-	// ray->sum_trgb.g = '\0';
-	// ray->sum_trgb.b = '\0';
-	// ray->p_trgb.t = 100;
-	// ray->p_trgb.r = 100;
-	// ray->p_trgb.g = 100;
-	// ray->p_trgb.b = 100;
 	ray->nrst = NULL;
 }
 

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 18:28:48 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/12 22:00:58 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/19 23:57:34 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void    nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr)
 	p_make(&o, 0, 0, 0);
 	v_null(&oc);
 	v_make(&oc, &o, &sphr->p);
-	//v_fill(&oc);
 	v_make(nrml, &sphr->p, &ray->hit_p);
-	// d_prdct = v_d_prdct(&oc.nxyz, &nrml->nxyz);
 	if (oc.lngth < sphr->d / 2)
 	{
 		v_opposite(nrml);
@@ -57,7 +55,7 @@ void	nrml_trngl(t_trngl *trngl, t_ray *ray)
 
 	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
 	{
-		v_crss_prdct(&trngl->n.xyz, &trngl->plgn.c_a.xyz, &trngl->plgn.a_b.xyz);
+		v_crss_prdct(&trngl->n.xyz, &trngl->trgn.c_a.xyz, &trngl->trgn.a_b.xyz);
 		v_fill(&trngl->n);
 		d_prdct = v_d_prdct(&trngl->n.nxyz, &ray->vctr[0].nxyz);
 		if (d_prdct > 0)
@@ -73,6 +71,30 @@ void	nrml_trngl(t_trngl *trngl, t_ray *ray)
 		{
 			v_opposite(&trngl->n);
 			v_fill(&trngl->n);
+		}
+	}
+}
+
+void	nrml_sqr(t_sqr *sqr, t_ray *ray)
+{
+	float	d_prdct;
+
+	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
+	{
+		d_prdct = v_d_prdct(&sqr->v.nxyz, &ray->vctr[0].nxyz);
+		if (d_prdct > 0)
+		{
+			v_opposite(&sqr->v);
+			v_fill(&sqr->v);
+		}
+	}
+	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
+	{
+		d_prdct = v_d_prdct(&sqr->v.nxyz, &ray->vctr[1].nxyz);
+		if (d_prdct > 0)
+		{
+			v_opposite(&sqr->v);
+			v_fill(&sqr->v);
 		}
 	}
 }

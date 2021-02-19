@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/12 21:59:24 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/20 00:01:01 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,34 +102,34 @@ y - yes;
 \0 - no;
 */
 
-typedef struct 		s_polygon
+typedef struct 		s_trigon
 {
 	t_point			p;
 	t_point			a;
 	t_point			b;
 	t_point			c;
-	// t_point			d;
 	t_vctr			c_a;
 	t_vctr			a_b;
 	t_vctr			b_c;
-	// t_vctr			c_d;
 	t_vctr			p_a;
 	t_vctr			p_b;
 	t_vctr			p_c;
-	// t_vctr			p_d;
 	float			prmtr;
 	float			prmtr1;
 	float			prmtr2;
 	float			prmtr3;
-	// float			prmtr4;
 	float			area;
 	float			area1;
 	float			area2;
 	float			area3;
-	// float			area4;
 	char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
 	char			p_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
-}					t_polygon;
+}					t_trigon;
+
+typedef struct 		s_qdron
+{
+	
+}					t_qdron;
 
 //lum
 typedef struct 		s_lum
@@ -257,7 +257,7 @@ typedef struct		s_trngl
 	t_point			p3;
 	t_vctr			n;
 	t_color			trgb;
-	t_polygon		plgn;
+	t_trigon		trgn;
 	struct s_trngl	*nxt;
 }					t_trngl;
 
@@ -456,6 +456,8 @@ void				mtrx4_x_vctr(t_vctr *out, t_mtrx4x4 *mtrx, t_vxyz *in);
 void				mtrx4_x_point(t_point *out, t_mtrx4x4 *mtrx, t_point *in);
 
 //ft_mnrt_lookat.c
+void				null_lookat(t_look_at *lookat);
+void				v_tmp_make(t_vctr *vTMP, t_vctr *vF);
 void				look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p);
 void				get_cam_fov(t_scn *nscn, t_scn *lscn);
 void				cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
@@ -469,17 +471,8 @@ void				lookat_node(t_scn *nscn);
 
 //ft_mnrt_intrsct.c
 void				intrsct_node(t_scn *lscn, t_ray *ray);
-void 				check_sphrs(t_scn *lscn, t_ray *ray);
-void 				check_plns(t_scn *lscn, t_ray *ray);
-float				q_equation(float *root, float a, float b, float c);
-void				sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray);
-float				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
-void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
-void				plgn_null(t_polygon *plgn);
-void				plgn_prmtr(t_polygon *plgn);
-void				plgn_area(t_polygon *plgn);
-void				plgn_make(t_trngl *trngl, t_ray *ray);
-
+void				check_objcts(t_scn *lscn, t_ray *ray);
+void				check_lghts(t_scn *lscn, t_ray *ray);
 
 //ft_mnrt_lum.c
 void				l_ambnt(t_lum *lum);
@@ -495,6 +488,30 @@ void				lum_node(t_scn *lscn, t_lght *lght, t_ray *ray);
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
 void				nrml_trngl(t_trngl *trngl, t_ray *ray);
 void				nrml_pln(t_pln *pln, t_ray *ray);
+void				nrml_sqr(t_sqr *sqr, t_ray *ray);
+
+//ft_mnrt_sphr.c
+float				q_equation(float *root, float a, float b, float c);
+void				sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray);
+void 				check_sphrs(t_scn *lscn, t_ray *ray);
+
+//ft_mnrt_pln.c
+float				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
+void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
+void 				check_plns(t_scn *lscn, t_ray *ray);
+
+//ft_mnrt_pln.c
+void				sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray);
+void 				check_sqrs(t_scn *lscn, t_ray *ray);
+
+//ft_mnrt_trngl.c
+void				plgn_null(t_trigon *trgn);
+void				plgn_prmtr(t_trigon *trgn);
+void				plgn_area(t_trigon *trgn);
+void				is_in_trngl(t_trngl *trngl);
+void				plgn_make(t_trngl *trngl, t_ray *ray);
+void				trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray);
+void 				check_trngls(t_scn *lscn, t_ray *ray);
 
 //ft_mnrt_color.c
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);

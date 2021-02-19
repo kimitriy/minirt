@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/12 21:46:03 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/19 15:54:44 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,7 @@ void	make_lum(t_lum *lum, t_scn *lscn, t_lght *lght, t_ray *ray)
 	lum->lvl = lght->lvl;
 	color_copy(&lum->l_trgb, &lght->trgb);
 	v_copy(&lum->op, &ray->vctr[0]); //op vctr which is already calculated and stored in the ray struct
-	//lum->op = ray->vctr[0]; //op vctr which is already calculated and stored in the ray struct
 	v_copy(&lum->ldir, &ray->vctr[1]);
-	// lum->ldir = ray->vctr[1];
     lum->dst = lum->ldir.lngth;
     v_null(&opposite_op);
 	opposite_op.nxyz.x = (-1) * lum->op.nxyz.x;
@@ -130,35 +128,6 @@ void	lum_trngl(t_scn *lscn, t_lght *lght, t_ray *ray)
 	color_copy(&ray->obj_trgb, &trngl->trgb);
 	color_node(lscn, ray, &lum);
 }
-
-// void    lum_sphr(t_scn *lscn, t_ray *ray)
-// {
-//     t_lght  *lght;
-//     t_lum   lum;
-//     t_vctr  minus_op;
-// 	t_sphr	*sphr;
-
-// 	sphr = ray->nrst->content;
-//     lght = lscn->n_lght->content;
-// 	lum.alvl = lscn->n_ambnt.lvl;
-//     lum.lvl = lght->lvl;
-//     lum.op = ray->vctr[ray->sgm]; //op vctr which is already calculated and stored in the ray struct
-//     nrml_sphr(&lum.nrml, ray, sphr); //makes nrml vctr
-//     v_make(&lum.ldir, &ray->hit_p[ray->sgm], &lght->p); //makes light direction vctr
-//     lum.dst = lum.ldir.lngth;
-//     v_null(&minus_op);
-// 	minus_op.nxyz.x = (-1) * lum.op.nxyz.x;
-//     minus_op.nxyz.y = (-1) * lum.op.nxyz.y;
-//     minus_op.nxyz.z = (-1) * lum.op.nxyz.z;
-//     v_fill(&minus_op);
-//     v_sum(&lum.hvctr.xyz, &lum.ldir.nxyz, &minus_op.nxyz);
-//     v_fill(&lum.hvctr);
-// 	l_all(&lum);
-// 	color_copy(&ray->trgb, &sphr->trgb);
-// 	color_modify(&ray->trgb, &lum);
-// }
-
-
 
 /*
 obj types:
