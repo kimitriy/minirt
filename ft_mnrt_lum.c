@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/19 15:54:44 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/21 03:23:32 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	make_lum(t_lum *lum, t_scn *lscn, t_lght *lght, t_ray *ray)
     opposite_op.nxyz.y = (-1) * lum->op.nxyz.y;
     opposite_op.nxyz.z = (-1) * lum->op.nxyz.z;
     v_fill(&opposite_op);
+	v_null(&lum->hvctr);
     v_sum(&lum->hvctr.xyz, &lum->ldir.nxyz, &opposite_op.nxyz);
     v_fill(&lum->hvctr);
 }
@@ -129,6 +130,22 @@ void	lum_trngl(t_scn *lscn, t_lght *lght, t_ray *ray)
 	color_node(lscn, ray, &lum);
 }
 
+void	lum_sqr(t_scn *lscn, t_lght *lght, t_ray *ray)
+{
+    t_lum   lum;
+	t_sqr	*sqr;
+
+	sqr = ray->nrst->content;
+	ray->sgm = 0;
+	nrml_sqr(sqr, ray);
+	v_copy(&lum.nrml, &sqr->v);
+	v_fill(&lum.nrml);
+	make_lum(&lum, lscn, lght, ray);
+	l_all(lscn, &lum);
+	color_copy(&ray->obj_trgb, &sqr->trgb);
+	color_node(lscn, ray, &lum);
+}
+
 /*
 obj types:
 p - pln;
@@ -147,8 +164,9 @@ void	lum_node(t_scn *lscn, t_lght *lght, t_ray *ray)
 		lum_pln(lscn, lght, ray);
 	if (ray->obj == 't')
 		lum_trngl(lscn, lght, ray);
+	if (ray->obj == 'q')
+		lum_sqr(lscn, lght, ray);
 	// if (ray->obj == 'c')
 	// 	lum_cyl(lscn, lght, ray);
-	// if (ray->obj == 'q')
-	// 	lum_sqr(lscn, lght, ray);
+	
 }

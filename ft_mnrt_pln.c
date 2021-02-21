@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/19 23:40:38 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/21 05:08:50 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 
 	dist = (p->x - r_orgn->x) * nrml->nxyz.x + (p->y - r_orgn->y) * nrml->nxyz.y + (p->z - r_orgn->z) * nrml->nxyz.z; //1
 	dist = dist < 0 ? dist * (-1) : dist; //2
+	v_null(&o_p0);
 	v_n_prdct(&o_p0.xyz, &nrml->nxyz, dist); //3
 	v_n_prdct(&o_p0.xyz, &o_p0.xyz, -1); //3 change the sign (direction)
 	v_fill(&o_p0);

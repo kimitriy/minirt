@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/20 00:01:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/20 23:47:42 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,16 +104,16 @@ y - yes;
 
 typedef struct 		s_trigon
 {
-	t_point			p;
+	t_point			xp;
 	t_point			a;
 	t_point			b;
 	t_point			c;
 	t_vctr			c_a;
 	t_vctr			a_b;
 	t_vctr			b_c;
-	t_vctr			p_a;
-	t_vctr			p_b;
-	t_vctr			p_c;
+	t_vctr			xp_a;
+	t_vctr			xp_b;
+	t_vctr			xp_c;
 	float			prmtr;
 	float			prmtr1;
 	float			prmtr2;
@@ -123,12 +123,20 @@ typedef struct 		s_trigon
 	float			area2;
 	float			area3;
 	char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
-	char			p_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
+	char			xp_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
 }					t_trigon;
 
 typedef struct 		s_qdron
 {
-	
+	t_point			xp; //intersection point at which the ray intersects the pln
+	t_vctr			vTMP;
+	t_vctr			vR;
+	t_vctr			vUP;
+	t_vctr			vPXP; //vctr on the pln from .p (which is the point which is given to build the pln) to .i (which is an intersection point on the pln)
+	float			alpha; //rad, angle between vR и vpi
+	float			x;
+	float			y;
+	char			xp_in;
 }					t_qdron;
 
 //lum
@@ -500,16 +508,19 @@ float				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
 void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
 void 				check_plns(t_scn *lscn, t_ray *ray);
 
-//ft_mnrt_pln.c
+//ft_mnrt_sqr.c
+void				qdron_null(t_qdron *qdrn);
+void				qdron_make(t_qdron *qdrn, t_sqr *sqr);
+void				is_in_sqr(t_qdron *qdrn,t_sqr *sqr);
 void				sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray);
 void 				check_sqrs(t_scn *lscn, t_ray *ray);
 
 //ft_mnrt_trngl.c
-void				plgn_null(t_trigon *trgn);
-void				plgn_prmtr(t_trigon *trgn);
-void				plgn_area(t_trigon *trgn);
+void				trgn_null(t_trigon *trgn);
+void				trgn_prmtr(t_trigon *trgn);
+void				trgn_area(t_trigon *trgn);
 void				is_in_trngl(t_trngl *trngl);
-void				plgn_make(t_trngl *trngl, t_ray *ray);
+void				trgn_make(t_trngl *trngl, t_ray *ray);
 void				trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray);
 void 				check_trngls(t_scn *lscn, t_ray *ray);
 

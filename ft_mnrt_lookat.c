@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/19 20:25:20 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/21 05:19:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	v_tmp_make(t_vctr *vTMP, t_vctr *vF)
 		vTMP->nxyz.y = 1;
 		vTMP->nxyz.z = 0;
 	}
+	v_fill(vTMP);
 }
 
 void	look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p)
@@ -139,7 +140,7 @@ void	cnvrse_pln(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		// lpln->v.nxyz.x = pln->v.nxyz.x;
 		// lpln->v.nxyz.y = pln->v.nxyz.y;
 		// lpln->v.nxyz.z = pln->v.nxyz.z;
-		v_fill(&lpln->v);
+		// v_fill(&lpln->v);
 		color_copy(&lpln->trgb, &pln->trgb);
 		// lpln->trgb.t = pln->trgb.t;
 		// lpln->trgb.r = pln->trgb.r;
