@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/28 20:22:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 22:57:33 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at *lkt)
 		//XP1 XP2 пересчитать через lkt проверить что координата z > 0 && z <= 0 + h
 		is_on_cyl(cln, cyl, lkt);
 		cylon_make3(cln, cyl);
-		nrml_cyl(cyl, ray);
+		nrml_cyl(cyl, ray); //необходимо передавать в эту функцию только ту нормаль которую видно
 	}
 }
 
@@ -138,14 +138,14 @@ void	cylon_make3(t_cylon *cln, t_cyl *cyl)
 		v_fill(&cln->vCM1);
 		v_sbtrct(&cyl->n1.xyz, &cln->vCXP1.xyz, &cln->vCM1.xyz);
 		v_fill(&cyl->n1);
-		if (cln->t2 != INFINITY)
-		{
-			v_make(&cln->vCXP2, &cln->C, &cln->XP2);
-			v_n_prdct(&cln->vCM2.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP2.lngth, 2) - powf(cyl->d / 2, 2)));
-			v_fill(&cln->vCM2);
-			v_sbtrct(&cyl->n1.xyz, &cln->vCXP2.xyz, &cln->vCM2.xyz);
-			v_fill(&cyl->n1);
-		}
+	}
+	if (cln->t2 != INFINITY)
+	{
+		v_make(&cln->vCXP2, &cln->C, &cln->XP2);
+		v_n_prdct(&cln->vCM2.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP2.lngth, 2) - powf(cyl->d / 2, 2)));
+		v_fill(&cln->vCM2);
+		v_sbtrct(&cyl->n2.xyz, &cln->vCXP2.xyz, &cln->vCM2.xyz);
+		v_fill(&cyl->n2);
 	}
 }
 
