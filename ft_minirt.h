@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/20 23:47:42 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 05:03:31 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,21 @@ typedef struct 		s_point
 
 typedef struct		s_2d_point
 {
-	int				x;
-	int				y;
+	float				x;
+	float				y;
 }					t_2d_point;
+
+typedef struct 		s_vxy
+{
+	float			x;
+	float			y;
+}					t_vxy;
+
+typedef struct 		s_vctr2d
+{
+	t_vxy			xy;
+	float			lngth;
+}					t_vctr2d;
 
 typedef struct 		s_vxyz
 {
@@ -133,11 +145,40 @@ typedef struct 		s_qdron
 	t_vctr			vR;
 	t_vctr			vUP;
 	t_vctr			vPXP; //vctr on the pln from .p (which is the point which is given to build the pln) to .i (which is an intersection point on the pln)
+	float			cos_a;
+	float			sin_a;
 	float			alpha; //rad, angle between vR и vpi
 	float			x;
 	float			y;
 	char			xp_in;
 }					t_qdron;
+
+typedef struct 		s_cylon
+{
+	t_2d_point		_RO; //projection of the ray origin point
+	t_2d_point		_C; //projection of the cyl's center point
+	t_2d_point		_D; //projection of the .D
+	t_point			RO;
+	t_point			C;
+	t_point			XP1;
+	t_point			XP2;
+	t_vctr2d		_vD; //projection of the vD vctr
+	t_vctr2d		_vOC; //vctr from _RO to _C
+	t_vctr			vD;
+	t_vctr			vOXP1;
+	t_vctr			vOXP2;
+	t_vctr			vCXP1;
+	t_vctr			vCXP2;
+	t_vctr			vCM1;
+	t_vctr			vCM2;
+	float			_CH; //length of a perpendicular from .c to the projection of vD
+	float			t1; //length of the vOXP1 vctr
+	float			t2; //length of the vOXP2 vctr
+	float			_OH; //distance from _RO to the point where projection of vOXP intersects with CH
+	float			_HXP; //distance from the point where projection of vOXP intersects with CH to XP
+	float			alpha; //angle between vN of the cyl and vD of the ray
+	char			xp_on;
+}					t_cylon;
 
 //lum
 typedef struct 		s_lum
@@ -242,7 +283,11 @@ typedef struct		s_sphr
 typedef struct		s_cyl
 {
 	t_point			p;
+	t_point			p2;
 	t_vctr			v;
+	t_vctr			v2;
+	t_vctr			n1;
+	t_vctr			n2;
 	float			d;
 	float			h;
 	t_color			trgb;
@@ -422,12 +467,21 @@ void    			print_cyl(t_scn *nscn);
 void    			print_sqr(t_scn *nscn);
 void    			print_trngl(t_scn *nscn);
 
-//ft_mnrt_vctr.c
+//ft_mnrt_point.c
 void				p2d_make(t_2d_point *out, int x, int y);
 void				p_make(t_point *output, float x, float y, float z);
 void				p_calc(t_point *out, t_vctr *vctr, t_point *tail);
 void				p_copy(t_point *out, t_point *in);
 int					p_is_equal(t_point *p1, t_point *p2);
+
+//ft_mnrt_vctr2d.c
+void				v_xy(t_vxy *out, t_2d_point *tail, t_2d_point *head);
+void				v2d_null(t_vctr2d *vctr);
+void				v2d_lngth(t_vctr2d *vctr);
+void				v2d_make(t_vctr2d *out, t_2d_point *tail, t_2d_point *head);
+float				v2d_pd_prdct(t_vctr2d *_vD, t_vctr2d *_vOC);
+
+//ft_mnrt_vctr3d.c
 void				v_xyz(t_vxyz *out, t_point *tail, t_point *head);
 void				v_lngth(t_vctr *vctr);
 void				v_n(t_vctr *vctr);
@@ -436,6 +490,7 @@ void				v_fill(t_vctr *nvctr);
 void				v_make(t_vctr *out, t_point *tail, t_point *head);
 void				v_copy(t_vctr *out, t_vctr *in);
 void				v_sum(t_vxyz *out, t_vxyz *vctr1, t_vxyz *vctr2);
+void				v_sbtrct(t_vxyz *out, t_vxyz *vctr1, t_vxyz *vctr2);
 void    			v_n_prdct(t_vxyz *out, t_vxyz *vxyz, float num);
 float				v_d_prdct(t_vxyz *xyz1, t_vxyz *xyz2);
 float				v_x_point_prdct(t_vxyz *xyz, t_point *p);
@@ -497,6 +552,7 @@ void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
 void				nrml_trngl(t_trngl *trngl, t_ray *ray);
 void				nrml_pln(t_pln *pln, t_ray *ray);
 void				nrml_sqr(t_sqr *sqr, t_ray *ray);
+void				nrml_cyl(t_cyl *cyl, t_ray *ray);
 
 //ft_mnrt_sphr.c
 float				q_equation(float *root, float a, float b, float c);
@@ -523,6 +579,15 @@ void				is_in_trngl(t_trngl *trngl);
 void				trgn_make(t_trngl *trngl, t_ray *ray);
 void				trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray);
 void 				check_trngls(t_scn *lscn, t_ray *ray);
+
+//ft_mnrt_cyl.c
+void				cylon_null(t_cylon *cln);
+void				cylon_cnvrse(t_cylon *cln, t_look_at *lkt);
+void				cylon_make(t_cylon *cln, t_scn *lscn, t_ray *ray, t_cyl *cyl);
+void				cylon_make2(t_cylon *cln, t_scn *lscn, t_ray *ray, t_cyl *cyl);
+void				cylon_make3(t_cylon *cln, t_scn *lscn, t_ray *ray, t_cyl *cyl);
+void				cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray);
+void 				check_cyls(t_scn *lscn, t_ray *ray);
 
 //ft_mnrt_color.c
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);

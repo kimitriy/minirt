@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/19 23:47:44 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/25 03:06:03 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	check_objcts(t_scn *lscn, t_ray *ray)
 	check_sphrs(lscn, ray);
 	check_trngls(lscn, ray);
 	check_sqrs(lscn, ray);
-	// check_cyls(lscn, ray);
+	check_cyls(lscn, ray);
 	check_plns(lscn, ray);
 }
 

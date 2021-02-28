@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/21 03:23:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 01:49:32 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,22 @@ void	lum_sqr(t_scn *lscn, t_lght *lght, t_ray *ray)
 	color_node(lscn, ray, &lum);
 }
 
+void	lum_cyl(t_scn *lscn, t_lght *lght, t_ray *ray)
+{
+    t_lum   lum;
+	t_cyl	*cyl;
+
+	cyl = ray->nrst->content;
+	ray->sgm = 0;
+	nrml_cyl(cyl, ray);
+	v_copy(&lum.nrml, &cyl->n1);
+	v_fill(&lum.nrml);
+	make_lum(&lum, lscn, lght, ray);
+	l_all(lscn, &lum);
+	color_copy(&ray->obj_trgb, &cyl->trgb);
+	color_node(lscn, ray, &lum);
+}
+
 /*
 obj types:
 p - pln;
@@ -166,7 +182,7 @@ void	lum_node(t_scn *lscn, t_lght *lght, t_ray *ray)
 		lum_trngl(lscn, lght, ray);
 	if (ray->obj == 'q')
 		lum_sqr(lscn, lght, ray);
-	// if (ray->obj == 'c')
-	// 	lum_cyl(lscn, lght, ray);
+	if (ray->obj == 'c')
+		lum_cyl(lscn, lght, ray);
 	
 }

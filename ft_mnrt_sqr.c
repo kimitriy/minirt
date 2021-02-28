@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:46:58 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/20 23:39:57 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 02:06:06 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ void	qdron_make(t_qdron *qdrn, t_sqr *sqr)
 	v_crss_prdct(&qdrn->vUP.xyz, &qdrn->vR.nxyz, &sqr->v.nxyz); //creates vUP
 	v_fill(&qdrn->vUP);
 	v_make(&qdrn->vPXP, &sqr->p, &qdrn->xp); //creates vCA
-	qdrn->alpha = v_d_prdct(&qdrn->vR.nxyz, &qdrn->vPXP.xyz);
-	qdrn->x = qdrn->vPXP.lngth * qdrn->alpha;
-	qdrn->y = sinf(qdrn->alpha) * qdrn->vPXP.lngth;
+	qdrn->cos_a = v_d_prdct(&qdrn->vR.nxyz, &qdrn->vPXP.xyz) / (1 * qdrn->vPXP.lngth);
+	qdrn->alpha = 360 - acosf(qdrn->cos_a) * 180 / M_PI;
+	qdrn->x = qdrn->vPXP.lngth * qdrn->cos_a;
+	qdrn->sin_a = sinf(qdrn->alpha * M_PI / 180);
+	qdrn->y = qdrn->sin_a * qdrn->vPXP.lngth;
 }
 
 void	is_in_sqr(t_qdron *qdrn,t_sqr *sqr)

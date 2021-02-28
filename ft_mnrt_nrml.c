@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 18:28:48 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/21 06:26:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 02:05:05 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,8 @@ void    nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr)
 	v_make(nrml, &sphr->p, &ray->hit_p);
 	v_fill(nrml);
 	if (oc.lngth < sphr->d / 2)
-	{
 		v_opposite(nrml);
-		v_fill(nrml);
-	}
 }
-
 
 void	nrml_pln(t_pln *pln, t_ray *ray)
 {
@@ -46,10 +42,7 @@ void	nrml_pln(t_pln *pln, t_ray *ray)
 		v_fill(&op);
 		d_prdct = v_d_prdct(&pln->v.nxyz, &op.nxyz);
 		if (d_prdct > 0)
-		{
 			v_opposite(&pln->v);
-			v_fill(&pln->v);
-		}
 	}
 }
 
@@ -63,19 +56,13 @@ void	nrml_trngl(t_trngl *trngl, t_ray *ray)
 		v_fill(&trngl->n);
 		d_prdct = v_d_prdct(&trngl->n.nxyz, &ray->vctr[0].nxyz);
 		if (d_prdct > 0)
-		{
 			v_opposite(&trngl->n);
-			v_fill(&trngl->n);
-		}
 	}
 	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
 	{
 		d_prdct = v_d_prdct(&trngl->n.nxyz, &ray->vctr[1].nxyz);
 		if (d_prdct > 0)
-		{
 			v_opposite(&trngl->n);
-			v_fill(&trngl->n);
-		}
 	}
 }
 
@@ -87,18 +74,37 @@ void	nrml_sqr(t_sqr *sqr, t_ray *ray)
 	{
 		d_prdct = v_d_prdct(&sqr->v.nxyz, &ray->vctr[0].nxyz);
 		if (d_prdct > 0)
-		{
 			v_opposite(&sqr->v);
-			v_fill(&sqr->v);
-		}
 	}
 	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
 	{
 		d_prdct = v_d_prdct(&sqr->v.nxyz, &ray->vctr[1].nxyz);
 		if (d_prdct > 0)
-		{
 			v_opposite(&sqr->v);
-			v_fill(&sqr->v);
-		}
+	}
+}
+
+void	nrml_cyl(t_cyl *cyl, t_ray *ray)
+{
+	float	d_prdct1;
+	float	d_prdct2;
+	
+	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
+	{
+		d_prdct1 = v_d_prdct(&cyl->n1.nxyz, &ray->vctr[0].nxyz);
+		if (d_prdct1 > 0)
+			v_opposite(&cyl->n1);
+		d_prdct2 = v_d_prdct(&cyl->n2.nxyz, &ray->vctr[0].nxyz);
+		if (d_prdct2 > 0)
+			v_opposite(&cyl->n2);
+	}
+	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
+	{
+		d_prdct1 = v_d_prdct(&cyl->n1.nxyz, &ray->vctr[1].nxyz);
+		if (d_prdct1 > 0)
+			v_opposite(&cyl->n1);
+		d_prdct2 = v_d_prdct(&cyl->n2.nxyz, &ray->vctr[1].nxyz);
+		if (d_prdct2 > 0)
+			v_opposite(&cyl->n2);
 	}
 }

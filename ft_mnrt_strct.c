@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/06 20:11:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 05:28:32 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	make_t_rsltn(t_scn *scn)
 void	make_t_ambnt(t_scn *scn)
 {
 	scn->n_ambnt.lvl = 0;
-	scn->n_ambnt.trgb.t = 0;
-	scn->n_ambnt.trgb.r = 0;
-	scn->n_ambnt.trgb.g = 0;
-	scn->n_ambnt.trgb.b = 0;
+	color_make(&scn->n_ambnt.trgb, 0, 0, 0);
 }
 
 void	make_t_cam(t_scn *scn)
@@ -33,12 +30,7 @@ void	make_t_cam(t_scn *scn)
 	
 	if (!(new_cam = (t_cam*)malloc(1 * sizeof(t_cam))))
 		new_cam = NULL;
-	new_cam->p.x = 0;
-	new_cam->p.y = 0;
-	new_cam->p.z = 0;
-	new_cam->v.xyz.x = 0;
-	new_cam->v.xyz.y = 0;
-	new_cam->v.xyz.z = 0;
+	p_make(&new_cam->p, 0, 0, 0);
 	v_null(&new_cam->v);
 	new_cam->fov = 0;
 	new_cam->nxt = NULL;
@@ -47,14 +39,9 @@ void	make_t_cam(t_scn *scn)
 
 void	t_lght_null(t_lght *lght)
 {
-	lght->p.x = 0;
-	lght->p.y = 0;
-	lght->p.z = 0;
+	p_make(&lght->p, 0, 0, 0);
 	lght->lvl = 0;
-	lght->trgb.t = 0;
-	lght->trgb.r = 0;
-	lght->trgb.g = 0;
-	lght->trgb.b = 0;
+	color_make(&lght->trgb, 0, 0, 0);
 	lght->nxt = NULL;
 }
 
@@ -74,17 +61,9 @@ void	make_t_pln(t_scn *scn)
 
 	if (!(new_pln = (t_pln*)malloc(1 * sizeof(t_pln))))
 		new_pln = NULL;
-	new_pln->p.x = 0;
-	new_pln->p.y = 0;
-	new_pln->p.z = 0;
-	new_pln->v.xyz.x = 0;
-	new_pln->v.xyz.y = 0;
-	new_pln->v.xyz.z = 0;
+	p_make(&new_pln->p, 0, 0, 0);
 	v_null(&new_pln->v);
-	new_pln->trgb.t = 0;
-	new_pln->trgb.r = 0;
-	new_pln->trgb.g = 0;
-	new_pln->trgb.b = 0;
+	color_make(&new_pln->trgb, 0, 0, 0);
 	new_pln->nxt = NULL;
 	ft_lstadd_back(&scn->n_pln, ft_lstnew(new_pln));
 }
@@ -95,14 +74,9 @@ void	make_t_sphr(t_scn *scn)
 	
 	if (!(new_sphr = (t_sphr*)malloc(1 * sizeof(t_sphr))))
 		new_sphr = NULL;
-	new_sphr->p.x = 0;
-	new_sphr->p.y = 0;
-	new_sphr->p.z = 0;
+	p_make(&new_sphr->p, 0, 0, 0);
 	new_sphr->d = 0;
-	new_sphr->trgb.t = 0;
-	new_sphr->trgb.r = 0;
-	new_sphr->trgb.g = 0;
-	new_sphr->trgb.b = 0;
+	color_make(&new_sphr->trgb, 0, 0, 0);
 	new_sphr->nxt = NULL;
 	ft_lstadd_back(&scn->n_sphr, ft_lstnew(new_sphr));
 }
@@ -113,19 +87,15 @@ void	make_t_cyl(t_scn *scn)
 
 	if (!(new_cyl = (t_cyl*)malloc(1 * sizeof(t_cyl))))
 		new_cyl = NULL;
-	new_cyl->p.x = 0;
-	new_cyl->p.y = 0;
-	new_cyl->p.z = 0;
-	new_cyl->v.xyz.x = 0;
-	new_cyl->v.xyz.y = 0;
-	new_cyl->v.xyz.z = 0;
+	p_make(&new_cyl->p, 0, 0, 0);
+	p_make(&new_cyl->p2, 0, 0, 0);
 	v_null(&new_cyl->v);
+	v_null(&new_cyl->v2);
+	v_null(&new_cyl->n1);
+	v_null(&new_cyl->n2);
 	new_cyl->d = 0;
 	new_cyl->h = 0;
-	new_cyl->trgb.t = 0;
-	new_cyl->trgb.r = 0;
-	new_cyl->trgb.g = 0;
-	new_cyl->trgb.b = 0;
+	color_make(&new_cyl->trgb, 0, 0, 0);
 	new_cyl->nxt = NULL;
 	ft_lstadd_back(&scn->n_cyl, ft_lstnew(new_cyl));
 }
@@ -136,18 +106,10 @@ void	make_t_sqr(t_scn *scn)
 
 	if (!(new_sqr = (t_sqr*)malloc(1 * sizeof(t_sqr))))
 		new_sqr = NULL;
-	new_sqr->p.x = 0;
-	new_sqr->p.y = 0;
-	new_sqr->p.z = 0;
-	new_sqr->v.xyz.x = 0;
-	new_sqr->v.xyz.y = 0;
-	new_sqr->v.xyz.z = 0;
+	p_make(&new_sqr->p, 0, 0, 0);
 	v_null(&new_sqr->v);
 	new_sqr->side = 0;
-	new_sqr->trgb.t = 0;
-	new_sqr->trgb.r = 0;
-	new_sqr->trgb.g = 0;
-	new_sqr->trgb.b = 0;
+	color_make(&new_sqr->trgb, 0, 0, 0);
 	new_sqr->nxt = NULL;
 	ft_lstadd_back(&scn->n_sqr, ft_lstnew(new_sqr));
 }
@@ -158,23 +120,11 @@ void	make_t_trngl(t_scn *scn)
 
 	if (!(new_trngl = (t_trngl*)malloc(1 * sizeof(t_trngl))))
 		new_trngl = NULL;
-	new_trngl->p1.x = 0;
-	new_trngl->p1.y = 0;
-	new_trngl->p1.z = 0;
-	new_trngl->p2.x = 0;
-	new_trngl->p2.y = 0;
-	new_trngl->p2.z = 0;
-	new_trngl->p3.x = 0;
-	new_trngl->p3.y = 0;
-	new_trngl->p3.z = 0;
-	new_trngl->n.xyz.x = 0;
-	new_trngl->n.xyz.y = 0;
-	new_trngl->n.xyz.z = 0;
+	p_make(&new_trngl->p1, 0, 0, 0);
+	p_make(&new_trngl->p2, 0, 0, 0);
+	p_make(&new_trngl->p3, 0, 0, 0);
 	v_null(&new_trngl->n);
-	new_trngl->trgb.t = 0;
-	new_trngl->trgb.r = 0;
-	new_trngl->trgb.g = 0;
-	new_trngl->trgb.b = 0;
+	color_make(&new_trngl->trgb, 0, 0, 0);
 	new_trngl->nxt = NULL;
 	ft_lstadd_back(&scn->n_trngl, ft_lstnew(new_trngl));
 }

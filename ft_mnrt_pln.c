@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/21 05:08:50 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 02:55:26 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 {
 	float	t;
-	t_vctr	*orth;
 
 	nrml_pln(pln, ray);
 	t = pln_equation(&pln->p, &ray->tail_p, &pln->v, &ray->vctr[ray->sgm]);
