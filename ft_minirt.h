@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/28 05:03:31 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 18:07:03 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -583,9 +583,9 @@ void 				check_trngls(t_scn *lscn, t_ray *ray);
 //ft_mnrt_cyl.c
 void				cylon_null(t_cylon *cln);
 void				cylon_cnvrse(t_cylon *cln, t_look_at *lkt);
-void				cylon_make(t_cylon *cln, t_scn *lscn, t_ray *ray, t_cyl *cyl);
-void				cylon_make2(t_cylon *cln, t_scn *lscn, t_ray *ray, t_cyl *cyl);
-void				cylon_make3(t_cylon *cln, t_scn *lscn, t_ray *ray, t_cyl *cyl);
+void				cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl);
+void				cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at	*lkt);
+void				cylon_make3(t_cylon *cln, t_cyl *cyl);
 void				cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray);
 void 				check_cyls(t_scn *lscn, t_ray *ray);
 

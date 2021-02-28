@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/28 06:56:08 by rburton          ###   ########.fr       */
+/*   Updated: 2021/02/28 20:22:51 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	cylon_null(t_cylon *cln)
 {
-	cln->_CH = 0;
-	cln->t1 = 0;
-	cln->t2 = 0;
+	cln->_CH = INFINITY;
+	cln->t1 = INFINITY;
+	cln->t2 = INFINITY;
 	cln->_OH = 0;
 	cln->_HXP = 0;
 	cln->alpha = 0;
@@ -54,8 +54,8 @@ void	cylon_cnvrse(t_cylon *cln, t_look_at *lkt)
 	cln->_C.y = ptmp.y;
 	v_null(&vtmp);
 	mtrx4_x_vctr(&vtmp, &lkt->m, &cln->vD.xyz);
-	cln->_vD.xy.x = vtmp.xyz.x;
-	cln->_vD.xy.y = vtmp.xyz.y;
+	cln->_vD.xy.x = vtmp.nxyz.x;
+	cln->_vD.xy.y = vtmp.nxyz.y;
 	v2d_lngth(&cln->_vD);
 }
 
@@ -68,7 +68,7 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	v_copy(&cln->vD, &ray->vctr[ray->sgm]);
 	cylon_cnvrse(cln, &lkt);
 	v2d_make(&cln->_vOC, &cln->_RO, &cln->_C);
-	cln->_CH = v2d_pd_prdct(&cln->_vD, &cln->_vOC) / cln->_vD.lngth;
+	cln->_CH = fabsf(v2d_pd_prdct(&cln->_vD, &cln->_vOC) / cln->_vD.lngth);
 	if (cln->_CH > 0 && cln->_CH <= cyl->d/2)
 	{
 		cln->xp_on = '+';
@@ -86,7 +86,30 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	cylon_make2(cln, ray, cyl, &lkt);
 }
 
-void	cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at	*lkt)
+void	is_on_cyl(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
+{
+	t_point	tmp1;
+	t_point	tmp2;
+
+	mtrx4_x_point(&tmp1, &lkt->m, &cln->XP1);
+	mtrx4_x_point(&tmp2, &lkt->m, &cln->XP2);
+	if ((tmp1.z < 0 || tmp1.z > cyl->h) && (tmp2.z < 0 || tmp2.z > cyl->h))
+		cylon_null(cln);
+	else if ((tmp1.z < 0 || tmp1.z > cyl->h) && (tmp2.z >= 0 && tmp2.z <= cyl->h))
+	{
+		cln->t1 = INFINITY;
+		p_make(&cln->XP1, 0, 0, 0);
+		v_null(&cln->vOXP1);
+	}
+	else if ((tmp1.z >= 0 && tmp1.z <= cyl->h) && (tmp2.z < 0 || tmp2.z > cyl->h))
+	{
+		cln->t2 = INFINITY;
+		p_make(&cln->XP2, 0, 0, 0);
+		v_null(&cln->vOXP2);
+	}
+}
+
+void	cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at *lkt)
 {
 	if (cln->xp_on == '+')
 	{
@@ -99,7 +122,8 @@ void	cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at	*lkt)
 			v_fill(&cln->vOXP2);
 			p_calc(&cln->XP2, &cln->vOXP2, &cln->RO);
 		}
-		//
+		//XP1 XP2 пересчитать через lkt проверить что координата z > 0 && z <= 0 + h
+		is_on_cyl(cln, cyl, lkt);
 		cylon_make3(cln, cyl);
 		nrml_cyl(cyl, ray);
 	}
@@ -107,18 +131,21 @@ void	cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at	*lkt)
 
 void	cylon_make3(t_cylon *cln, t_cyl *cyl)
 {	
-	v_make(&cln->vCXP1, &cln->C, &cln->XP1);
-	v_n_prdct(&cln->vCM1.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP1.lngth, 2) - powf(cyl->d / 2, 2)));
-	v_fill(&cln->vCM1);
-	v_sbtrct(&cyl->n1.xyz, &cln->vCXP1.xyz, &cln->vCM1.xyz);
-	v_fill(&cyl->n1);
-	if (cln->t2 != '\0')
+	if (cln->t1 != INFINITY)
 	{
-		v_make(&cln->vCXP2, &cln->C, &cln->XP2);
-		v_n_prdct(&cln->vCM2.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP2.lngth, 2) - powf(cyl->d / 2, 2)));
-		v_fill(&cln->vCM2);
-		v_sbtrct(&cyl->n1.xyz, &cln->vCXP2.xyz, &cln->vCM2.xyz);
+		v_make(&cln->vCXP1, &cln->C, &cln->XP1);
+		v_n_prdct(&cln->vCM1.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP1.lngth, 2) - powf(cyl->d / 2, 2)));
+		v_fill(&cln->vCM1);
+		v_sbtrct(&cyl->n1.xyz, &cln->vCXP1.xyz, &cln->vCM1.xyz);
 		v_fill(&cyl->n1);
+		if (cln->t2 != INFINITY)
+		{
+			v_make(&cln->vCXP2, &cln->C, &cln->XP2);
+			v_n_prdct(&cln->vCM2.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP2.lngth, 2) - powf(cyl->d / 2, 2)));
+			v_fill(&cln->vCM2);
+			v_sbtrct(&cyl->n1.xyz, &cln->vCXP2.xyz, &cln->vCM2.xyz);
+			v_fill(&cyl->n1);
+		}
 	}
 }
 
