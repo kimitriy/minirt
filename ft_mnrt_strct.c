@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/28 05:28:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/02 01:46:19 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,9 @@ void	make_t_cyl(t_scn *scn)
 	if (!(new_cyl = (t_cyl*)malloc(1 * sizeof(t_cyl))))
 		new_cyl = NULL;
 	p_make(&new_cyl->p, 0, 0, 0);
-	p_make(&new_cyl->p2, 0, 0, 0);
 	v_null(&new_cyl->v);
-	v_null(&new_cyl->v2);
-	v_null(&new_cyl->n1);
-	v_null(&new_cyl->n2);
+	v_null(&new_cyl->n);
+	// v_null(&new_cyl->n2);
 	new_cyl->d = 0;
 	new_cyl->h = 0;
 	color_make(&new_cyl->trgb, 0, 0, 0);

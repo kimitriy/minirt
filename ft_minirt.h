@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/02/28 18:07:03 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/02 01:46:00 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ typedef struct 		s_cylon
 {
 	t_2d_point		_RO; //projection of the ray origin point
 	t_2d_point		_C; //projection of the cyl's center point
-	t_2d_point		_D; //projection of the .D
+	// t_2d_point		_D; //projection of the .D
 	t_point			RO;
 	t_point			C;
 	t_point			XP1;
@@ -283,11 +283,9 @@ typedef struct		s_sphr
 typedef struct		s_cyl
 {
 	t_point			p;
-	t_point			p2;
 	t_vctr			v;
-	t_vctr			v2;
-	t_vctr			n1;
-	t_vctr			n2;
+	t_vctr			n;
+	// t_vctr			n2;
 	float			d;
 	float			h;
 	t_color			trgb;
@@ -479,6 +477,7 @@ void				v_xy(t_vxy *out, t_2d_point *tail, t_2d_point *head);
 void				v2d_null(t_vctr2d *vctr);
 void				v2d_lngth(t_vctr2d *vctr);
 void				v2d_make(t_vctr2d *out, t_2d_point *tail, t_2d_point *head);
+float				v2d_d_prdct(t_vxy *xy1, t_vxy *xy2);
 float				v2d_pd_prdct(t_vctr2d *_vD, t_vctr2d *_vOC);
 
 //ft_mnrt_vctr3d.c

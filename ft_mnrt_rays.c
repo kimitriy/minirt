@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/28 22:51:07 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/02 00:29:05 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,38 +78,37 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	unsigned int	y;
 	t_2d_point		xy;
 	
-	// x = 0;
-	// y = 0;
-	// while (y < lscn->n_rsltn.y)
-	// {
-	// 	while (x < lscn->n_rsltn.x)
-	// 	{
-	// 		p2d_make(&xy, x, y);
-	// 		cnvrse2crtsn(lscn, &xy);
-    // 		cnvrse2xyz(&ray->head_p, lscn, &xy);
-	// 		trace_ray(lscn, ray);
-	// 		rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
-	// 		ray_null(ray);
-	// 		x++;
-	// 	}
-	// 	x = 0;
-	// 	y++;
-	// }
+	x = 0;
+	y = 0;
+	while (y < lscn->n_rsltn.y)
+	{
+		while (x < lscn->n_rsltn.x)
+		{
+			p2d_make(&xy, x, y);
+			cnvrse2crtsn(lscn, &xy);
+    		cnvrse2xyz(&ray->head_p, lscn, &xy);
+			trace_ray(lscn, ray);
+			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+			ray_null(ray);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
 	
-	// x100y500 левый край
-	// x900y500 правый край
-	// x325y500 обратная сторона треугольника
-	// x = 625;
-	// y = 375;
+	// x = 615;
+	// y = 615;
+	// x = 385;
+	// y = 385;
 	
-	x = 250;
-	y = 250;
-	p2d_make(&xy, x, y);
-	cnvrse2crtsn(lscn, &xy);
-	cnvrse2xyz(&ray->head_p, lscn, &xy);
-	trace_ray(lscn, ray);
-	rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
-	ray_null(ray);
+	// x = 385;
+	// y = 385;
+	// p2d_make(&xy, x, y);
+	// cnvrse2crtsn(lscn, &xy);
+	// cnvrse2xyz(&ray->head_p, lscn, &xy);
+	// trace_ray(lscn, ray);
+	// rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	// ray_null(ray);
 }
 
 void	rays_node(t_scn *lscn, t_scn *nscn)

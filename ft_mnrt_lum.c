@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/28 22:05:36 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/02 01:46:42 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void	lum_cyl(t_scn *lscn, t_lght *lght, t_ray *ray)
 	ray->sgm = 0;
 	nrml_cyl(cyl, ray);
 
-	v_copy(&lum.nrml, &cyl->n1);
+	v_copy(&lum.nrml, &cyl->n);
 	v_fill(&lum.nrml);
 	make_lum(&lum, lscn, lght, ray);
 	l_all(lscn, &lum);

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 21:35:34 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/26 23:55:06 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/02 00:14:54 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,15 @@ void	v2d_make(t_vctr2d *out, t_2d_point *tail, t_2d_point *head)
 	v_xy(&out->xy, tail, head);
 	v2d_lngth(out);
 }
+
+float	v2d_d_prdct(t_vxy *xy1, t_vxy *xy2)
+{
+	float	dt_prdct;
+
+	dt_prdct = xy1->x * xy2->x + xy1->y * xy2->y;
+	return (dt_prdct);
+}
+
 
 float	v2d_pd_prdct(t_vctr2d *_vD, t_vctr2d *_vOC)
 {
