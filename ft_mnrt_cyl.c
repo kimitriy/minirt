@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/02 01:50:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/03 00:17:07 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 
 	look_at_mtrx(&lkt, &cyl->v, &cyl->p);
 	p_copy(&cln->C, &cyl->p);
+	p_copy(&cln->RO, &ray->tail_p);
 	v_copy(&cln->vD, &ray->vctr[ray->sgm]);
 	cylon_cnvrse(cln, &lkt);
 	v2d_make(&cln->_vOC, &cln->_RO, &cln->_C);
@@ -103,6 +104,8 @@ void	is_on_cyl(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 	t_point	tmp1;
 	t_point	tmp2;
 
+	// p_make(&tmp1, 0, 0, 0);
+	// p_make(&tmp2, 0, 0, 0);
 	mtrx4_x_point(&tmp1, &lkt->m, &cln->XP1);
 	mtrx4_x_point(&tmp2, &lkt->m, &cln->XP2);
 	if ((tmp1.z < 0 || tmp1.z > cyl->h) && (tmp2.z < 0 || tmp2.z > cyl->h))
@@ -128,7 +131,7 @@ void	cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at *lkt)
 		v_n_prdct(&cln->vOXP1.xyz, &cln->vD.nxyz, cln->t1);
 		v_fill(&cln->vOXP1);
 		p_calc(&cln->XP1, &cln->vOXP1, &cln->RO);
-		if (cln->t2 != 0)
+		if (cln->t2 != INFINITY)
 		{
 			v_n_prdct(&cln->vOXP2.xyz, &cln->vD.nxyz, cln->t2);
 			v_fill(&cln->vOXP2);
@@ -186,7 +189,7 @@ void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)
 
 	cylon_null(&cln);
 	cylon_make(&cln, ray, cyl);
-	if (cln.xp_on == '+' && ray->sgm == 0)
+	if (cln.xp_on == '+' && min_2floats(cln.t1, cln.t2) < ray->dist && ray->sgm == 0)
 	{
 		ray->obj = 'c';
 		ray->nrst = lscn->n_cyl;
@@ -205,7 +208,7 @@ void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)
 			p_copy(&ray->hit_p, &cln.XP2);
 		}
 	}
-	if (cln.xp_on == '+' && ray->sgm == 1 && ray->shdw != 'y')
+	if (cln.xp_on == '+' && ray->sgm == 1 && ray->shdw != 'y' && min_2floats(cln.t1, cln.t2) < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 
