@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/28 02:55:26 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/06 00:54:02 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 	float t;
 
 	dist = (p->x - r_orgn->x) * nrml->nxyz.x + (p->y - r_orgn->y) * nrml->nxyz.y + (p->z - r_orgn->z) * nrml->nxyz.z; //1
-	dist = dist < 0 ? dist * (-1) : dist; //2
+	// dist = dist < 0 ? dist * (-1) : dist; //2
 	v_null(&o_p0);
 	v_n_prdct(&o_p0.xyz, &nrml->nxyz, dist); //3
-	v_n_prdct(&o_p0.xyz, &o_p0.xyz, -1); //3 change the sign (direction)
+	// v_n_prdct(&o_p0.xyz, &o_p0.xyz, -1); //3 change the sign (direction)
 	v_fill(&o_p0);
 	p_calc(&p0, &o_p0, r_orgn); //4
 	tmp1 = v_d_prdct(&o_p0.xyz, &nrml->nxyz); //6, 7
 	tmp2 = v_d_prdct(&ray->nxyz, &nrml->nxyz); //8
-	t = 1.00001 * tmp1 / tmp2; //9
+	t = tmp1 / tmp2; //9
 	return (t);
 }
 
@@ -50,7 +50,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 		v_fill(&ray->vctr[0]);
 		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p);
 	}
-	if (ray->sgm == 1 && t > 0.0003 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (ray->sgm == 1 && t > 0.000003 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 

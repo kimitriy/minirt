@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 21:32:54 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/26 21:33:24 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/03 07:47:12 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	p_copy(t_point *out, t_point *in)
 
 int		p_is_equal(t_point *p1, t_point *p2)
 {
-	if (p1->x == p2->x && p1->y == p2->y && p1->z == p2->z)
+	float		d;
+
+	d = 0.000009;
+	if (fabsf(p1->x - p2->x) < d && fabsf(p1->y - p2->y) < d && fabsf(p1->z - p2->z) < d)
 		return (1);
 	else
 		return (0);

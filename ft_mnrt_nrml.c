@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 18:28:48 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/02 01:47:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/04 16:09:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	nrml_trngl(t_trngl *trngl, t_ray *ray)
 {
 	float	d_prdct;
 
-	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
+	if (/*p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || */ray->sgm == 0)
 	{
 		v_crss_prdct(&trngl->n.xyz, &trngl->trgn.c_a.nxyz, &trngl->trgn.a_b.nxyz);
 		v_fill(&trngl->n);
@@ -58,7 +58,7 @@ void	nrml_trngl(t_trngl *trngl, t_ray *ray)
 		if (d_prdct > 0)
 			v_opposite(&trngl->n);
 	}
-	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
+	else if (/*p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || */ray->sgm == 1)
 	{
 		d_prdct = v_d_prdct(&trngl->n.nxyz, &ray->vctr[1].nxyz);
 		if (d_prdct > 0)
@@ -69,57 +69,41 @@ void	nrml_trngl(t_trngl *trngl, t_ray *ray)
 void	nrml_sqr(t_sqr *sqr, t_ray *ray)
 {
 	float	d_prdct;
+	// t_vctr	dir;
+	// t_vctr	lght;
 
-	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
+	if (ray->sgm == 0)
 	{
+		// v_null(&dir);
+		// v_make(&dir, &ray->tail_p, &sqr->p);
 		d_prdct = v_d_prdct(&sqr->v.nxyz, &ray->vctr[0].nxyz);
+		// d_prdct = v_d_prdct(&sqr->v.nxyz, &dir.nxyz);
 		if (d_prdct > 0)
 			v_opposite(&sqr->v);
 	}
-	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
+	else if (ray->sgm == 1)
 	{
+		// v_null(&lght);
+		// v_make(&lght, &sqr->p, &ray->head_p);
+		// v_n_prdct(&lght.xyz, &lght.xyz, -1); // off - for shadows
+		// v_fill(&lght);
 		d_prdct = v_d_prdct(&sqr->v.nxyz, &ray->vctr[1].nxyz);
 		if (d_prdct > 0)
 			v_opposite(&sqr->v);
 	}
 }
 
-// void	nrml_cyl(t_cyl *cyl, t_ray *ray)
-// {
-// 	float	d_prdct1;
-// 	float	d_prdct2;
-	
-// 	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
-// 	{
-// 		d_prdct1 = v_d_prdct(&cyl->n1.nxyz, &ray->vctr[0].nxyz);
-// 		if (d_prdct1 > 0)
-// 			v_opposite(&cyl->n1);
-// 		d_prdct2 = v_d_prdct(&cyl->n2.nxyz, &ray->vctr[0].nxyz);
-// 		if (d_prdct2 > 0)
-// 			v_opposite(&cyl->n2);
-// 	}
-// 	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
-// 	{
-// 		d_prdct1 = v_d_prdct(&cyl->n1.nxyz, &ray->vctr[1].nxyz);
-// 		if (d_prdct1 > 0)
-// 			v_opposite(&cyl->n1);
-// 		d_prdct2 = v_d_prdct(&cyl->n2.nxyz, &ray->vctr[1].nxyz);
-// 		if (d_prdct2 > 0)
-// 			v_opposite(&cyl->n2);
-// 	}
-// }
-
 void	nrml_cyl(t_cyl *cyl, t_ray *ray)
 {
 	float	d_prdct;
 	
-	if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 0)
+	if (/*p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || */ray->sgm == 0)
 	{
 		d_prdct = v_d_prdct(&cyl->n.nxyz, &ray->vctr[0].nxyz);
 		if (d_prdct > 0)
 			v_opposite(&cyl->n);
 	}
-	else if (p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || ray->sgm == 1)
+	else if (/*p_is_equal(&ray->tail_p, &ray->hit_p) == 0 || */ray->sgm == 1)
 	{
 		d_prdct = v_d_prdct(&cyl->n.nxyz, &ray->vctr[1].nxyz);
 		if (d_prdct > 0)

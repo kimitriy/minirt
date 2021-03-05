@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/03 00:18:33 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/06 01:14:06 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ unsigned int	**make_rays_array(t_scn *lscn)
 	}
 	y = 0;
 	x = 0;
-	color_make(&grey, 100, 100, 100);
+	color_make(&grey, 255, 255, 255);
 	while (y < lscn->n_rsltn.y)
 	{
 		while (x < lscn->n_rsltn.x)
@@ -96,19 +96,40 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 		y++;
 	}
 	
-	// x = 615;
-	// y = 615;
-	// x = 385;
-	// y = 385;
+	// x = 500;
+	// y = 460;	sqr upper fantom
+	// y = 625; sqr bottom
+	// y = 800; shadow
 	
 	// x = 500;
-	// y = 750;
+	// y = 600;
 	// p2d_make(&xy, x, y);
 	// cnvrse2crtsn(lscn, &xy);
 	// cnvrse2xyz(&ray->head_p, lscn, &xy);
 	// trace_ray(lscn, ray);
 	// rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
 	// ray_null(ray);
+
+	// x = 395;
+	// y = 606;
+	
+	// x = 487;
+	// y = 628;
+	// while (y <= 630)
+	// {
+	// 	while (x <= 515)
+	// 	{
+	// 		p2d_make(&xy, x, y);
+	// 		cnvrse2crtsn(lscn, &xy);
+    // 		cnvrse2xyz(&ray->head_p, lscn, &xy);
+	// 		trace_ray(lscn, ray);
+	// 		rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	// 		ray_null(ray);
+	// 		x++;
+	// 	}
+	// 	x = 487;
+	// 	y++;
+	// }
 }
 
 void	rays_node(t_scn *lscn, t_scn *nscn)

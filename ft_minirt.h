@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/02 01:46:00 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/04 21:24:48 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,11 @@ typedef struct 		s_qdron
 	t_vctr			vTMP;
 	t_vctr			vR;
 	t_vctr			vUP;
-	t_vctr			vPXP; //vctr on the pln from .p (which is the point which is given to build the pln) to .i (which is an intersection point on the pln)
+	t_vctr			vCXP; //vctr on the pln from .C (which is the point which is given to build the pln) to .i (which is an intersection point on the pln)
 	float			cos_a;
 	float			sin_a;
 	float			alpha; //rad, angle between vR и vpi
+	float			t;
 	float			x;
 	float			y;
 	char			xp_in;
@@ -177,7 +178,7 @@ typedef struct 		s_cylon
 	float			_OH; //distance from _RO to the point where projection of vOXP intersects with CH
 	float			_HXP; //distance from the point where projection of vOXP intersects with CH to XP
 	float			alpha; //angle between vN of the cyl and vD of the ray
-	char			xp_on;
+	// char			xp_on;
 }					t_cylon;
 
 //lum

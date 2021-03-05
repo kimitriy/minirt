@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 12:16:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/02 01:46:42 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/04 08:20:30 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	make_lum(t_lum *lum, t_scn *lscn, t_lght *lght, t_ray *ray)
 	lum->alvl = lscn->n_ambnt.lvl;
 	lum->lvl = lght->lvl;
 	color_copy(&lum->l_trgb, &lght->trgb);
-	v_copy(&lum->op, &ray->vctr[0]); //op vctr which is already calculated and stored in the ray struct
+	v_copy(&lum->op, &ray->vctr[0]); //op vctr which is already calculated and stored in the t_ray
 	v_copy(&lum->ldir, &ray->vctr[1]);
     lum->dst = lum->ldir.lngth;
     v_null(&opposite_op);

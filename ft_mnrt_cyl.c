@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/03 00:17:07 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/04 02:48:30 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	cylon_null(t_cylon *cln)
 	v_null(&cln->vCXP2);
 	v_null(&cln->vCM1);
 	v_null(&cln->vCM2);
-	cln->xp_on = '\0';
+	// cln->xp_on = '\0';
 }
 
 void	cylon_cnvrse(t_cylon *cln, t_look_at *lkt)
@@ -74,16 +74,16 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	v2d_make(&cln->_vOC, &cln->_RO, &cln->_C);
 	d_prdct = v2d_d_prdct(&cln->_vD.xy, &cln->_vOC.xy);
 	mul_length = cln->_vD.lngth * cln->_vOC.lngth;
-	cos_angle = d_prdct / mul_length;
+	cos_angle = min_2floats(d_prdct / mul_length, 1);
 	angle = acosf(cos_angle) * 180 / M_PI;
-	if (angle >= 89.99999)
+	if (angle > 90)
 		cylon_null(cln);
 	else
 	{
 		cln->_CH = fabsf(v2d_pd_prdct(&cln->_vD, &cln->_vOC) / cln->_vD.lngth);
 		if (cln->_CH >= 0 && cln->_CH <= cyl->d/2)
 		{
-			cln->xp_on = '+';
+			// cln->xp_on = '+';
 			cln->_OH = sqrtf(powf(cln->_vOC.lngth, 2) - powf(cln->_CH, 2));
 			cln->alpha = v_angle(&cyl->v, &cln->vD);
 			if (cln->_CH == cyl->d/2)
@@ -104,8 +104,6 @@ void	is_on_cyl(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 	t_point	tmp1;
 	t_point	tmp2;
 
-	// p_make(&tmp1, 0, 0, 0);
-	// p_make(&tmp2, 0, 0, 0);
 	mtrx4_x_point(&tmp1, &lkt->m, &cln->XP1);
 	mtrx4_x_point(&tmp2, &lkt->m, &cln->XP2);
 	if ((tmp1.z < 0 || tmp1.z > cyl->h) && (tmp2.z < 0 || tmp2.z > cyl->h))
@@ -126,60 +124,42 @@ void	is_on_cyl(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 
 void	cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at *lkt)
 {
-	if (cln->xp_on == '+')
+	if (cln->t1 > 0.000009 && cln->t1 != INFINITY)
 	{
 		v_n_prdct(&cln->vOXP1.xyz, &cln->vD.nxyz, cln->t1);
 		v_fill(&cln->vOXP1);
 		p_calc(&cln->XP1, &cln->vOXP1, &cln->RO);
-		if (cln->t2 != INFINITY)
-		{
-			v_n_prdct(&cln->vOXP2.xyz, &cln->vD.nxyz, cln->t2);
-			v_fill(&cln->vOXP2);
-			p_calc(&cln->XP2, &cln->vOXP2, &cln->RO);
-		}
-		//XP1 XP2 пересчитать через lkt проверить что координата z > 0 && z <= 0 + h
-		is_on_cyl(cln, cyl, lkt);
-		cylon_make3(cln, cyl);
-		nrml_cyl(cyl, ray); //необходимо передавать в эту функцию только ту нормаль которую видно
 	}
+	if (cln->t2 > 0.000009 && cln->t2 != INFINITY)
+	{
+		v_n_prdct(&cln->vOXP2.xyz, &cln->vD.nxyz, cln->t2);
+		v_fill(&cln->vOXP2);
+		p_calc(&cln->XP2, &cln->vOXP2, &cln->RO);
+	}
+	//XP1 XP2 пересчитать через lkt проверить что координата z > 0 && z <= 0 + h
+	is_on_cyl(cln, cyl, lkt);
+	cylon_make3(cln, cyl);
+	nrml_cyl(cyl, ray); //необходимо передавать в эту функцию только ту нормаль которую видно
 }
-
-// void	cylon_make3(t_cylon *cln, t_cyl *cyl)
-// {	
-// 	if (cln->t1 != INFINITY)
-// 	{
-// 		v_make(&cln->vCXP1, &cln->C, &cln->XP1);
-// 		v_n_prdct(&cln->vCM1.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP1.lngth, 2) - powf(cyl->d / 2, 2)));
-// 		v_fill(&cln->vCM1);
-// 		v_sbtrct(&cyl->n1.xyz, &cln->vCXP1.xyz, &cln->vCM1.xyz);
-// 		v_fill(&cyl->n1);
-// 	}
-// 	if (cln->t2 != INFINITY)
-// 	{
-// 		v_make(&cln->vCXP2, &cln->C, &cln->XP2);
-// 		v_n_prdct(&cln->vCM2.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP2.lngth, 2) - powf(cyl->d / 2, 2)));
-// 		v_fill(&cln->vCM2);
-// 		v_sbtrct(&cyl->n2.xyz, &cln->vCXP2.xyz, &cln->vCM2.xyz);
-// 		v_fill(&cyl->n2);
-// 	}
-// }
 
 void	cylon_make3(t_cylon *cln, t_cyl *cyl)
 {	
-	if (cln->t1 != INFINITY && cln->t1 <= cln->t2)
+	if (cln->t1 != INFINITY && fabsf(cln->t1) > 0.000009 && cln->t1 <= cln->t2)
 	{
 		v_make(&cln->vCXP1, &cln->C, &cln->XP1);
 		v_n_prdct(&cln->vCM1.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP1.lngth, 2) - powf(cyl->d / 2, 2)));
 		v_fill(&cln->vCM1);
 		v_sbtrct(&cyl->n.xyz, &cln->vCXP1.xyz, &cln->vCM1.xyz);
 	}
-	else if (cln->t2 != INFINITY && cln->t2 < cln->t1)
+	else if (cln->t2 != INFINITY && fabsf(cln->t2) > 0.000009 && cln->t2 < cln->t1)
 	{
 		v_make(&cln->vCXP2, &cln->C, &cln->XP2);
 		v_n_prdct(&cln->vCM2.xyz, &cyl->v.nxyz, sqrtf(powf(cln->vCXP2.lngth, 2) - powf(cyl->d / 2, 2)));
 		v_fill(&cln->vCM2);
 		v_sbtrct(&cyl->n.xyz, &cln->vCXP2.xyz, &cln->vCM2.xyz);
 	}
+	else
+		cylon_null(cln);
 	v_fill(&cyl->n);
 }
 
@@ -189,13 +169,15 @@ void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)
 
 	cylon_null(&cln);
 	cylon_make(&cln, ray, cyl);
-	if (cln.xp_on == '+' && min_2floats(cln.t1, cln.t2) < ray->dist && ray->sgm == 0)
+	if (/*cln.xp_on == '+' && */min_2floats(cln.t1, cln.t2) < ray->dist && ray->sgm == 0)
 	{
 		ray->obj = 'c';
 		ray->nrst = lscn->n_cyl;
-		if (cln.t2 == 0)
+		if (cln.t1 != INFINITY && cln.t2 == INFINITY)
 			ray->dist = cln.t1;
-		else
+		else if (cln.t1 == INFINITY && cln.t2 != INFINITY)
+			ray->dist = cln.t2;
+		else if (cln.t1 != INFINITY && cln.t2 != INFINITY)
 			ray->dist = cln.t1 < cln.t2 ? cln.t1 : cln.t2;
 		if (ray->dist == cln.t1)
 		{
@@ -208,7 +190,7 @@ void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)
 			p_copy(&ray->hit_p, &cln.XP2);
 		}
 	}
-	if (cln.xp_on == '+' && ray->sgm == 1 && ray->shdw != 'y' && min_2floats(cln.t1, cln.t2) < ray->vctr[1].lngth)
+	if (/*cln.xp_on == '+' && */ray->sgm == 1 && ray->shdw != 'y' && min_2floats(cln.t1, cln.t2) < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 
