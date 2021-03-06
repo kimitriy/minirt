@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/06 09:57:35 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/06 15:12:18 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,28 +80,35 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	mul_length = cln->_vD.lngth * cln->_vOC.lngth;
 	cos_angle = min_2floats(d_prdct / mul_length, 1);
 	angle = acosf(cos_angle) * 180 / M_PI;
-	if (cln->_vOC.lngth >= cyl->d / 2 && angle > 90)
+	if (cln->_vOC.lngth > cyl->d / 2 && angle >= 90)
 		cylon_null(cln);
 	else
 	{
-		cln->_CH = fabsf(v2d_pd_prdct(&cln->_vD, &cln->_vOC) / cln->_vD.lngth);
-		if (cln->_CH >= 0 && cln->_CH <= cyl->d/2)
+		if (cln->_vOC.lngth > cyl->d / 2 && angle < 90)
 		{
-			cln->_OH = sqrtf(powf(cln->_vOC.lngth, 2) - powf(cln->_CH, 2));
-			cln->alpha = v_angle(&cyl->v, &cln->vD);
-			if (cln->_CH == cyl->d/2)
-			{	
-				cln->t1 = 0.999995 * cln->_OH / sinf(cln->alpha);
-				cln->t1 = cln->t1 < 0 ? INFINITY : cln->t1;
-			}
-			else
+			cln->_CH = fabsf(v2d_pd_prdct(&cln->_vD, &cln->_vOC) / cln->_vD.lngth);
+			if (cln->_CH >= 0 && cln->_CH <= cyl->d/2)
 			{
-				cln->_HXP = sqrtf(powf(cyl->d / 2, 2) - powf(cln->_CH, 2));
-				cln->t1 = 0.999995 * (cln->_OH - cln->_HXP) / sinf(cln->alpha);
-				cln->t1 = cln->t1 < 0 ? INFINITY : cln->t1;
-				cln->t2 = 0.999995 * (cln->_OH + cln->_HXP) / sinf(cln->alpha);
-				cln->t2 = cln->t2 < 0 ? INFINITY : cln->t2;
+				cln->_OH = sqrtf(powf(cln->_vOC.lngth, 2) - powf(cln->_CH, 2));
+				cln->alpha = v_angle(&cyl->v, &cln->vD);
+				if (cln->_CH == cyl->d/2)
+				{	
+					cln->t1 = 0.999995 * cln->_OH / sinf(cln->alpha);
+					cln->t1 = cln->t1 < 0 ? INFINITY : cln->t1;
+				}
+				else
+				{
+					cln->_HXP = sqrtf(powf(cyl->d / 2, 2) - powf(cln->_CH, 2));
+					cln->t1 = 0.999995 * (cln->_OH - cln->_HXP) / sinf(cln->alpha);
+					cln->t1 = cln->t1 < 0 ? INFINITY : cln->t1;
+					cln->t2 = 0.999995 * (cln->_OH + cln->_HXP) / sinf(cln->alpha);
+					cln->t2 = cln->t2 < 0 ? INFINITY : cln->t2;
+				}
 			}
+		}
+		else if (cln->_vOC.lngth <= cyl->d / 2)
+		{
+			cln->_CH = fabsf(v2d_pd_prdct(&cln->_vD, &cln->_vOC) / cln->_vD.lngth);
 		}
 		cylon_make2(cln, ray, cyl, &lkt);
 	}
