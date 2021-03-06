@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/06 00:54:02 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/06 03:33:01 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 		v_fill(&ray->vctr[0]);
 		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p);
 	}
-	if (ray->sgm == 1 && t > 0.000003 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (ray->sgm == 1 && t > 0.0001 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 

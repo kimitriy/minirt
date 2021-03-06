@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:46:58 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/06 01:14:56 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/06 02:32:16 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray)
 	// 	qdrn.t = INFINITY;
 	// else
 	// 	nrml_sqr(sqr, ray);
-	if (qdrn.t > 0 && qdrn.t < INFINITY)
+	if (qdrn.t > 0.000001 && qdrn.t < INFINITY)
 	{
 		v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, qdrn.t); //calculates vctr from ray origin point to the intrsct_p
 		v_fill(&o_p);
