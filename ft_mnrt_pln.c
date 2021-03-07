@@ -6,11 +6,19 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/06 03:33:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/07 03:46:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
+
+void	pln_null(t_pln *pln)
+{
+	p_make(&pln->p, 0, 0, 0);
+	v_null(&pln->v);
+	color_null(&pln->trgb);
+	pln->nxt = NULL;
+}
 
 float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 {
@@ -22,10 +30,8 @@ float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 	float t;
 
 	dist = (p->x - r_orgn->x) * nrml->nxyz.x + (p->y - r_orgn->y) * nrml->nxyz.y + (p->z - r_orgn->z) * nrml->nxyz.z; //1
-	// dist = dist < 0 ? dist * (-1) : dist; //2
 	v_null(&o_p0);
 	v_n_prdct(&o_p0.xyz, &nrml->nxyz, dist); //3
-	// v_n_prdct(&o_p0.xyz, &o_p0.xyz, -1); //3 change the sign (direction)
 	v_fill(&o_p0);
 	p_calc(&p0, &o_p0, r_orgn); //4
 	tmp1 = v_d_prdct(&o_p0.xyz, &nrml->nxyz); //6, 7

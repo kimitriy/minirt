@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/06 07:04:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/07 04:02:51 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,28 +154,40 @@ typedef struct 		s_qdron
 	char			xp_in;
 }					t_qdron;
 
+typedef struct		s_pln
+{
+	t_point			p;
+	t_vctr			v;
+	t_color			trgb;
+	struct s_pln	*nxt;
+}					t_pln;
+
 typedef struct 		s_cylon
 {
-	t_2d_point		_RO; //projection of the ray origin point
-	t_2d_point		_C; //projection of the cyl's center point
-	t_point			RO;
-	t_point			C;
-	t_point			XP1;
-	t_point			XP2;
-	t_vctr2d		_vD; //projection of the vD vctr
-	t_vctr2d		_vOC; //vctr from _RO to _C
-	t_vctr			vD;
-	t_vctr			vOXP1;
-	t_vctr			vOXP2;
-	t_vctr			vCXP1;
-	t_vctr			vCXP2;
-	t_vctr			vCM1;
-	t_vctr			vCM2;
-	float			_CH; //length of a perpendicular from .c to the projection of vD
+	t_2d_point		_ro; //projection of the ray origin point
+	t_2d_point		_c; //projection of the cyl's center point
+	t_point			ro; //ray origin
+	t_point			c;
+	t_point			xp1;
+	t_point			xp2;
+	t_point			p;	//intersection point with the cyl's cap plane
+	t_vctr2d		_v_d; //projection of the vD vctr
+	t_vctr2d		_v_oc; //vctr from _RO to _C
+	t_vctr			v_d;
+	t_vctr			v_oxp1;
+	t_vctr			v_oxp2;
+	t_vctr			v_cxp1;
+	t_vctr			v_cxp2;
+	t_vctr			v_cm1;
+	t_vctr			v_cm2;
+	t_vctr			v_cp;
+	t_pln			pln; //a pln where the .C lies
+	float			_ch; //length of a perpendicular from .c to the projection of vD
 	float			t1; //length of the vOXP1 vctr
 	float			t2; //length of the vOXP2 vctr
-	float			_OH; //distance from _RO to the point where projection of vOXP intersects with CH
-	float			_HXP; //distance from the point where projection of vOXP intersects with CH to XP
+	float			_oh; //distance from _RO to the point where projection of vOXP intersects with CH
+	float			_hxp; //distance from the point where projection of vOXP intersects with CH to XP
+	float			angle; //angle between vD of the ray and _vOC
 	float			alpha; //angle between vN of the cyl and vD of the ray
 }					t_cylon;
 
@@ -263,13 +275,13 @@ typedef struct		s_lght
 	struct s_lght	*nxt;
 }					t_lght;
 
-typedef struct		s_pln
-{
-	t_point			p;
-	t_vctr			v;
-	t_color			trgb;
-	struct s_pln	*nxt;
-}					t_pln;
+// typedef struct		s_pln
+// {
+// 	t_point			p;
+// 	t_vctr			v;
+// 	t_color			trgb;
+// 	struct s_pln	*nxt;
+// }					t_pln;
 
 typedef struct		s_sphr
 {
@@ -561,6 +573,7 @@ void 				check_sphrs(t_scn *lscn, t_ray *ray);
 float				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
 void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
 void 				check_plns(t_scn *lscn, t_ray *ray);
+void				pln_null(t_pln *pln);
 
 //ft_mnrt_sqr.c
 void				qdron_null(t_qdron *qdrn);
@@ -582,6 +595,7 @@ void 				check_trngls(t_scn *lscn, t_ray *ray);
 void				cylon_null(t_cylon *cln);
 void				cylon_cnvrse(t_cylon *cln, t_look_at *lkt);
 void				cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl);
+void				cylon_make1(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at *lkt);
 void				cylon_make2(t_cylon *cln, t_ray *ray, t_cyl *cyl, t_look_at	*lkt);
 void				cylon_make3(t_cylon *cln, t_cyl *cyl);
 void				cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray);
