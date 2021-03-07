@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/28 01:30:44 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/07 22:41:58 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	v_fill(t_vctr *nvctr)
 
 void	v_make(t_vctr *out, t_point *tail, t_point *head)
 {
+	v_null(out);
 	v_xyz(&out->xyz, tail, head);
 	v_fill(out);
 }

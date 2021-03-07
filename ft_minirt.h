@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/07 04:02:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/07 22:13:55 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,9 @@ typedef struct 		s_cylon
 	t_2d_point		_ro; //projection of the ray origin point
 	t_2d_point		_c; //projection of the cyl's center point
 	t_point			ro; //ray origin
-	t_point			c;
+	t_point			c; //center of the cyl
+	t_point			c1; //a projection of .C on the cap 1
+	t_point			c2; //a projection of .C on the cap 2
 	t_point			xp1;
 	t_point			xp2;
 	t_point			p;	//intersection point with the cyl's cap plane
@@ -181,7 +183,7 @@ typedef struct 		s_cylon
 	t_vctr			v_cm1;
 	t_vctr			v_cm2;
 	t_vctr			v_cp;
-	t_pln			pln; //a pln where the .C lies
+	t_pln			pln; //a pln where the cap 1 lies
 	float			_ch; //length of a perpendicular from .c to the projection of vD
 	float			t1; //length of the vOXP1 vctr
 	float			t2; //length of the vOXP2 vctr

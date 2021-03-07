@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/07 04:15:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/07 22:47:06 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,35 @@ void	cylon_cnvrse(t_cylon *cln, t_look_at *lkt)
 	v2d_lngth(&cln->_v_d);
 }
 
+void	cap_pln(t_cylon *cln, t_cyl *cyl)
+{
+	t_vctr	v_cc1;
+	t_vctr	v_cc2;
+	t_vctr	v_oc1;
+	t_vctr	v_oc2;
+
+	v_null(&v_cc1);
+	v_null(&v_cc2);
+	v_n_prdct(&v_cc1.xyz, &cyl->v.nxyz, (-1)*cyl->h/2);
+	v_fill(&v_cc1);
+	v_n_prdct(&v_cc2.xyz, &cyl->v.nxyz, cyl->h/2);
+	v_fill(&v_cc2);
+	p_calc(&cln->c1, &v_cc1, &cln->c);
+	p_calc(&cln->c2, &v_cc2, &cln->c);
+	v_make(&v_oc1, &cln->ro, &cln->c1);
+	v_make(&v_oc2, &cln->ro, &cln->c2);
+	if (v_oc1.lngth <= v_oc2.lngth)
+	{
+		p_copy(&cln->pln.p, &cln->c1);
+		v_copy(&cln->pln.v, &v_cc1);
+	}
+	else
+	{
+		p_copy(&cln->pln.p, &cln->c2);
+		v_copy(&cln->pln.v, &v_cc2);
+	}
+}
+
 void	calc_roots1(t_cylon *cln, t_cyl *cyl)
 {
 	cln->_ch = fabsf(v2d_pd_prdct(&cln->_v_d, &cln->_v_oc) / cln->_v_d.lngth);
@@ -89,8 +118,10 @@ void	calc_roots2(t_cylon *cln, t_cyl *cyl, t_look_at	*lkt)
 {
 	float	vctr_projection;
 
-	p_copy(&cln->pln.p, &cyl->p);
-	v_copy(&cln->pln.v, &lkt->vF);
+	
+	// p_copy(&cln->pln.p, &cyl->p);
+	// v_copy(&cln->pln.v, &lkt->vF);
+	cap_pln(cln, cyl);
 	cln->t1 = pln_equation(&cln->pln.p, &cln->ro, &cln->pln.v, &cln->v_d);
 	v_n_prdct(&cln->v_d.xyz, &cln->v_d.nxyz, cln->t1);
 	v_fill(&cln->v_d);
