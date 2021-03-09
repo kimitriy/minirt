@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 16:05:17 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:40:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cylon_null(t_cylon *cln)
 	cln->oxp1 = 0;
 	cln->oxp2 = 0;
 	cln->angle = 0;
-	cln->alpha = 0;
+	cln->sin_alpha = 0;
 	p_make(&cln->_o, 0, 0, 0);
 	p_make(&cln->_c, 0, 0, 0);
 	p_make(&cln->o, 0, 0, 0);
@@ -123,14 +123,27 @@ void	pln_calc(t_cylon *cln)
 	v_fill(&cln->v_d);
 	p_calc(&cln->p, &cln->v_d.xyz, &cln->o); // p - is a pointt where the ray intersects the pln
 	p_copy(&cln->_o, &plnx._o);
-	v_make(&cln->v_o_c, &cln->pln.p, &cln->_o);
-	v_make(&cln->v_p_c, &cln->pln.p, &cln->p);
+	v_make(&cln->v_o_c, &cln->_o, &cln->pln.p);
+	v_make(&cln->v_p_c, &cln->p, &cln->pln.p);
+}
+
+void	cln_angles(t_cylon *cln)
+{
+	float tmp;
+
+	cln->angle = v_angle(&cln->v_d, &cln->v_o_c) * 180 / M_PI;
+	tmp = v_angle(&cln->v_d, &cln->pln.v);
+	cln->sin_alpha = sinf(tmp);
 }
 
 void	ch_calc(t_cylon *cln, t_look_at *lkt)
 {
+	float	tmp;
+
 	cylon_cnvrse(cln, lkt);
-	
+	tmp = v2d_pd_prdct(&cln->_v_od, &cln->_v_oc);
+	// tmp = v2d_pd_prdct(&cln->_v_oc, &cln->_v_od);
+	cln->_ch = fabsf(tmp / cln->_v_od.lngth);
 }
 
 void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
@@ -142,7 +155,7 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	look_at_mtrx(&lkt, &cyl->v, &cln->pln.p); //2
 	pln_calc(cln);
 	ch_calc(cln, &lkt);
-	
+	cln_angles(cln);
 }
 
 void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)

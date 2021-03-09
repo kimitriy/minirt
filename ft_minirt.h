@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/09 15:23:59 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:23:42 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ typedef struct 		s_cylon
 	float			oxp1;
 	float			oxp2;
 	float			angle; //angle between vD of the ray and _vOC
-	float			alpha; //angle between vN of the cyl and vD of the ray
+	float			sin_alpha; //angle between vN of the cyl and vD of the ray
 }					t_cylon;
 
 //lum
