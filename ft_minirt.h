@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/09 16:23:42 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 18:14:21 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,8 +197,8 @@ typedef struct 		s_cylon
 	float			t2; //length of the vOXP2 vctr
 	float			_oh; //distance from _RO to the point where projection of vOXP intersects with CH
 	float			_hxp; //distance from the point where projection of vOXP intersects with CH to XP
-	float			oxp1;
-	float			oxp2;
+	float			_oxp1; //projection of v_oxp1
+	float			_oxp2; //projection of v_oxp2
 	float			angle; //angle between vD of the ray and _vOC
 	float			sin_alpha; //angle between vN of the cyl and vD of the ray
 }					t_cylon;

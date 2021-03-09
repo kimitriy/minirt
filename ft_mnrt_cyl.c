@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 16:40:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 18:18:45 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	cylon_null(t_cylon *cln)
 	cln->t2 = INFINITY;
 	cln->_oh = 0;
 	cln->_hxp = 0;
-	cln->oxp1 = 0;
-	cln->oxp2 = 0;
+	cln->_oxp1 = 0;
+	cln->_oxp2 = 0;
 	cln->angle = 0;
 	cln->sin_alpha = 0;
 	p_make(&cln->_o, 0, 0, 0);
@@ -146,6 +146,53 @@ void	ch_calc(t_cylon *cln, t_look_at *lkt)
 	cln->_ch = fabsf(tmp / cln->_v_od.lngth);
 }
 
+void	case1(t_cylon *cln)
+{
+	cln->_oxp1 = cln->_oh + cln->_hxp;
+	cln->t1 = cln->_oxp1 / cln->sin_alpha;
+}
+
+void	case2(t_cylon *cln)
+{
+	cln->_oxp1 = cln->_oh - cln->_hxp;
+	cln->_oxp2 = cln->_oh + cln->_hxp;
+	cln->t1 = cln->_oxp1 / cln->sin_alpha;
+	cln->t2 = cln->_oxp2 / cln->sin_alpha;
+}
+
+void	case3(t_cylon *cln)
+{
+	cln->_oxp1 = cln->_oh;
+	cln->t1 = cln->_oxp1 / cln->sin_alpha;
+}
+
+void	find_roots(t_cylon *cln, t_cyl *cyl)
+{
+	float	r;
+
+	r = cyl->d / 2;
+	cln->_oh = sqrtf(powf(cln->v_o_c.lngth, 2) - powf(cln->_ch, 2));
+	cln->_hxp = sqrtf(powf(r, 2) - powf(cln->_ch, 2));
+	if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth <= r)
+		case1(cln);
+	else if (cln->v_o_c.lngth > r)
+	{
+		if (cln->angle > 90 && cln->angle <= 180)
+		{
+			if (cln->_ch < r)
+				case2(cln);
+			else if (cln->_ch == r)
+				case3(cln);
+			else
+				cylon_null(cln);
+		}
+		else if (cln->angle <= 90)
+			cylon_null(cln);
+	}
+	else if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth > r)
+		cylon_null(cln);
+}
+
 void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 {
 	t_look_at	lkt;
@@ -156,6 +203,7 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	pln_calc(cln);
 	ch_calc(cln, &lkt);
 	cln_angles(cln);
+	find_roots(cln, cyl);
 }
 
 void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)
