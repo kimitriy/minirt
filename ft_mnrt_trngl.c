@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:32:43 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/21 06:36:38 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 14:36:13 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 	trgn_null(&trngl->trgn);
 	trgn_make(trngl, ray);
 	nrml_trngl(trngl, ray);
-	t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]); //3, 4
+	t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]).t; //3, 4
 	if (fabsf(t) < INFINITY && t > 0.00006)
 	{
 		v_null(&o_p);
 		v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
 		v_fill(&o_p);
-		p_calc(&trngl->trgn.xp, &o_p, &ray->tail_p); //calculates p(x, y, z)
+		p_calc(&trngl->trgn.xp, &o_p.xyz, &ray->tail_p); //calculates p(x, y, z)
 		trgn_make(trngl, ray);
 	}
 	if (trngl->trgn.xp_in == '+' && t > 0 && t < ray->dist && ray->sgm == 0)

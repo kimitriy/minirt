@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:46:58 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/06 02:32:16 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 14:36:36 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray)
 	qdron_null(&qdrn);
 	
 	nrml_sqr(sqr, ray);
-	qdrn.t = pln_equation(&sqr->p, &ray->tail_p, &sqr->v, &ray->vctr[ray->sgm]);
+	qdrn.t = pln_equation(&sqr->p, &ray->tail_p, &sqr->v, &ray->vctr[ray->sgm]).t;
 	// if (qdrn.t < 0)
 	// 	qdrn.t = INFINITY;
 	// else
@@ -82,7 +82,7 @@ void	sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray)
 		v_fill(&o_p);
 		if ((ray->sgm == 0) || (ray->sgm == 1 && o_p.lngth < ray->vctr[1].lngth))
 		{
-			p_calc(&qdrn.xp, &o_p, &ray->tail_p); //calculates p(x, y, z)
+			p_calc(&qdrn.xp, &o_p.xyz, &ray->tail_p); //calculates p(x, y, z)
 			qdron_make(&qdrn, sqr);
 			is_in_sqr(&qdrn,sqr);
 		}

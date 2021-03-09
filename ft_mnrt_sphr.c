@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:42:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/19 23:43:52 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 14:41:08 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray)
 		ray->nrst = lscn->n_sphr;
 		v_n_prdct(&ray->vctr[0].xyz, &ray->vctr[0].nxyz, ray->dist); //makes a ray from the cam point to the intersection point
 		v_fill(&ray->vctr[0]);
-		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p); //calculates the hit point
+		p_calc(&ray->hit_p, &ray->vctr[0].xyz, &ray->tail_p); //calculates the hit point
 	}
 	if (ray->sgm == 1 && dscr >= 0 && root > 0.01 && root < ray->vctr[1].lngth && ray->shdw != 'y')
 		ray->shdw = 'y';

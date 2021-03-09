@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/07 03:46:47 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 15:24:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,62 @@ void	pln_null(t_pln *pln)
 	pln->nxt = NULL;
 }
 
-float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
+void	plnx_null(t_plnx *plnx)
 {
-	float	dist;
-	t_vctr	o_p0; //vctr from .o (tail point) to the pln
-	t_point	p0;	//point on the pln, projection of tail point to this pln
+	p_make(&plnx->_o, 0, 0, 0);
+	v_null(&plnx->orth);
+	plnx->t = INFINITY;
+}
+
+void	pln_make(t_pln *pln, t_point *p, t_vctr *v)
+{
+	pln_null(pln);
+	p_copy(&pln->p, p);
+	v_copy(&pln->v, v);
+}
+
+t_plnx	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
+{
+	t_pln	pln;
+	t_plnx	plnx;	
 	float tmp1;
 	float tmp2;
-	float t;
 
-	dist = (p->x - r_orgn->x) * nrml->nxyz.x + (p->y - r_orgn->y) * nrml->nxyz.y + (p->z - r_orgn->z) * nrml->nxyz.z; //1
-	v_null(&o_p0);
-	v_n_prdct(&o_p0.xyz, &nrml->nxyz, dist); //3
-	v_fill(&o_p0);
-	p_calc(&p0, &o_p0, r_orgn); //4
-	tmp1 = v_d_prdct(&o_p0.xyz, &nrml->nxyz); //6, 7
+	pln_make(&pln, p, nrml);
+	plnx_null(&plnx);
+	p2pln_prjctn(&plnx, &pln, r_orgn);
+	tmp1 = v_d_prdct(&plnx.orth.xyz, &nrml->nxyz); //6, 7
 	tmp2 = v_d_prdct(&ray->nxyz, &nrml->nxyz); //8
-	t = tmp1 / tmp2; //9
-	return (t);
+	plnx.t = tmp1 / tmp2; //9
+	return (plnx);
 }
+
+// float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
+// {
+// 	float	dist;
+// 	t_vctr	o_p0; //vctr from .o (tail point) to the pln
+// 	t_point	p0;	//point on the pln, projection of tail point to this pln
+// 	float tmp1;
+// 	float tmp2;
+// 	float t;
+
+// 	dist = (p->x - r_orgn->x) * nrml->nxyz.x + (p->y - r_orgn->y) * nrml->nxyz.y + (p->z - r_orgn->z) * nrml->nxyz.z; //1
+// 	v_null(&o_p0);
+// 	v_n_prdct(&o_p0.xyz, &nrml->nxyz, dist); //3
+// 	v_fill(&o_p0);
+// 	p_calc(&p0, &o_p0, r_orgn); //4
+// 	tmp1 = v_d_prdct(&o_p0.xyz, &nrml->nxyz); //6, 7
+// 	tmp2 = v_d_prdct(&ray->nxyz, &nrml->nxyz); //8
+// 	t = tmp1 / tmp2; //9
+// 	return (t);
+// }
 
 void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 {
 	float	t;
 
 	nrml_pln(pln, ray);
-	t = pln_equation(&pln->p, &ray->tail_p, &pln->v, &ray->vctr[ray->sgm]);
+	t = pln_equation(&pln->p, &ray->tail_p, &pln->v, &ray->vctr[ray->sgm]).t;
 	
 	if (t > 0 && t < ray->dist && ray->sgm == 0)
 	{
@@ -54,7 +84,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 		ray->nrst = lscn->n_pln;
 		v_n_prdct(&ray->vctr[0].xyz, &ray->vctr[ray->sgm].nxyz, ray->dist);
 		v_fill(&ray->vctr[0]);
-		p_calc(&ray->hit_p, &ray->vctr[0], &ray->tail_p);
+		p_calc(&ray->hit_p, &ray->vctr[0].xyz, &ray->tail_p);
 	}
 	if (ray->sgm == 1 && t > 0.0001 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';

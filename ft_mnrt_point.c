@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 21:32:54 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/03 07:47:12 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/09 14:38:50 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	p_make(t_point *out, float x, float y, float z)
 	out->z = z;
 }
 
-void	p_calc(t_point *out, t_vctr *vctr, t_point *tail)
+void	p_calc(t_point *out, t_vxyz *vctr, t_point *tail)
 {
-	out->x = tail->x + vctr->xyz.x;
-	out->y = tail->y + vctr->xyz.y;
-	out->z = tail->z + vctr->xyz.z;
+	out->x = tail->x + vctr->x;
+	out->y = tail->y + vctr->y;
+	out->z = tail->z + vctr->z;
 }
 
 void	p_copy(t_point *out, t_point *in)
@@ -48,4 +48,20 @@ int		p_is_equal(t_point *p1, t_point *p2)
 		return (1);
 	else
 		return (0);
+}
+
+void	p2pln_prjctn(t_plnx *plnx, t_pln *pln, t_point *p)
+{
+	float	d1;
+	float	d2;
+	float	d3;
+
+	d1 = (pln->p.x - p->x) * pln->v.nxyz.x;
+	d2 = (pln->p.y - p->y) * pln->v.nxyz.y;
+	d3 = (pln->p.z - p->z) * pln->v.nxyz.z;
+	d1 = d1 + d2 + d3;
+	v_null(&plnx->orth);
+	v_n_prdct(&plnx->orth.xyz, &pln->v.nxyz, d1);
+	v_fill(&plnx->orth);
+	p_calc(&plnx->_o, &plnx->orth.xyz, p);
 }
