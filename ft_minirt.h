@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/10 01:20:26 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 07:19:01 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ typedef struct 		s_cylon
 {
 	t_point			o; //ray origin
 	t_point			_o; //projection of the ray origin point
+	t_point			o_nb; //conversed .O
 	t_point			c; //center of the cyl
 	t_point			_c; //projection of the cyl's center point
 	t_point			d; 

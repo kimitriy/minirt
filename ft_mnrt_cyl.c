@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/10 04:47:43 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 07:41:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	cylon_null(t_cylon *cln)
 	cln->angle = 0;
 	cln->sin_alpha = 0;
 	p_make(&cln->_o, 0, 0, 0);
+	p_make(&cln->o_nb, 0, 0, 0);
 	p_make(&cln->_c, 0, 0, 0);
 	p_make(&cln->o, 0, 0, 0);
 	p_make(&cln->c, 0, 0, 0);
@@ -86,6 +87,7 @@ void	cylon_cnvrse(t_cylon *cln, t_look_at *lkt)
 {
 	t_vctr		vtmp;
 
+	mtrx4_x_point(&cln->o_nb, &lkt->m, &cln->o);
 	v_null(&vtmp);
 	mtrx4_x_vctr(&vtmp, &lkt->m, &cln->v_d.nxyz);
 	cln->_v_od.xy.x = vtmp.xyz.x;
@@ -180,6 +182,13 @@ void	case1(t_cylon *cln, t_cyl *cyl)
 
 void	case2(t_cylon *cln, t_cyl *cyl)
 {
+	cln->_oxp1 = cln->_oh + cln->_hxp;
+	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
+	xp_cyl(cln, cyl);
+}
+
+void	case3(t_cylon *cln, t_cyl *cyl)
+{
 	cln->_oxp1 = cln->_oh - cln->_hxp;
 	cln->_oxp2 = cln->_oh + cln->_hxp;
 	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
@@ -187,7 +196,7 @@ void	case2(t_cylon *cln, t_cyl *cyl)
 	xp_cyl(cln, cyl);
 }
 
-void	case3(t_cylon *cln, t_cyl *cyl)
+void	case4(t_cylon *cln, t_cyl *cyl)
 {
 	cln->_oxp1 = cln->_oh;
 	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
@@ -224,16 +233,18 @@ void	find_roots(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 	r = cyl->d / 2;
 	cln->_oh = sqrtf(powf(cln->v_o_c.lngth, 2) - powf(cln->_ch, 2));
 	cln->_hxp = sqrtf(powf(r, 2) - powf(cln->_ch, 2));
-	if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth <= r)
+	if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth <= r && cln->o_nb.z < 0)
 		case1(cln, cyl);
+	else if (cln->v_o_c.lngth <= r && /*cln->v_p_c.lngth > r && */cln->o_nb.z >= 0 && cln->o_nb.z <= cyl->h)
+		case2(cln, cyl);
 	else if (cln->v_o_c.lngth > r)
 	{
 		if (cln->angle < 90)
 		{
 			if (cln->_ch < r)
-				case2(cln, cyl);
-			else if (cln->_ch == r)
 				case3(cln, cyl);
+			else if (cln->_ch == r)
+				case4(cln, cyl);
 			else
 				cylon_null(cln);
 		}

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/10 04:48:12 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 07:57:59 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,13 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 		y++;
 	}
 	
-	// x = 425;
-	// y = 500;
+	// x = 165;
+	// y = 630;
+	// x = 165;
+	// y = 660;
 	
-	// x = 390;
-	// y = 500;
+	// x = 405;
+	// y = 605;
 	// p2d_make(&xy, x, y);
 	// cnvrse2crtsn(lscn, &xy);
 	// cnvrse2xyz(&ray->head_p, lscn, &xy);
