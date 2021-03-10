@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 14:43:33 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 04:48:12 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,35 +78,35 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	unsigned int	y;
 	t_2d_point		xy;
 	
-	// x = 0;
-	// y = 0;
-	// while (y < lscn->n_rsltn.y)
-	// {
-	// 	while (x < lscn->n_rsltn.x)
-	// 	{
-	// 		p2d_make(&xy, x, y);
-	// 		cnvrse2crtsn(lscn, &xy);
-    // 		cnvrse2xyz(&ray->head_p, lscn, &xy);
-	// 		trace_ray(lscn, ray);
-	// 		rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
-	// 		ray_null(ray);
-	// 		x++;
-	// 	}
-	// 	x = 0;
-	// 	y++;
-	// }
+	x = 0;
+	y = 0;
+	while (y < lscn->n_rsltn.y)
+	{
+		while (x < lscn->n_rsltn.x)
+		{
+			p2d_make(&xy, x, y);
+			cnvrse2crtsn(lscn, &xy);
+    		cnvrse2xyz(&ray->head_p, lscn, &xy);
+			trace_ray(lscn, ray);
+			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+			ray_null(ray);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
 	
-	// x = 600;
+	// x = 425;
 	// y = 500;
 	
-	x = 625;
-	y = 500;
-	p2d_make(&xy, x, y);
-	cnvrse2crtsn(lscn, &xy);
-	cnvrse2xyz(&ray->head_p, lscn, &xy);
-	trace_ray(lscn, ray);
-	rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
-	ray_null(ray);
+	// x = 390;
+	// y = 500;
+	// p2d_make(&xy, x, y);
+	// cnvrse2crtsn(lscn, &xy);
+	// cnvrse2xyz(&ray->head_p, lscn, &xy);
+	// trace_ray(lscn, ray);
+	// rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	// ray_null(ray);
 
 	// x = 395;
 	// y = 606;

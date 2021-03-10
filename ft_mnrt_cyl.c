@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 18:18:45 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 04:47:43 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,6 @@ void	cylon_null(t_cylon *cln)
 	v_null(&cln->v_d);
 	v_null(&cln->v_oxp1);
 	v_null(&cln->v_oxp2);
-	v_null(&cln->v_cxp1);
-	v_null(&cln->v_cxp2);
-	v_null(&cln->v_cm1);
-	v_null(&cln->v_cm2);
 	v_null(&cln->v_o_c);
 	v_null(&cln->v_p_c);
 	pln_null(&cln->pln);
@@ -81,20 +77,9 @@ void	cap_pln(t_cylon *cln, t_cyl *cyl)
 
 void	cylon_fill(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 {
-	// float 		d_prdct;
-	// float		mul_length;
-	// float		cos_angle;
-
 	p_copy(&cln->c, &cyl->p);
 	p_copy(&cln->o, &ray->tail_p);
 	v_copy(&cln->v_d, &ray->vctr[ray->sgm]);
-	// cylon_cnvrse(cln, lkt);
-	// v2d_make(&cln->_v_oc, &cln->_ro, &cln->_c);
-	// d_prdct = v2d_d_prdct(&cln->_v_d.xy, &cln->_v_oc.xy);
-	// mul_length = cln->_v_d.lngth * cln->_v_oc.lngth;
-	// cos_angle = min_2floats(d_prdct / mul_length, 1);
-	// cln->angle = acosf(cos_angle) * 180 / M_PI;
-	// cln->alpha = v_angle(&cyl->v, &cln->v_d);
 }
 
 void	cylon_cnvrse(t_cylon *cln, t_look_at *lkt)
@@ -119,12 +104,16 @@ void	pln_calc(t_cylon *cln)
 
 	plnx_null(&plnx);
 	plnx = pln_equation(&cln->pln.p, &cln->o, &cln->pln.v, &cln->v_d); //4
-	v_n_prdct(&cln->v_d.xyz, &cln->v_d.nxyz, plnx.t);
-	v_fill(&cln->v_d);
-	p_calc(&cln->p, &cln->v_d.xyz, &cln->o); // p - is a pointt where the ray intersects the pln
+	if (plnx.t != INFINITY && plnx.t > 0)
+	{
+		v_n_prdct(&cln->v_d.xyz, &cln->v_d.nxyz, plnx.t);
+		v_fill(&cln->v_d);
+		p_calc(&cln->p, &cln->v_d.xyz, &cln->o); // p - is a pointt where the ray intersects the pln
+		v_make(&cln->v_p_c, &cln->p, &cln->pln.p);
+	}
 	p_copy(&cln->_o, &plnx._o);
 	v_make(&cln->v_o_c, &cln->_o, &cln->pln.p);
-	v_make(&cln->v_p_c, &cln->p, &cln->pln.p);
+	
 }
 
 void	cln_angles(t_cylon *cln)
@@ -142,31 +131,93 @@ void	ch_calc(t_cylon *cln, t_look_at *lkt)
 
 	cylon_cnvrse(cln, lkt);
 	tmp = v2d_pd_prdct(&cln->_v_od, &cln->_v_oc);
-	// tmp = v2d_pd_prdct(&cln->_v_oc, &cln->_v_od);
 	cln->_ch = fabsf(tmp / cln->_v_od.lngth);
 }
 
-void	case1(t_cylon *cln)
+void	calc_nrml_cyl(t_cylon *cln, t_cyl *cyl)
 {
-	cln->_oxp1 = cln->_oh + cln->_hxp;
-	cln->t1 = cln->_oxp1 / cln->sin_alpha;
+	t_vctr	cxp;
+	t_vctr	cm;
+	float	tmp;
+	float	r;
+
+	r = cyl->d / 2;
+	v_null(&cxp);
+	v_null(&cm);
+	if (cln->t1 != INFINITY && cln->t1 > 0 && cln->t1 <= cln->t2)
+		v_make(&cxp, &cln->pln.p, &cln->xp1);
+	else if (cln->t2 != INFINITY && cln->t2 > 0 && cln->t1 > cln->t2)
+		v_make(&cxp, &cln->pln.p, &cln->xp2);
+	tmp = sqrt(powf(cxp.lngth, 2) - powf(r, 2));
+	v_n_prdct(&cm.xyz, &cyl->v.nxyz, tmp);
+	v_fill(&cm);
+	v_sbtrct(&cyl->n.xyz, &cxp.xyz, &cm.xyz);
+	v_fill(&cyl->n);
 }
 
-void	case2(t_cylon *cln)
+void	xp_cyl(t_cylon *cln, t_cyl *cyl)
+{
+	if (cln->t1 != INFINITY)
+	{
+		v_n_prdct(&cln->v_oxp1.xyz, &cln->v_d.nxyz, cln->t1);
+		v_fill(&cln->v_oxp1);
+		p_calc(&cln->xp1, &cln->v_oxp1.xyz, &cln->o);
+	}
+	if (cln->t2 != INFINITY)
+	{
+		v_n_prdct(&cln->v_oxp2.xyz, &cln->v_d.nxyz, cln->t2);
+		v_fill(&cln->v_oxp2);
+		p_calc(&cln->xp2, &cln->v_oxp2.xyz, &cln->o);
+	}
+}
+
+void	case1(t_cylon *cln, t_cyl *cyl)
+{
+	cln->_oxp1 = cln->_oh + cln->_hxp;
+	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
+	xp_cyl(cln, cyl);
+}
+
+void	case2(t_cylon *cln, t_cyl *cyl)
 {
 	cln->_oxp1 = cln->_oh - cln->_hxp;
 	cln->_oxp2 = cln->_oh + cln->_hxp;
-	cln->t1 = cln->_oxp1 / cln->sin_alpha;
-	cln->t2 = cln->_oxp2 / cln->sin_alpha;
+	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
+	cln->t2 = 0.999995 * cln->_oxp2 / cln->sin_alpha;
+	xp_cyl(cln, cyl);
 }
 
-void	case3(t_cylon *cln)
+void	case3(t_cylon *cln, t_cyl *cyl)
 {
 	cln->_oxp1 = cln->_oh;
-	cln->t1 = cln->_oxp1 / cln->sin_alpha;
+	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
+	xp_cyl(cln, cyl);
 }
 
-void	find_roots(t_cylon *cln, t_cyl *cyl)
+void	is_on_cyl(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
+{
+	t_point	tmp1;
+	t_point	tmp2;
+
+	mtrx4_x_point(&tmp1, &lkt->m, &cln->xp1);
+	mtrx4_x_point(&tmp2, &lkt->m, &cln->xp2);
+	if ((tmp1.z < 0 || tmp1.z > cyl->h) && (tmp2.z < 0 || tmp2.z > cyl->h))
+		cylon_null(cln);
+	else if ((tmp1.z < 0 || tmp1.z > cyl->h) && (tmp2.z >= 0 && tmp2.z <= cyl->h))
+	{
+		cln->t1 = INFINITY;
+		p_make(&cln->xp1, 0, 0, 0);
+		v_null(&cln->v_oxp1);
+	}
+	else if ((tmp1.z >= 0 && tmp1.z <= cyl->h) && (tmp2.z < 0 || tmp2.z > cyl->h))
+	{
+		cln->t2 = INFINITY;
+		p_make(&cln->xp2, 0, 0, 0);
+		v_null(&cln->v_oxp2);
+	}
+}
+
+void	find_roots(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 {
 	float	r;
 
@@ -174,15 +225,15 @@ void	find_roots(t_cylon *cln, t_cyl *cyl)
 	cln->_oh = sqrtf(powf(cln->v_o_c.lngth, 2) - powf(cln->_ch, 2));
 	cln->_hxp = sqrtf(powf(r, 2) - powf(cln->_ch, 2));
 	if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth <= r)
-		case1(cln);
+		case1(cln, cyl);
 	else if (cln->v_o_c.lngth > r)
 	{
-		if (cln->angle > 90 && cln->angle <= 180)
+		if (cln->angle < 90)
 		{
 			if (cln->_ch < r)
-				case2(cln);
+				case2(cln, cyl);
 			else if (cln->_ch == r)
-				case3(cln);
+				case3(cln, cyl);
 			else
 				cylon_null(cln);
 		}
@@ -191,6 +242,8 @@ void	find_roots(t_cylon *cln, t_cyl *cyl)
 	}
 	else if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth > r)
 		cylon_null(cln);
+	is_on_cyl(cln, cyl, lkt);
+	// calc_nrml_cyl(cln, cyl);
 }
 
 void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
@@ -203,7 +256,13 @@ void	cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	pln_calc(cln);
 	ch_calc(cln, &lkt);
 	cln_angles(cln);
-	find_roots(cln, cyl);
+	find_roots(cln, cyl, &lkt);
+	if ((cln->t1 != INFINITY || cln->t2 != INFINITY) && ray->sgm == 0)
+	{	
+		if (ray->sgm == 0)
+			calc_nrml_cyl(cln, cyl);
+		nrml_cyl(cyl, ray);
+	}
 }
 
 void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)
@@ -216,6 +275,7 @@ void	cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray)
 	{
 		ray->obj = 'c';
 		ray->nrst = lscn->n_cyl;
+		ray->dist = cln.t1;
 		if (cln.t1 != INFINITY && cln.t2 == INFINITY)
 			ray->dist = cln.t1;
 		else if (cln.t1 == INFINITY && cln.t2 != INFINITY)

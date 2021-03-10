@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 15:24:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 04:19:32 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ t_plnx	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 	p2pln_prjctn(&plnx, &pln, r_orgn);
 	tmp1 = v_d_prdct(&plnx.orth.xyz, &nrml->nxyz); //6, 7
 	tmp2 = v_d_prdct(&ray->nxyz, &nrml->nxyz); //8
-	plnx.t = tmp1 / tmp2; //9
+	if (tmp2 != 0)
+		plnx.t = 0.999995 * tmp1 / tmp2; //9
 	return (plnx);
 }
 
@@ -77,7 +78,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 	nrml_pln(pln, ray);
 	t = pln_equation(&pln->p, &ray->tail_p, &pln->v, &ray->vctr[ray->sgm]).t;
 	
-	if (t > 0 && t < ray->dist && ray->sgm == 0)
+	if (t > 0.00001 && t < ray->dist && ray->sgm == 0)
 	{
 		ray->dist = t;
 		ray->obj = 'p';
@@ -86,7 +87,7 @@ void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 		v_fill(&ray->vctr[0]);
 		p_calc(&ray->hit_p, &ray->vctr[0].xyz, &ray->tail_p);
 	}
-	if (ray->sgm == 1 && t > 0.0001 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (ray->sgm == 1 && t > 0 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 

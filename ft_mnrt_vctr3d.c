@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 14:41:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 04:24:32 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,13 @@ float	v_angle(t_vctr *vctr1, t_vctr *vctr2)
 {
     float	angle;
 	float	dt_prdct;
+	float	divider;
+	// float	res;
 
 	dt_prdct = v_d_prdct(&vctr1->xyz, &vctr2->xyz);
-	angle = acosf(dt_prdct / (vctr1->lngth * vctr2->lngth));
+	divider = vctr1->lngth * vctr2->lngth;
+	// res = min_2floats(1, dt_prdct / divider);
+	angle = acosf(min_2floats(1, dt_prdct / divider));
 	return (angle);
 }
 

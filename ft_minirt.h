@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/09 18:14:21 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/10 01:20:26 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,10 +185,8 @@ typedef struct 		s_cylon
 	t_vctr			v_d;
 	t_vctr			v_oxp1;
 	t_vctr			v_oxp2;
-	t_vctr			v_cxp1;
-	t_vctr			v_cxp2;
-	t_vctr			v_cm1;
-	t_vctr			v_cm2;
+	// t_vctr			v_cxp1;
+	// t_vctr			v_cxp2;
 	t_vctr			v_o_c; //vctr from _o to _c
 	t_vctr			v_p_c; //vctr from .p to _c
 	t_pln			pln; //a pln where the cap 1 lies
