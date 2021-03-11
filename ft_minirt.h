@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/10 07:19:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 12:29:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,6 @@ typedef struct 		s_qdron
 	t_vctr			vR;
 	t_vctr			vUP;
 	t_vctr			vCXP; //vctr on the pln from .C (which is the point which is given to build the pln) to .i (which is an intersection point on the pln)
-	float			cos_a;
-	float			sin_a;
 	float			alpha; //rad, angle between vR и vpi
 	float			t;
 	float			x;
@@ -178,18 +176,21 @@ typedef struct 		s_cylon
 	t_point			_c; //projection of the cyl's center point
 	t_point			d; 
 	t_point			_d; //necessary to build a projection line
+	t_2d_point		d_nb; //conversed .D'
 	t_point			xp1;
 	t_point			xp2;
 	t_point			p;	//intersection point with the cyl's cap plane
-	t_vctr2d		_v_od; //projection of the vD vctr
-	t_vctr2d		_v_oc; //vctr from _RO to _C
+	// t_2d_point		p_nb; //conversed .P'
+	t_vctr2d		v_od_nb; //projection of the vD vctr
+	t_vctr2d		v_oc_nb; //vctr from _RO to _C
 	t_vctr			v_d;
+	t_vctr			v_od; //projection of v_d
 	t_vctr			v_oxp1;
 	t_vctr			v_oxp2;
 	// t_vctr			v_cxp1;
 	// t_vctr			v_cxp2;
-	t_vctr			v_o_c; //vctr from _o to _c
-	t_vctr			v_p_c; //vctr from .p to _c
+	t_vctr			v_o_c; //vctr from _o' to _c'
+	t_vctr			v_p_c; //vctr from .plnXP' to _c'
 	t_pln			pln; //a pln where the cap 1 lies
 	float			_ch; //length of a perpendicular from .c to the projection of vD
 	float			t1; //length of the vOXP1 vctr

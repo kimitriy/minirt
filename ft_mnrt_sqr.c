@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:46:58 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 14:36:36 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 12:29:34 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	qdron_null(t_qdron *qdrn)
 {
 	qdrn->xp_in = '\0';
 	qdrn->alpha = 0;
-	qdrn->cos_a = INFINITY;
-	qdrn->sin_a = INFINITY;
 	qdrn->t = INFINITY;
 	qdrn->x = 0;
 	qdrn->y = 0;
@@ -36,17 +34,10 @@ void	qdron_make(t_qdron *qdrn, t_sqr *sqr)
 	v_copy(&qdrn->vTMP, &lkt.vTMP);
 	v_copy(&qdrn->vR, &lkt.vR);
 	v_copy(&qdrn->vUP, &lkt.vUP);
-	// v_tmp_make(&qdrn->vTMP, &sqr->v); //creates vTMP
-	// v_crss_prdct(&qdrn->vR.xyz, &sqr->v.nxyz, &qdrn->vTMP.nxyz); //creates vR
-	// v_fill(&qdrn->vR);
-	// v_crss_prdct(&qdrn->vUP.xyz, &qdrn->vR.nxyz, &sqr->v.nxyz); //creates vUP
-	// v_fill(&qdrn->vUP);
 	v_make(&qdrn->vCXP, &sqr->p, &qdrn->xp); //creates vCA
-	qdrn->cos_a = v_d_prdct(&qdrn->vR.nxyz, &qdrn->vCXP.xyz) / (1 * qdrn->vCXP.lngth);
-	qdrn->alpha = 360 - acosf(qdrn->cos_a) * 180 / M_PI;
-	qdrn->x = qdrn->vCXP.lngth * qdrn->cos_a;
-	qdrn->sin_a = sinf(qdrn->alpha * M_PI / 180);
-	qdrn->y = qdrn->sin_a * qdrn->vCXP.lngth;
+	qdrn->alpha = v_angle(&qdrn->vR, &qdrn->vCXP);
+	qdrn->x = qdrn->vCXP.lngth * cosf(qdrn->alpha);
+	qdrn->y = qdrn->vCXP.lngth * sinf(qdrn->alpha);
 }
 
 void	is_in_sqr(t_qdron *qdrn,t_sqr *sqr)
@@ -72,11 +63,7 @@ void	sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray)
 	
 	nrml_sqr(sqr, ray);
 	qdrn.t = pln_equation(&sqr->p, &ray->tail_p, &sqr->v, &ray->vctr[ray->sgm]).t;
-	// if (qdrn.t < 0)
-	// 	qdrn.t = INFINITY;
-	// else
-	// 	nrml_sqr(sqr, ray);
-	if (qdrn.t > 0.000001 && qdrn.t < INFINITY)
+	if (qdrn.t > 0 && qdrn.t < INFINITY)
 	{
 		v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, qdrn.t); //calculates vctr from ray origin point to the intrsct_p
 		v_fill(&o_p);
@@ -87,7 +74,7 @@ void	sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray)
 			is_in_sqr(&qdrn,sqr);
 		}
 	}
-	if (qdrn.xp_in == '+'/* && t < ray->dist*/ && ray->sgm == 0)
+	if (qdrn.xp_in == '+'/* && t < ray->dist*/ && ray->sgm == 0 && ray->dist > qdrn.t)
 	{
 		ray->dist = qdrn.t;
 		ray->obj = 'q';

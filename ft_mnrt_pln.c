@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/10 04:19:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 11:41:53 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_plnx	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 	tmp1 = v_d_prdct(&plnx.orth.xyz, &nrml->nxyz); //6, 7
 	tmp2 = v_d_prdct(&ray->nxyz, &nrml->nxyz); //8
 	if (tmp2 != 0)
-		plnx.t = 0.999995 * tmp1 / tmp2; //9
+		plnx.t = 0.99999 * tmp1 / tmp2; //9
 	return (plnx);
 }
 

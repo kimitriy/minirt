@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/10 07:41:20 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 11:28:24 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,13 @@ void	cylon_null(t_cylon *cln)
 	p_make(&cln->xp1, 0, 0, 0);
 	p_make(&cln->xp2, 0, 0, 0);
 	p_make(&cln->p, 0, 0, 0);
-	v2d_null(&cln->_v_od);
-	v2d_null(&cln->_v_oc);
+	p_make(&cln->d, 0, 0, 0);
+	p_make(&cln->_d, 0, 0, 0);
+	p2d_make(&cln->d_nb, 0, 0);
+	v2d_null(&cln->v_od_nb);
+	v2d_null(&cln->v_oc_nb);
 	v_null(&cln->v_d);
+	v_null(&cln->v_od);
 	v_null(&cln->v_oxp1);
 	v_null(&cln->v_oxp2);
 	v_null(&cln->v_o_c);
@@ -81,28 +85,35 @@ void	cylon_fill(t_cylon *cln, t_ray *ray, t_cyl *cyl)
 	p_copy(&cln->c, &cyl->p);
 	p_copy(&cln->o, &ray->tail_p);
 	v_copy(&cln->v_d, &ray->vctr[ray->sgm]);
+	p_calc(&cln->d, &cln->v_d.nxyz, &cln->o);
+	
 }
 
 void	cylon_cnvrse(t_cylon *cln, t_look_at *lkt)
 {
 	t_vctr		vtmp;
+	t_point		ptmp;
 
 	mtrx4_x_point(&cln->o_nb, &lkt->m, &cln->o);
+	mtrx4_x_point(&ptmp, &lkt->m, &cln->_d);
+	cln->d_nb.x = ptmp.x;
+	cln->d_nb.y = ptmp.y;
 	v_null(&vtmp);
 	mtrx4_x_vctr(&vtmp, &lkt->m, &cln->v_d.nxyz);
-	cln->_v_od.xy.x = vtmp.xyz.x;
-	cln->_v_od.xy.y = vtmp.xyz.y;
-	v2d_lngth(&cln->_v_od);
+	cln->v_od_nb.xy.x = vtmp.xyz.x;
+	cln->v_od_nb.xy.y = vtmp.xyz.y;
+	v2d_lngth(&cln->v_od_nb);
 	v_null(&vtmp);
 	mtrx4_x_vctr(&vtmp, &lkt->m, &cln->v_o_c.xyz);
-	cln->_v_oc.xy.x = vtmp.xyz.x;
-	cln->_v_oc.xy.y = vtmp.xyz.y;
-	v2d_lngth(&cln->_v_oc);
+	cln->v_oc_nb.xy.x = vtmp.xyz.x;
+	cln->v_oc_nb.xy.y = vtmp.xyz.y;
+	v2d_lngth(&cln->v_oc_nb);
 }
 
 void	pln_calc(t_cylon *cln)
 {
 	t_plnx		plnx;
+	t_vctr		tmp;
 
 	plnx_null(&plnx);
 	plnx = pln_equation(&cln->pln.p, &cln->o, &cln->pln.v, &cln->v_d); //4
@@ -115,7 +126,11 @@ void	pln_calc(t_cylon *cln)
 	}
 	p_copy(&cln->_o, &plnx._o);
 	v_make(&cln->v_o_c, &cln->_o, &cln->pln.p);
-	
+	v_copy(&tmp, &plnx.orth);
+	plnx_null(&plnx);
+	plnx = pln_equation(&cln->pln.p, &cln->d, &cln->pln.v, &tmp); //calc projection of cln->d
+	p_copy(&cln->_d, &plnx._o);
+	v_make(&cln->v_od, &cln->_o, &cln->_d);
 }
 
 void	cln_angles(t_cylon *cln)
@@ -132,8 +147,8 @@ void	ch_calc(t_cylon *cln, t_look_at *lkt)
 	float	tmp;
 
 	cylon_cnvrse(cln, lkt);
-	tmp = v2d_pd_prdct(&cln->_v_od, &cln->_v_oc);
-	cln->_ch = fabsf(tmp / cln->_v_od.lngth);
+	tmp = v2d_pd_prdct(&cln->v_od_nb, &cln->v_oc_nb);
+	cln->_ch = fabsf(tmp / cln->v_od_nb.lngth);
 }
 
 void	calc_nrml_cyl(t_cylon *cln, t_cyl *cyl)
@@ -173,33 +188,87 @@ void	xp_cyl(t_cylon *cln, t_cyl *cyl)
 	}
 }
 
-void	case1(t_cylon *cln, t_cyl *cyl)
+// void	oxp_calc(t_cylon *cln)
+// {
+// 	t_vctr	v_pln_xp_o;
+// 	float	pln_xp_h;
+
+// 	v_make(&v_pln_xp_o, &cln->p, &cln->_o);
+// 	pln_xp_h = sqrtf(powf(cln->v_p_c.lngth, 2) - powf(cln->_ch, 2));
+// 	if (pln_xp_h > v_pln_xp_o.lngth)
+// 		cln->_oxp1 = cln->_hxp - cln->_oh;
+// 	else if (pln_xp_h == v_pln_xp_o.lngth)
+// 		cln->_oxp1 = cln->_hxp;
+// 	else if (pln_xp_h < v_pln_xp_o.lngth)
+// 		cln->_oxp1 = cln->_hxp + cln->_oh;
+// }
+
+void	oxp_calc(t_cylon *cln, t_look_at *lkt)
 {
-	cln->_oxp1 = cln->_oh + cln->_hxp;
-	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
+	t_vctr		v_ort;
+	t_point		ort;
+	t_2d_point	ort_nb;
+	t_2d_point	o_nb;
+	t_2d_point	c_nb;
+	t_vctr2d	v_ort_o;
+	t_vctr2d	v_ort_d;
+	t_vctr2d	v_ort_c;
+	float		tmp;
+
+	v_crss_prdct(&v_ort.xyz, &cln->v_od.nxyz, &cln->pln.v.nxyz); //makes v_ort
+	v_fill(&v_ort);
+	p_calc(&ort, &v_ort.xyz, &cln->_o); //makes .ort
+	mtrx4_x_point(&ort, &lkt->m, &ort); //makes .ort_nb
+	ort_nb.x = ort.x;
+	ort_nb.y = ort.y;
+	o_nb.x = cln->o_nb.x; //makes .o_nb
+	o_nb.y = cln->o_nb.y;
+	p2d_make(&c_nb, 0, 0); //makes .c_nb
+	v2d_make(&v_ort_o, &ort_nb, &o_nb); //makes v_ort_o
+	v2d_make(&v_ort_d, &ort_nb, &cln->d_nb); //makes v_ort_d
+	v2d_make(&v_ort_c, &ort_nb, &c_nb); //makes v_ort_c
+	tmp = v2d_pd_prdct(&v_ort_o, &v_ort_d) * v2d_pd_prdct(&v_ort_o, &v_ort_c);
+	if (tmp < 0)
+		cln->_oxp1 = cln->_hxp - cln->_oh;
+	else if (tmp > 0)
+		cln->_oxp1 = cln->_hxp + cln->_oh;
+	else if (tmp == 0)
+	{	
+		if (v2d_pd_prdct(&v_ort_o, &v_ort_c) == 0 && cln->v_od.lngth != 0)
+			cln->_oxp1 = cln->_hxp;
+	}
+	else
+		cylon_null(cln);
+}
+
+void	case1_2(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
+{
+	// cln->_oxp1 = cln->_oh + cln->_hxp; //hxp' + o'h or hxp' - o'h //in dependence on if the .O' and .P' are on the one side relatively from C'H
+	oxp_calc(cln, lkt);
+	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
 	xp_cyl(cln, cyl);
 }
 
-void	case2(t_cylon *cln, t_cyl *cyl)
-{
-	cln->_oxp1 = cln->_oh + cln->_hxp;
-	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
-	xp_cyl(cln, cyl);
-}
+// void	case2(t_cylon *cln, t_cyl *cyl)
+// {
+// 	cln->_oxp1 = cln->_oh + cln->_hxp;
+// 	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
+// 	xp_cyl(cln, cyl);
+// }
 
 void	case3(t_cylon *cln, t_cyl *cyl)
 {
 	cln->_oxp1 = cln->_oh - cln->_hxp;
 	cln->_oxp2 = cln->_oh + cln->_hxp;
-	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
-	cln->t2 = 0.999995 * cln->_oxp2 / cln->sin_alpha;
+	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
+	cln->t2 = 0.999965 * cln->_oxp2 / cln->sin_alpha;
 	xp_cyl(cln, cyl);
 }
 
 void	case4(t_cylon *cln, t_cyl *cyl)
 {
 	cln->_oxp1 = cln->_oh;
-	cln->t1 = 0.999995 * cln->_oxp1 / cln->sin_alpha;
+	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
 	xp_cyl(cln, cyl);
 }
 
@@ -234,9 +303,9 @@ void	find_roots(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 	cln->_oh = sqrtf(powf(cln->v_o_c.lngth, 2) - powf(cln->_ch, 2));
 	cln->_hxp = sqrtf(powf(r, 2) - powf(cln->_ch, 2));
 	if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth <= r && cln->o_nb.z < 0)
-		case1(cln, cyl);
+		case1_2(cln, cyl, lkt);
 	else if (cln->v_o_c.lngth <= r && /*cln->v_p_c.lngth > r && */cln->o_nb.z >= 0 && cln->o_nb.z <= cyl->h)
-		case2(cln, cyl);
+		case1_2(cln, cyl, lkt);
 	else if (cln->v_o_c.lngth > r)
 	{
 		if (cln->angle < 90)
