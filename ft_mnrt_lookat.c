@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/21 05:19:20 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 15:12:18 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,35 @@
 
 void	null_lookat(t_look_at *lookat)
 {
+	if (lookat->tmp != '+')	
+		v_null(&lookat->vTMP);
 	v_null(&lookat->vF);
-	v_null(&lookat->vTMP);
 	v_null(&lookat->vR);
 	v_null(&lookat->vUP);
 }
 
-void	v_tmp_make(t_vctr *vTMP, t_vctr *vF)
+void	v_tmp_make(t_look_at *lookat)
 {
-	vTMP->nxyz.x = 0;
-	if (vF->nxyz.y == 1)
+	if (lookat->tmp != '+')
 	{
-		vTMP->nxyz.y = 0;
-		vTMP->nxyz.z = -1;
+		lookat->vTMP.nxyz.x = 0;
+		if (lookat->vF.nxyz.y == 1)
+		{
+			lookat->vTMP.nxyz.y = 0;
+			lookat->vTMP.nxyz.z = -1;
+		}
+		else if (lookat->vF.nxyz.y == -1)
+		{
+			lookat->vTMP.nxyz.y = 0;
+			lookat->vTMP.nxyz.z = 1;
+		}
+		else
+		{
+			lookat->vTMP.nxyz.y = 1;
+			lookat->vTMP.nxyz.z = 0;
+		}
 	}
-	else if (vF->nxyz.y == -1)
-	{
-		vTMP->nxyz.y = 0;
-		vTMP->nxyz.z = 1;
-	}
-	else
-	{
-		vTMP->nxyz.y = 1;
-		vTMP->nxyz.z = 0;
-	}
-	v_fill(vTMP);
+	v_fill(&lookat->vTMP);
 }
 
 void	look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p)
@@ -46,8 +50,8 @@ void	look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p)
 	null_lookat(lookat);
 	v_n_prdct(&lookat->vF.nxyz, &vF->nxyz, -1);
 	v_fill(&lookat->vF);
-	v_tmp_make(&lookat->vTMP, vF);
-	v_fill(&lookat->vTMP);
+	v_tmp_make(lookat);
+	// v_fill(&lookat->vTMP);
 	v_crss_prdct(&lookat->vR.xyz, &lookat->vF.nxyz, &lookat->vTMP.nxyz);
 	v_fill(&lookat->vR);
 	v_crss_prdct(&lookat->vUP.xyz, &lookat->vR.nxyz, &lookat->vF.nxyz);
@@ -249,6 +253,7 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		// lsqr->v.nxyz.x = sqr->v.nxyz.x;
 		// lsqr->v.nxyz.y = sqr->v.nxyz.y;
 		// lsqr->v.nxyz.z = sqr->v.nxyz.z;
+		v_copy(&lsqr->v_tmp, &sqr->v_tmp);
 		lsqr->side = sqr->side;
 		color_copy(&lsqr->trgb, &sqr->trgb);
 		// lsqr->trgb.t = sqr->trgb.t;
@@ -258,6 +263,8 @@ void	cnvrse_sqr(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 		mtrx4_x_point(&lsqr->p, &lookat->m, &sqr->p);
 		mtrx4_x_vctr(&lsqr->v, &lookat->m, &sqr->v.nxyz);
 		v_fill(&lsqr->v);
+		mtrx4_x_vctr(&lsqr->v_tmp, &lookat->m, &sqr->v_tmp.nxyz);
+		v_fill(&lsqr->v_tmp);
 		if (nscn->n_sqr->next != NULL)
 			nscn->n_sqr = nscn->n_sqr->next;
 		lscn->n_cntr.sqr++;

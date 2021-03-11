@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/06 04:25:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 14:49:01 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,12 +181,16 @@ void	write_sqr(t_scn *nscn, t_prsr *np)
 	tmp->v.nxyz.x = ft_atof(np->nx);
 	tmp->v.nxyz.y = ft_atof(np->ny);
 	tmp->v.nxyz.z = ft_atof(np->nz);
+	v_fill(&tmp->v);
+	tmp->v_tmp.xyz.x = 0;
+	tmp->v_tmp.xyz.y = 1;
+	tmp->v_tmp.xyz.z = 0;
+	v_fill(&tmp->v_tmp);
 	tmp->side = ft_atof(np->side);
 	tmp->trgb.t = 0;
 	tmp->trgb.r = ft_atoi(np->r);
 	tmp->trgb.g = ft_atoi(np->g);
 	tmp->trgb.b = ft_atoi(np->b);
-	v_fill(&tmp->v);
 	nscn->n_cntr.sqr++;
 }
 

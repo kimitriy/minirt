@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/11 12:29:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 15:11:57 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ typedef struct		s_mtrx4x4
 //look_at_mtrx
 typedef struct		s_look_at
 {
+	char			tmp;
 	t_vctr			vF;
 	t_vctr			vTMP;
 	t_vctr			vR;
@@ -319,6 +320,7 @@ typedef struct		s_sqr
 {
 	t_point			p;
 	t_vctr			v;
+	t_vctr			v_tmp;
 	float			side;
 	t_color			trgb;
 	struct s_sqr	*nxt;
@@ -543,7 +545,7 @@ void				mtrx4_x_point(t_point *out, t_mtrx4x4 *mtrx, t_point *in);
 
 //ft_mnrt_lookat.c
 void				null_lookat(t_look_at *lookat);
-void				v_tmp_make(t_vctr *vTMP, t_vctr *vF);
+void				v_tmp_make(t_look_at *lookat);
 void				look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p);
 void				get_cam_fov(t_scn *nscn, t_scn *lscn);
 void				cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat);

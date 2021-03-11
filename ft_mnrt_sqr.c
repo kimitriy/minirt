@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:46:58 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/11 12:29:34 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 15:05:38 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	qdron_make(t_qdron *qdrn, t_sqr *sqr)
 {
 	t_look_at	lkt;
 
+	v_copy(&lkt.vTMP, &sqr->v_tmp);
+	lkt.tmp = '+';
 	look_at_mtrx(&lkt, &sqr->v, &sqr->p);
 	v_copy(&qdrn->vTMP, &lkt.vTMP);
 	v_copy(&qdrn->vR, &lkt.vR);
