@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/11 12:42:14 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 21:02:08 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,17 @@ float	v_angle(t_vctr *vctr1, t_vctr *vctr2)
 
 void	v_opposite(t_vctr *vctr)
 {
-	vctr->xyz.x = (-1) * vctr->xyz.x;
-	vctr->xyz.y = (-1) * vctr->xyz.y;
-	vctr->xyz.z = (-1) * vctr->xyz.z;
+	v_n_prdct(&vctr->xyz, &vctr->xyz, -1);
+	// vctr->xyz.x = (-1) * vctr->xyz.x;
+	// vctr->xyz.y = (-1) * vctr->xyz.y;
+	// vctr->xyz.z = (-1) * vctr->xyz.z;
 	v_fill(vctr);
+}
+
+float	v_are_collinear(t_vctr *v1, t_vctr *v2)
+{
+	if (v_d_prdct(&v1->xyz, &v2->xyz) == 1 || v_d_prdct(&v1->xyz, &v2->xyz) == -1)
+		return (1);
+	else
+		return (0);
 }

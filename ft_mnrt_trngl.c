@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/19 23:32:43 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/11 12:54:59 by rburton          ###   ########.fr       */
+/*   Created: 2021/03/11 20:16:24 by rburton           #+#    #+#             */
+/*   Updated: 2021/03/12 00:20:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,99 +14,151 @@
 
 void	trgn_null(t_trigon *trgn)
 {
-	trgn->f = '\0';
+	// trgn->f = '\0';
 	trgn->xp_in = '\0';
 	p_make(&trgn->xp, 0, 0, 0);
-	p_make(&trgn->a, 0, 0, 0);
-	p_make(&trgn->b, 0, 0, 0);
-	p_make(&trgn->c, 0, 0, 0);
-	v_null(&trgn->a_b);
-	v_null(&trgn->b_c);
-	v_null(&trgn->c_a);
-	v_null(&trgn->xp_a);
-	v_null(&trgn->xp_b);
-	v_null(&trgn->xp_c);
-	trgn->prmtr = 0;
-	trgn->prmtr1 = 0;
-	trgn->prmtr2 = 0;
-	trgn->prmtr3 = 0;
-	trgn->area = 0;
-	trgn->area1 = 0;
-	trgn->area2 = 0;
-	trgn->area3 = 0;
+	v_null(&trgn->v_ab);
+	v_null(&trgn->v_ac);
+	v_null(&trgn->v_op);
+	v_null(&trgn->v_minus_f);
+    null_lookat(&trgn->lkt);
+    p2d_make(&trgn->_a, 0, 0);
+    p2d_make(&trgn->_b, 0, 0);
+	p2d_make(&trgn->_c, 0, 0);
+    p2d_make(&trgn->_xp, 0, 0);
+    v2d_null(&trgn->_ab);
+    v2d_null(&trgn->_ac);
+    v2d_null(&trgn->_axp);
+    v2d_null(&trgn->_bc);
+    v2d_null(&trgn->_ba);
+    v2d_null(&trgn->_bxp);
+    v2d_null(&trgn->_ca);
+    v2d_null(&trgn->_cb);
+    v2d_null(&trgn->_cxp);
 }
 
-void	trgn_prmtr(t_trigon *trgn)
+void    nrml_make(t_trngl *trngl)
 {
-	trgn->prmtr = (trgn->a_b.lngth + trgn->b_c.lngth + trgn->c_a.lngth) / 2;
-	trgn->prmtr1 = (trgn->xp_a.lngth + trgn->a_b.lngth + trgn->xp_b.lngth) / 2;
-	trgn->prmtr2 = (trgn->xp_b.lngth + trgn->b_c.lngth + trgn->xp_c.lngth) / 2;
-	trgn->prmtr3 = (trgn->xp_c.lngth + trgn->c_a.lngth + trgn->xp_a.lngth) / 2;
+    v_make(&trngl->trgn.v_ab, &trngl->p1, &trngl->p2);
+    v_make(&trngl->trgn.v_ac, &trngl->p1, &trngl->p3);
+    v_crss_prdct(&trngl->n.xyz, &trngl->trgn.v_ab.nxyz, &trngl->trgn.v_ac.nxyz);
+    v_fill(&trngl->n);
+    v_n_prdct(&trngl->trgn.v_minus_f.xyz, &trngl->n.nxyz, -1);
+	v_fill(&trngl->trgn.v_minus_f);
 }
 
-void	trgn_area(t_trigon *trgn)
+void    xp_calc(t_trngl *trngl, t_ray *ray)
 {
-	trgn->area = sqrtf(trgn->prmtr * (trgn->prmtr - trgn->a_b.lngth) * (trgn->prmtr - trgn->b_c.lngth) * (trgn->prmtr - trgn->c_a.lngth));
-	trgn->area1 = sqrtf(trgn->prmtr1 * (trgn->prmtr1 - trgn->xp_a.lngth) * (trgn->prmtr1 - trgn->a_b.lngth) * (trgn->prmtr1 - trgn->xp_b.lngth));
-	trgn->area2 = sqrtf(trgn->prmtr2 * (trgn->prmtr2 - trgn->xp_b.lngth) * (trgn->prmtr2 - trgn->b_c.lngth) * (trgn->prmtr2 - trgn->xp_c.lngth));
-	trgn->area3 = sqrtf(trgn->prmtr3 * (trgn->prmtr3 - trgn->xp_c.lngth) * (trgn->prmtr3 - trgn->c_a.lngth) * (trgn->prmtr3 - trgn->xp_a.lngth));
+    float       t;
+    // t_vctr		v_op;
+
+    t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]).t;
+    if (fabsf(t) < INFINITY && t > 0)
+	{
+		v_null(&trngl->trgn.v_op);
+		v_n_prdct(&trngl->trgn.v_op.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
+		v_fill(&trngl->trgn.v_op);
+		p_calc(&trngl->trgn.xp, &trngl->trgn.v_op.xyz, &ray->tail_p); //calculates p(x, y, z)
+		trngl->trgn.t = t;
+		v_copy(&ray->vctr[ray->sgm], &trngl->trgn.v_op);
+	}
+}
+
+void    trgn_converse(t_trngl *trngl)
+{
+    t_point tmp;
+
+    p_make(&tmp, 0, 0, 0);
+    mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->p1);
+	trngl->trgn._a.x = tmp.x;
+	trngl->trgn._a.y = tmp.y;
+    p_make(&tmp, 0, 0, 0);
+    mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->p2);
+	trngl->trgn._b.x = tmp.x;
+	trngl->trgn._b.y = tmp.y;
+    p_make(&tmp, 0, 0, 0);
+    mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->p3);
+	trngl->trgn._c.x = tmp.x;
+	trngl->trgn._c.y = tmp.y;
+    p_make(&tmp, 0, 0, 0);
+    mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->trgn.xp);
+	trngl->trgn._xp.x = tmp.x;
+	trngl->trgn._xp.y = tmp.y;
+}
+
+void    vctr2d_make(t_trngl *trngl)
+{
+    v2d_make(&trngl->trgn._ab, &trngl->trgn._a, &trngl->trgn._b);
+    v2d_make(&trngl->trgn._ac, &trngl->trgn._a, &trngl->trgn._c);
+    v2d_make(&trngl->trgn._axp, &trngl->trgn._a, &trngl->trgn._xp);
+    v2d_make(&trngl->trgn._bc, &trngl->trgn._b, &trngl->trgn._c);
+    v2d_make(&trngl->trgn._ba, &trngl->trgn._b, &trngl->trgn._a);
+    v2d_make(&trngl->trgn._bxp, &trngl->trgn._b, &trngl->trgn._xp);
+    v2d_make(&trngl->trgn._ca, &trngl->trgn._c, &trngl->trgn._a);
+    v2d_make(&trngl->trgn._cb, &trngl->trgn._c, &trngl->trgn._b);
+    v2d_make(&trngl->trgn._cxp, &trngl->trgn._c, &trngl->trgn._xp);
 }
 
 void	is_in_trngl(t_trngl *trngl)
 {
-	if (trngl->trgn.area >= 0.9999 * (trngl->trgn.area1 + trngl->trgn.area2 + trngl->trgn.area3))
+    float   r1;
+    float   r2;
+	int		i;
+
+	i = 0;
+    r1 = v2d_pd_prdct(&trngl->trgn._ab, &trngl->trgn._axp);
+    r2 = v2d_pd_prdct(&trngl->trgn._ab, &trngl->trgn._ac);
+	if (r1 <= 0 && r2 < 0)
+		i++;
+	r1 = v2d_pd_prdct(&trngl->trgn._bc, &trngl->trgn._bxp);
+    r2 = v2d_pd_prdct(&trngl->trgn._bc, &trngl->trgn._ba);
+	if (r1 <= 0 && r2 < 0)
+		i++;
+	r1 = v2d_pd_prdct(&trngl->trgn._ca, &trngl->trgn._cxp);
+    r2 = v2d_pd_prdct(&trngl->trgn._ca, &trngl->trgn._cb);
+	if (r1 <= 0 && r2 < 0)
+		i++;
+	if (i == 3)
 		trngl->trgn.xp_in = '+';
 }
 
-void	trgn_make(t_trngl *trngl, t_ray *ray)
+void    trgn_make(t_trngl *trngl, t_ray *ray)
 {
-	if (trngl->trgn.f != 'f')
-	{
-		p_copy(&trngl->trgn.a, &trngl->p1);
-		p_copy(&trngl->trgn.b, &trngl->p2);
-		p_copy(&trngl->trgn.c, &trngl->p3);
-		v_make(&trngl->trgn.c_a, &trngl->trgn.c, &trngl->trgn.a);
-		v_make(&trngl->trgn.a_b, &trngl->trgn.a, &trngl->trgn.b);
-		v_make(&trngl->trgn.b_c, &trngl->trgn.b, &trngl->trgn.c);
-		trngl->trgn.f = 'f';
-	}
-	else if (trngl->trgn.f == 'f')
-	{
-		v_make(&trngl->trgn.xp_a, &trngl->trgn.xp, &trngl->trgn.a);
-		v_make(&trngl->trgn.xp_b, &trngl->trgn.xp, &trngl->trgn.b);
-		v_make(&trngl->trgn.xp_c, &trngl->trgn.xp, &trngl->trgn.c);
-		trgn_prmtr(&trngl->trgn);
-		trgn_area(&trngl->trgn);
-		is_in_trngl(trngl);
-	}
+    nrml_make(trngl);
+    look_at_mtrx(&trngl->trgn.lkt, &trngl->trgn.v_minus_f, &ray->tail_p);
+    nrml_trngl(trngl, ray);
+    xp_calc(trngl, ray);
+    trgn_converse(trngl);
+    vctr2d_make(trngl);
+    is_in_trngl(trngl);
 }
 
 void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 {
-	t_vctr		o_p; //vctr from ray origin to the pln that is collinear to ray->vctr[0] and reaches p
-	float		t;
+	// t_vctr		o_p; //vctr from ray origin to the pln that is collinear to ray->vctr[0] and reaches p
+	// float		t;
 	
 	trgn_null(&trngl->trgn);
 	trgn_make(trngl, ray);
-	nrml_trngl(trngl, ray);
-	t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]).t; //3, 4
-	if (fabsf(t) < INFINITY && t > 0.00006)
+	// nrml_trngl(trngl, ray);
+	// t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]).t; //3, 4
+	// if (fabsf(t) < INFINITY && t > 0.00006)
+	// {
+	// 	v_null(&o_p);
+	// 	v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
+	// 	v_fill(&o_p);
+	// 	p_calc(&trngl->trgn.xp, &o_p.xyz, &ray->tail_p); //calculates p(x, y, z)
+	// 	trgn_make(trngl, ray);
+	// }
+	if (trngl->trgn.xp_in == '+' && trngl->trgn.t > 0 && trngl->trgn.t <= ray->dist && ray->sgm == 0)
 	{
-		v_null(&o_p);
-		v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
-		v_fill(&o_p);
-		p_calc(&trngl->trgn.xp, &o_p.xyz, &ray->tail_p); //calculates p(x, y, z)
-		trgn_make(trngl, ray);
-	}
-	if (trngl->trgn.xp_in == '+' && t > 0 && t < ray->dist && ray->sgm == 0)
-	{
-		ray->dist = t;
+		ray->dist = trngl->trgn.t;
 		ray->obj = 't';
 		ray->nrst = lscn->n_trngl;
-		v_copy(&ray->vctr[0], &o_p);
+		v_copy(&ray->vctr[0], &trngl->trgn.v_op);
 		p_copy(&ray->hit_p, &trngl->trgn.xp);
 	}
-	if (trngl->trgn.xp_in == '+' && ray->sgm == 1 && t > 0.000147 && ray->shdw != 'y' && t < ray->vctr[1].lngth)
+	if (trngl->trgn.xp_in == '+' && ray->sgm == 1 && trngl->trgn.t > 0.000147 && ray->shdw != 'y' && trngl->trgn.t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 

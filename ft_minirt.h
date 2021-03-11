@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/11 15:11:57 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/11 23:55:26 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,27 +121,72 @@ typedef struct 		s_plnx
 	float			t; //distan
 }					t_plnx;
 
+//mtrx
+typedef struct		s_mtrx4x4
+{
+	float			m[4][4];
+}					t_mtrx4x4;
+
+//look_at_mtrx
+typedef struct		s_look_at
+{
+	char			tmp;
+	t_vctr			vF;
+	t_vctr			vTMP;
+	t_vctr			vR;
+	t_vctr			vUP;
+	t_mtrx4x4		m;
+}					t_look_at;
+
+
+
+// typedef struct 		s_trigon
+// {
+// 	t_point			xp;
+// 	t_point			a;
+// 	t_point			b;
+// 	t_point			c;
+// 	t_vctr			c_a;
+// 	t_vctr			a_b;
+// 	t_vctr			b_c;
+// 	t_vctr			xp_a;
+// 	t_vctr			xp_b;
+// 	t_vctr			xp_c;
+// 	float			prmtr;
+// 	float			prmtr1;
+// 	float			prmtr2;
+// 	float			prmtr3;
+// 	float			area;
+// 	float			area1;
+// 	float			area2;
+// 	float			area3;
+// 	char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
+// 	char			xp_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
+// }					t_trigon;
+
 typedef struct 		s_trigon
 {
 	t_point			xp;
-	t_point			a;
-	t_point			b;
-	t_point			c;
-	t_vctr			c_a;
-	t_vctr			a_b;
-	t_vctr			b_c;
-	t_vctr			xp_a;
-	t_vctr			xp_b;
-	t_vctr			xp_c;
-	float			prmtr;
-	float			prmtr1;
-	float			prmtr2;
-	float			prmtr3;
-	float			area;
-	float			area1;
-	float			area2;
-	float			area3;
-	char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
+	t_vctr			v_ab;
+	t_vctr			v_ac;
+	t_vctr			v_op;
+	t_vctr			v_minus_f;
+	t_look_at		lkt;
+	t_2d_point		_a;
+	t_2d_point		_b;
+	t_2d_point		_c;
+	t_2d_point		_xp;
+	t_vctr2d		_ab;
+	t_vctr2d		_ac;
+	t_vctr2d		_axp;
+	t_vctr2d		_bc;
+	t_vctr2d		_ba;
+	t_vctr2d		_bxp;
+	t_vctr2d		_ca;
+	t_vctr2d		_cb;
+	t_vctr2d		_cxp;
+	float			t;
+	// char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
 	char			xp_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
 }					t_trigon;
 
@@ -226,22 +271,9 @@ typedef struct 		s_lum
 	t_color			l_trgb;
 }					t_lum;
 
-//mtrx
-typedef struct		s_mtrx4x4
-{
-	float			m[4][4];
-}					t_mtrx4x4;
 
-//look_at_mtrx
-typedef struct		s_look_at
-{
-	char			tmp;
-	t_vctr			vF;
-	t_vctr			vTMP;
-	t_vctr			vR;
-	t_vctr			vUP;
-	t_mtrx4x4		m;
-}					t_look_at;
+
+
 
 //mlx
 
@@ -522,6 +554,7 @@ float				v_x_point_prdct(t_vxyz *xyz, t_point *p);
 void				v_crss_prdct(t_vxyz *out, t_vxyz *xyz1, t_vxyz *xyz2);
 float				v_angle(t_vctr *vctr1, t_vctr *vctr2);
 void				v_opposite(t_vctr *vctr);
+float				v_are_collinear(t_vctr *v1, t_vctr *v2);
 void				v_node(void);
 
 //ft_mnrt_cnvs.c
@@ -545,7 +578,7 @@ void				mtrx4_x_point(t_point *out, t_mtrx4x4 *mtrx, t_point *in);
 
 //ft_mnrt_lookat.c
 void				null_lookat(t_look_at *lookat);
-void				v_tmp_make(t_look_at *lookat);
+void				v_tmp_make(t_vctr *vf, t_vctr *tmp, t_look_at *lookat);
 void				look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p);
 void				get_cam_fov(t_scn *nscn, t_scn *lscn);
 void				cnvrse_lght(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
