@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/06 04:25:08 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/13 12:19:59 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,4 +203,29 @@ float	min_2floats(float a, float b)
 		return (a);
 	else
 		return (b);
+}
+
+void	err_message(char *error)
+{
+    write(1, error, ft_strlen(error));
+    write(1, "\n", 1);
+    exit(0);
+}
+
+int		ft_strcmp(char *s1, char *s2)
+{
+	int		i;
+	int		output;
+
+	i = 0;
+	output = 0;
+	while (s1[i] != '\0' && s2[i] != '\0')
+	{
+		if (s1[i] != s2[i])
+			break ;
+		else
+			i++;
+	}
+	output = (unsigned char)s1[i] - (unsigned char)s2[i];
+	return (output);
 }

@@ -6,9 +6,13 @@
 #    By: rburton <rburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/28 11:32:38 by rburton           #+#    #+#              #
-#    Updated: 2021/02/26 21:35:09 by rburton          ###   ########.fr        #
+#    Updated: 2021/03/13 17:49:54 by rburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+NAME		= miniRT
+
+HEADER		= ft_minirt.h
 
 SRC 		= 	ft_mnrt_main.c \
 				ft_mnrt_utls.c \
@@ -42,33 +46,24 @@ NAME		= mnrt.out
 
 GCC			= gcc
 
-#OPTFLAGS	= -O2
+CFLAGS		= -g -Wall -Wextra -Werror
 
-#CFLAGS		= -g -Wall -Wextra -Werror
-CFLAGS		= -g
+MLXST		= ./mlx_st/libmlx.a
 
-#MLX		= -Imlx
+MLXDY		= ./mlx_dy/libmlx.dylib
 
 OPENGL		= -L. libmlx.a -framework OpenGL -framework AppKit
 
 RM			= rm -f
 
-#ARRC		= ar rc
-
-FT_H		= ft_minirt.h
-
-#LIB			= libminirt.a
-
-all:	${NAME}
-
-#bonus:	all
+all:		${NAME}
 
 #сопоставление *.c и *.o файлов
-.c.o:
-		${GCC} ${CFLAGS} -c $< -o ${<:.c=.o}
+.c.o:		=
+				${GCC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-${NAME}:${OBJS}
-		${GCC} ${CFLAGS} -o ${NAME} ${OBJS} ${OPENGL}
+${NAME}:		${OBJS}
+				${GCC} ${CFLAGS} -o ${NAME} ${OBJS} ${OPENGL}
 #		${ARRC} ${LIB} ${OBJS}
 #		${ARRC} ${LIB} ${FT_H}
 

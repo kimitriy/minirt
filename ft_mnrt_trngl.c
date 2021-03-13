@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 20:16:24 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/12 00:20:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/12 10:07:31 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void    xp_calc(t_trngl *trngl, t_ray *ray)
 		v_fill(&trngl->trgn.v_op);
 		p_calc(&trngl->trgn.xp, &trngl->trgn.v_op.xyz, &ray->tail_p); //calculates p(x, y, z)
 		trngl->trgn.t = t;
-		v_copy(&ray->vctr[ray->sgm], &trngl->trgn.v_op);
+		// v_copy(&ray->vctr[ray->sgm], &trngl->trgn.v_op);
 	}
 }
 
@@ -106,16 +106,16 @@ void	is_in_trngl(t_trngl *trngl)
 	int		i;
 
 	i = 0;
-    r1 = v2d_pd_prdct(&trngl->trgn._ab, &trngl->trgn._axp);
-    r2 = v2d_pd_prdct(&trngl->trgn._ab, &trngl->trgn._ac);
+    r1 = v2d_pd_prdct(&trngl->trgn._axp, &trngl->trgn._ab);
+    r2 = v2d_pd_prdct(&trngl->trgn._ac, &trngl->trgn._ab);
 	if (r1 <= 0 && r2 < 0)
 		i++;
-	r1 = v2d_pd_prdct(&trngl->trgn._bc, &trngl->trgn._bxp);
-    r2 = v2d_pd_prdct(&trngl->trgn._bc, &trngl->trgn._ba);
+	r1 = v2d_pd_prdct(&trngl->trgn._bxp, &trngl->trgn._bc);
+    r2 = v2d_pd_prdct(&trngl->trgn._ba, &trngl->trgn._bc);
 	if (r1 <= 0 && r2 < 0)
 		i++;
-	r1 = v2d_pd_prdct(&trngl->trgn._ca, &trngl->trgn._cxp);
-    r2 = v2d_pd_prdct(&trngl->trgn._ca, &trngl->trgn._cb);
+	r1 = v2d_pd_prdct(&trngl->trgn._cxp, &trngl->trgn._ca);
+    r2 = v2d_pd_prdct(&trngl->trgn._cb, &trngl->trgn._ca);
 	if (r1 <= 0 && r2 < 0)
 		i++;
 	if (i == 3)
@@ -125,7 +125,7 @@ void	is_in_trngl(t_trngl *trngl)
 void    trgn_make(t_trngl *trngl, t_ray *ray)
 {
     nrml_make(trngl);
-    look_at_mtrx(&trngl->trgn.lkt, &trngl->trgn.v_minus_f, &ray->tail_p);
+    look_at_mtrx(&trngl->trgn.lkt, &trngl->trgn.v_minus_f, &trngl->p1);
     nrml_trngl(trngl, ray);
     xp_calc(trngl, ray);
     trgn_converse(trngl);

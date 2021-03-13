@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/11 23:55:26 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/13 12:23:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -495,6 +495,8 @@ int					ft_isdigit(int c);
 float				max_2floats(float f1, float f2);
 float				max_3floats(float a, float b, float c);
 float				min_2floats(float a, float b);
+void				err_message(char *error);
+int					ft_strcmp(char *s1, char *s2);
 
 
 //ft_mnrt_list.c

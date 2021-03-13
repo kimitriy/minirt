@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/11 14:49:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/13 15:14:55 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void	write_rsltn(t_scn *nscn, t_prsr *np)
 {
 	nscn->n_rsltn.x = ft_atoi(np->rx);
 	nscn->n_rsltn.y = ft_atoi(np->ry);
+	if (nscn->n_rsltn.x > 2560)
+		nscn->n_rsltn.x = 2560;
+	if (nscn->n_rsltn.y > 1440)
+		nscn->n_rsltn.y = 1440;
 }
 
 void	write_ambnt(t_scn *nscn, t_prsr *np)
