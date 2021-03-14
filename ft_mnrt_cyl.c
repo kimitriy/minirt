@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/11 11:28:24 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/14 10:47:38 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	calc_nrml_cyl(t_cylon *cln, t_cyl *cyl)
 	v_fill(&cyl->n);
 }
 
-void	xp_cyl(t_cylon *cln, t_cyl *cyl)
+void	xp_cyl(t_cylon *cln/*, t_cyl *cyl*/)
 {
 	if (cln->t1 != INFINITY)
 	{
@@ -241,12 +241,12 @@ void	oxp_calc(t_cylon *cln, t_look_at *lkt)
 		cylon_null(cln);
 }
 
-void	case1_2(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
+void	case1_2(t_cylon *cln, /*t_cyl *cyl, */t_look_at *lkt)
 {
 	// cln->_oxp1 = cln->_oh + cln->_hxp; //hxp' + o'h or hxp' - o'h //in dependence on if the .O' and .P' are on the one side relatively from C'H
 	oxp_calc(cln, lkt);
 	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
-	xp_cyl(cln, cyl);
+	xp_cyl(cln/*, cyl*/);
 }
 
 // void	case2(t_cylon *cln, t_cyl *cyl)
@@ -256,20 +256,20 @@ void	case1_2(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 // 	xp_cyl(cln, cyl);
 // }
 
-void	case3(t_cylon *cln, t_cyl *cyl)
+void	case3(t_cylon *cln/*, t_cyl *cyl*/)
 {
 	cln->_oxp1 = cln->_oh - cln->_hxp;
 	cln->_oxp2 = cln->_oh + cln->_hxp;
 	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
 	cln->t2 = 0.999965 * cln->_oxp2 / cln->sin_alpha;
-	xp_cyl(cln, cyl);
+	xp_cyl(cln/*, cyl*/);
 }
 
-void	case4(t_cylon *cln, t_cyl *cyl)
+void	case4(t_cylon *cln/*, t_cyl *cyl*/)
 {
 	cln->_oxp1 = cln->_oh;
 	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
-	xp_cyl(cln, cyl);
+	xp_cyl(cln/*, cyl*/);
 }
 
 void	is_on_cyl(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
@@ -303,17 +303,17 @@ void	find_roots(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 	cln->_oh = sqrtf(powf(cln->v_o_c.lngth, 2) - powf(cln->_ch, 2));
 	cln->_hxp = sqrtf(powf(r, 2) - powf(cln->_ch, 2));
 	if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth <= r && cln->o_nb.z < 0)
-		case1_2(cln, cyl, lkt);
+		case1_2(cln, /*cyl, */lkt);
 	else if (cln->v_o_c.lngth <= r && /*cln->v_p_c.lngth > r && */cln->o_nb.z >= 0 && cln->o_nb.z <= cyl->h)
-		case1_2(cln, cyl, lkt);
+		case1_2(cln, /*cyl, */lkt);
 	else if (cln->v_o_c.lngth > r)
 	{
 		if (cln->angle < 90)
 		{
 			if (cln->_ch < r)
-				case3(cln, cyl);
+				case3(cln/*, cyl*/);
 			else if (cln->_ch == r)
-				case4(cln, cyl);
+				case4(cln/*, cyl*/);
 			else
 				cylon_null(cln);
 		}

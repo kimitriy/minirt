@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 18:28:48 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/11 23:27:35 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/14 10:48:16 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void    nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr)
 {
 	t_vctr	oc; //vctr from .O(0,0,0) to .c of the sphr
 	t_point	o;
-	float	d_prdct;
+	// float	d_prdct;
 
 	p_make(&o, 0, 0, 0);
 	v_null(&oc);

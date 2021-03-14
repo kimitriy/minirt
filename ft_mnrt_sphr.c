@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:42:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/09 14:41:08 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/14 10:42:01 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ float	q_equation(float *dscr, float a, float b, float c)
 	float	r2;
 	float	root;
 
+	root = INFINITY;
 	*dscr = powf(b, 2) - 4 * a * c;
 	if (dscr == 0)
 		root = b / (2 * a);

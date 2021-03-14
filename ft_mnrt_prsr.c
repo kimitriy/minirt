@@ -6,11 +6,12 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/13 15:14:55 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/14 20:13:43 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
+// #include "mlx_dy/mlx.h"
 
 void	prsr_assist(char *line, t_prsr *np, char *field, int n)
 {
@@ -34,14 +35,38 @@ void	prsr_assist(char *line, t_prsr *np, char *field, int n)
 	np->j = 0;
 }
 
+void	set_rsltn(t_scn *nscn)
+{
+	int		scr_w;
+	int		scr_h;
+	float	ratio;
+	float	orx;
+	float	ory;
+
+	mlx_get_screen_size(nscn->vrs.mlx, &scr_w, &scr_h);
+	if (nscn->n_rsltn.x > (unsigned int)scr_w || nscn->n_rsltn.y > (unsigned int)scr_h)
+	{
+		ratio = (float)nscn->n_rsltn.x / (float)nscn->n_rsltn.y;
+		orx = (float)nscn->n_rsltn.x / (float)scr_w;
+		ory = (float)nscn->n_rsltn.y / (float)scr_h;
+		if (orx >= ory)
+		{	
+			nscn->n_rsltn.x = scr_w;
+			nscn->n_rsltn.y = (int)scr_w / ratio;
+		}
+		else
+		{
+			nscn->n_rsltn.x = (int)scr_h * ratio;
+			nscn->n_rsltn.y = scr_h;
+		}
+	}
+}
+
 void	write_rsltn(t_scn *nscn, t_prsr *np)
 {
 	nscn->n_rsltn.x = ft_atoi(np->rx);
 	nscn->n_rsltn.y = ft_atoi(np->ry);
-	if (nscn->n_rsltn.x > 2560)
-		nscn->n_rsltn.x = 2560;
-	if (nscn->n_rsltn.y > 1440)
-		nscn->n_rsltn.y = 1440;
+	set_rsltn(nscn);
 }
 
 void	write_ambnt(t_scn *nscn, t_prsr *np)

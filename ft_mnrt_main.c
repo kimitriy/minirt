@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:54:57 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/13 14:29:35 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/14 16:47:00 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ void	check_argv(int argc, char **argv)
 		if (ft_strcmp(&argv[1][i - 3], ".rt") != 0)
 			err_message("Error. Wrong name of scene file.");
 	}
+	if (argv[2] != NULL)
+		if (ft_strcmp(argv[2], "--save") != 0)
+			err_message("Error. Second argument is incorrect.");
 }
 
 void	make_scn_arr(t_list **head, int size)

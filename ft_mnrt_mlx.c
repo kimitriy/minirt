@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 00:21:25 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/14 20:33:59 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,13 @@ int		close_mlx_win(int keycode, t_vars *vrs)
 	return (0);
 }
 
+int		stop_ex(t_vars *vrs)
+{
+	mlx_destroy_window(vrs->mlx, vrs->win);
+	exit (0);
+	return (0);
+}
+
 void	img2win(t_scn *nscn, unsigned int **arr)
 {
 	if (arr != NULL)
@@ -127,13 +134,14 @@ void	img2win(t_scn *nscn, unsigned int **arr)
 void	mlx_node(t_scn *nscn, unsigned int **arr)
 {
 	nscn->vrs.mlx = mlx_init(); //initialises mlx instance
-	nscn->vrs.win = mlx_new_window(nscn->vrs.mlx, nscn->n_rsltn.x, nscn->n_rsltn.y, "Hello, world!"); //initialises new window
+	nscn->vrs.win = mlx_new_window(nscn->vrs.mlx, nscn->n_rsltn.x, nscn->n_rsltn.y, "miniRT"); //initialises new window
 	
 	nscn->dt.img = mlx_new_image(nscn->vrs.mlx, nscn->n_rsltn.x, nscn->n_rsltn.y);
 	nscn->dt.addr = mlx_get_data_addr(nscn->dt.img, &nscn->dt.bits_per_pix, &nscn->dt.line_lngth, &nscn->dt.endian);
 	
 	mlx_key_hook(nscn->vrs.win, key_hook, nscn);
 	mlx_hook(nscn->vrs.win, 2, 1L<<0, close_mlx_win, &nscn->vrs);
+	mlx_hook(nscn->vrs.win, 17, 1L << 2, stop_ex, &nscn->vrs);
 
 	img2win(nscn, arr);
 

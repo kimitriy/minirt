@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/13 12:23:47 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/14 16:19:26 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <math.h>
-# include <mlx.h>
+# include "mlx_dy/mlx.h"
+// # include "mlx_st/mlx.h"
 //# include <stdarg.h>
 
 //t_list

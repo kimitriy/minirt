@@ -6,7 +6,7 @@
 #    By: rburton <rburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/28 11:32:38 by rburton           #+#    #+#              #
-#    Updated: 2021/03/13 17:49:54 by rburton          ###   ########.fr        #
+#    Updated: 2021/03/14 16:19:56 by rburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,33 +42,32 @@ SRC 		= 	ft_mnrt_main.c \
 
 OBJS		= ${SRC:.c=.o}
 
-NAME		= mnrt.out
-
 GCC			= gcc
 
 CFLAGS		= -g -Wall -Wextra -Werror
 
-MLXST		= ./mlx_st/libmlx.a
+# MLXST		= make -C ./mlx_st/
 
-MLXDY		= ./mlx_dy/libmlx.dylib
+MLXDY		= make -C ./mlx_dy/
 
-OPENGL		= -L. libmlx.a -framework OpenGL -framework AppKit
+# LIB			= libmlx.a libmlx.dylib
+LIB			= libmlx.dylib
+
+OPENGL		= -framework OpenGL -framework AppKit
 
 RM			= rm -f
 
 all:		${NAME}
 
-#сопоставление *.c и *.o файлов
 .c.o:		=
 				${GCC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-${NAME}:		${OBJS}
-				${GCC} ${CFLAGS} -o ${NAME} ${OBJS} ${OPENGL}
-#		${ARRC} ${LIB} ${OBJS}
-#		${ARRC} ${LIB} ${FT_H}
-
-#main:
-#		${GCC} ${CFLAGS} ${LIB} ft_mnrt_main.c
+${NAME}:		${OBJS} ${HEADER}
+				# ${MLXST}
+				# cp ./mlx_st/libmlx.a .
+				${MLXDY}
+				cp ./mlx_dy/libmlx.dylib .
+				${GCC} ${CFLAGS} -o ${NAME} ${OBJS} ${LIB} ${OPENGL}
 
 clean:
 		${RM} ${OBJS}
@@ -76,5 +75,8 @@ clean:
 fclean:	clean
 		${RM} ${NAME}
 		${RM} ${LIB}
+		# make clean -C ./mlx_st/
+		make clean -C ./mlx_dy/
+		${RM} img.bmp
 
 re:		fclean all
