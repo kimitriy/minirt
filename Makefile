@@ -6,7 +6,7 @@
 #    By: rburton <rburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/28 11:32:38 by rburton           #+#    #+#              #
-#    Updated: 2021/03/14 16:19:56 by rburton          ###   ########.fr        #
+#    Updated: 2021/03/15 22:54:41 by rburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC 		= 	ft_mnrt_main.c \
 				ft_mnrt_nrml.c \
 				ft_mnrt_color.c \
 				ft_mnrt_mlx.c \
+				ft_mnrt_bmp.c \
 
 
 OBJS		= ${SRC:.c=.o}

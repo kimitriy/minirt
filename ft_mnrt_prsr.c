@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/14 20:13:43 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/15 15:40:54 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,13 @@ void	set_rsltn(t_scn *nscn)
 	float	orx;
 	float	ory;
 
-	mlx_get_screen_size(nscn->vrs.mlx, &scr_w, &scr_h);
+	if (nscn->save != '+')
+		mlx_get_screen_size(nscn->vrs.mlx, &scr_w, &scr_h);
+	else
+	{
+		scr_w = 16000;
+		scr_h = 16000;
+	}
 	if (nscn->n_rsltn.x > (unsigned int)scr_w || nscn->n_rsltn.y > (unsigned int)scr_h)
 	{
 		ratio = (float)nscn->n_rsltn.x / (float)nscn->n_rsltn.y;

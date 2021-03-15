@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/12 10:07:57 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/16 00:31:18 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,15 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	// y = 500;
 	
 	// x = 500;
-	// y = 250;
+	// y = 500;
 	// p2d_make(&xy, x, y);
 	// cnvrse2crtsn(lscn, &xy);
 	// cnvrse2xyz(&ray->head_p, lscn, &xy);
 	// trace_ray(lscn, ray);
 	// rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	// unsigned int col;
+	// col = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+	// printf("color: %d", col);
 	// ray_null(ray);
 
 	// x = 395;
@@ -138,5 +141,8 @@ void	rays_node(t_scn *lscn, t_scn *nscn)
 	rays_arr = make_rays_array(lscn);
 	ray_null(&ray);
 	launch_rays(lscn, rays_arr, &ray);
-	mlx_node(nscn, rays_arr);
+	if (lscn->save != '+')
+		mlx_node(nscn, rays_arr);
+	else
+		bmp_node(nscn, rays_arr);
 }

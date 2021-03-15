@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/12 00:02:02 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/15 13:42:52 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ void	lookat_node(t_scn *nscn)
 {
 	t_scn	*lscn;
 
-	lscn = make_t_scn();
+	lscn = make_t_scn(nscn->save);
 
 	cnvrse2local(lscn, nscn);
 	print_node(lscn);

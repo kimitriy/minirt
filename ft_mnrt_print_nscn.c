@@ -6,11 +6,16 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:46:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/02/03 16:56:41 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/15 13:47:31 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
+
+void    print_save(t_scn *scn)
+{
+    printf("--save: (%c)\n", scn->save);
+}
 
 void    print_res(t_scn *scn)
 {
@@ -143,7 +148,8 @@ void    print_trngl(t_scn *scn)
 
 void	print_node(t_scn *scn)
 {
-	print_res(scn);
+	print_save(scn);
+    print_res(scn);
     print_ambnt(scn);
     print_cam(scn);
 	print_light(scn);

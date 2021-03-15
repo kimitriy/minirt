@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 17:25:16 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/16 02:44:49 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/16 02:29:02 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,14 @@ void    bmp_node(t_scn *nscn, unsigned int **arr)
     int     fd;
 	unsigned int	pddng;
     unsigned int	file_size;
-    int             padding_size;
+    int                 padding_size;
     unsigned char   image[nscn->n_rsltn.y][nscn->n_rsltn.x][3];
     int             i;
     int             j;
 
     i = -1;
-    
-    // return (((trgb->t & 0xff) << 24) + ((trgb->r & 0xff) << 16) + ((trgb->g & 0xff) << 8) + (trgb->b & 0xff));
-
+    //return (((trgb->t & 0xff) << 24) + ((trgb->r & 0xff) << 16) +
+    //((trgb->g & 0xff) << 8) + (trgb->b & 0xff));
     while (++i < (int)nscn->n_rsltn.y)
     {
         j = nscn->n_rsltn.x;

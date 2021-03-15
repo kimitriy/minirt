@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/02 01:46:19 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/15 15:02:53 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	null_frst(t_scn *scn)
 	scn->frst_trngl = NULL;
 }
 
-t_scn	*make_t_scn(void)
+t_scn	*make_t_scn(char save)
 {
     t_scn   *scn;
 
@@ -166,6 +166,8 @@ t_scn	*make_t_scn(void)
 	scn->n_sqr = NULL;
 	scn->n_trngl = NULL;
 	scn->n_cyl = NULL;
+	if (save == '+')
+		scn->save = save;
 	return (scn);
 }
 
@@ -183,12 +185,16 @@ void	nprsr_nullt_fields(t_prsr *nprsr)
 	int		i;
 
 	i = -1;
-	while (++i < 5)
+	while (++i < 4)
 	{
 		nprsr->r[i] = '\0';
 		nprsr->g[i] = '\0';
 		nprsr->b[i] = '\0';
 		nprsr->fov[i] = '\0';
+	}
+	i = -1;
+	while (++i < 6)
+	{
 		nprsr->rx[i] = '\0';
 		nprsr->ry[i] = '\0';
 	}
@@ -223,12 +229,12 @@ t_prsr	make_t_prsr(void)
 	return (nprsr);
 }
 
-void	strct_node(char **scn_arr, int size)
+void	strct_node(char **scn_arr, int size, char save)
 {
 	t_scn   *scn;
 	t_prsr  np;
 
-	scn = make_t_scn();
+	scn = make_t_scn(save);
 	np = make_t_prsr();
 
 	prsr(scn_arr, size, scn, &np);
@@ -238,8 +244,3 @@ void	strct_node(char **scn_arr, int size)
 	lookat_node(scn);
 	
 }
-
-	//v_node();
-	//cnvs_node(&scn);
-	//print_node(&scn);
-	//mlx_node();

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/13 12:19:59 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/16 00:35:33 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,8 @@ float	min_2floats(float a, float b)
 
 void	err_message(char *error)
 {
-    write(1, error, ft_strlen(error));
+    write(1, "Error!\n", 7);
+	write(1, error, ft_strlen(error));
     write(1, "\n", 1);
     exit(0);
 }
@@ -228,4 +229,16 @@ int		ft_strcmp(char *s1, char *s2)
 	}
 	output = (unsigned char)s1[i] - (unsigned char)s2[i];
 	return (output);
+}
+
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void	ft_putnbr16(unsigned int nbr, int base, char *dgts)
+{
+	if (nbr >= (unsigned int)base)
+		ft_putnbr16(nbr / (unsigned int)base, (unsigned int)base, dgts);
+	ft_putchar(dgts[nbr % (unsigned int)base]);
 }
