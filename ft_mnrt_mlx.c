@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/14 20:33:59 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/16 15:52:53 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,32 @@ void	draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr)
 	}
 }
 
-void	ft_putnbr(int n)
-{
-	char	ch;
+// void	ft_putnbr(int n)
+// {
+// 	char	ch;
 	
-	if (n == -2147483648)
-		write(1, "-2147483648", 11);
-	else if (n < 0)
-	{
-		write(1, "-", 1);
-		ft_putnbr(n * (-1));
-	}
-	else if (n > 9)
-	{
-		ft_putnbr(n / 10);
-		ft_putnbr(n % 10);
-	}
-	else
-	{	
-		ch = n + '0';
-		write(1, &ch, 1);
-	}
-}
+// 	if (n == -2147483648)
+// 		write(1, "-2147483648", 11);
+// 	else if (n < 0)
+// 	{
+// 		write(1, "-", 1);
+// 		ft_putnbr(n * (-1));
+// 	}
+// 	else if (n > 9)
+// 	{
+// 		ft_putnbr(n / 10);
+// 		ft_putnbr(n % 10);
+// 	}
+// 	else
+// 	{	
+// 		ch = n + '0';
+// 		write(1, &ch, 1);
+// 	}
+// }
 
 int		key_hook(int keycode, t_scn *nscn)
 {
-	ft_putnbr(keycode);
+	ft_putnbr(1, keycode, 10, "0123456789");
 	write(1, "\n", 1);
 	if (keycode == 13)
 	{

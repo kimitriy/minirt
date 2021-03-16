@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 17:25:16 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/16 02:44:49 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/16 23:39:31 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ unsigned int	get_pddng(t_scn *nscn)
 		return (0);
 }
 
-unsigned char	*make_bmp_hdr(t_scn *nscn, int file_size)
+void	make_bmp_hdr(t_scn *nscn, int file_size, int fd)
 {
     static unsigned char	hdr[54];
     
@@ -44,67 +44,69 @@ unsigned char	*make_bmp_hdr(t_scn *nscn, int file_size)
     hdr[14 + 10] = (unsigned char)(nscn->n_rsltn.y >> 16);
     hdr[14 + 11] = (unsigned char)(nscn->n_rsltn.y >> 24);
     hdr[14 + 12] = (unsigned char)(1);
-    hdr[14 + 14] = (unsigned char)(3 * 8);
-    return (hdr);
-    // write(fd, "\n", 1);
+    hdr[14 + 14] = (unsigned char)(24);
+    write(fd, hdr, 54);
 }
 
-void	img2pic(t_scn *nscn, unsigned char *image, int fd, int padding_size)
+void	pxl_put(unsigned int **arr, unsigned int h, unsigned int w, int fd)
 {
-    // (void)arr;
-    // (void)padding_size;
-    // (void)nscn;
-    int		h;
-    // unsigned int     w;
-    // unsigned int     p;
-    const unsigned char padding[3] = {0, 0, 0};
+	unsigned char	c;
 
-    // p = 0;
-    h = nscn->n_rsltn.y + 1;
-    while (--h >= 0)
+	c = (unsigned char)(arr[h][w] >> 0 & 0xFF);
+	write(fd, &c, 1);
+	c = (unsigned char)(arr[h][w] >> 8 & 0xFF);
+	write(fd, &c, 1);
+	c = (unsigned char)(arr[h][w] >> 16 & 0xFF);
+	write(fd, &c, 1);
+}
+
+void	pddng_put(int fd)
+{
+	unsigned char	c;
+
+	c = (unsigned char)(0);
+	write(fd, &c, 1);
+}
+
+void	img2pic(t_scn *nscn, unsigned int **arr, unsigned int pddng, int fd)
+{
+    int	h;
+    unsigned int	w;
+    unsigned int	p;
+
+    p = 0;
+	w = 0;
+    h = nscn->n_rsltn.y - 1;
+    while (h >= 0)
     {
-        write(fd, image + (h * nscn->n_rsltn.x * 3), 3 * nscn->n_rsltn.x);
-        write(fd, padding, padding_size);
+        while (w < nscn->n_rsltn.x)
+		{
+			pxl_put(arr, h, w, fd);
+			w++;
+		}
+		while (p < pddng)
+		{
+			pddng_put(fd);
+			p++;
+		}
+		w = 0;
+		p = 0;
+		h--;
     }
 }
 
 void    bmp_node(t_scn *nscn, unsigned int **arr)
 {
-    // nscn->vrs.mlx = mlx_init(); //initialises mlx instance
-	// nscn->vrs.win = mlx_new_window(nscn->vrs.mlx, nscn->n_rsltn.x, nscn->n_rsltn.y, "miniRT"); //initialises new window
-    // nscn->dt.img = mlx_new_image(nscn->vrs.mlx, nscn->n_rsltn.x, nscn->n_rsltn.y);
-	// nscn->dt.addr = mlx_get_data_addr(nscn->dt.img, &nscn->dt.bits_per_pix, &nscn->dt.line_lngth, &nscn->dt.endian);
-    int     fd;
+    int				fd;
 	unsigned int	pddng;
     unsigned int	file_size;
-    int             padding_size;
-    unsigned char   image[nscn->n_rsltn.y][nscn->n_rsltn.x][3];
-    int             i;
-    int             j;
-
-    i = -1;
     
-    // return (((trgb->t & 0xff) << 24) + ((trgb->r & 0xff) << 16) + ((trgb->g & 0xff) << 8) + (trgb->b & 0xff));
-
-    while (++i < (int)nscn->n_rsltn.y)
-    {
-        j = nscn->n_rsltn.x;
-        while (--j >= 0)
-        {
-            image[i][j][2] = arr[i][j] >> 16 & 0xFF;
-            image[i][j][1] = arr[i][j] >> 8 & 0xFF;
-            image[i][j][0] = arr[i][j] & 0xFF;
-        }
-    }
     if ((fd = open("screenshot.bmp", O_RDWR | O_CREAT | O_TRUNC, S_IRWXU)) == 0)
         err_message("Unable to create screenshot.");
-
     pddng = get_pddng(nscn);
-    padding_size = (4 - (nscn->n_rsltn.x * 3) % 4) % 4;
-    file_size = (nscn->n_rsltn.x * 3 + padding_size) * nscn->n_rsltn.y + 54;
-	
-	write(fd, make_bmp_hdr(nscn, file_size), 54);
-    img2pic(nscn, (unsigned char*)image, fd, padding_size);
+    file_size = (nscn->n_rsltn.x * 3 + pddng) * nscn->n_rsltn.y + 54;
+	make_bmp_hdr(nscn, file_size, fd);
+    img2pic(nscn, arr, pddng, fd);
 	close(fd);
 	write(1, "Screenshot successfully created.\n", 33);
     exit(0);

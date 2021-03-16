@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/16 00:35:33 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/16 15:50:33 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,14 +231,14 @@ int		ft_strcmp(char *s1, char *s2)
 	return (output);
 }
 
-void	ft_putchar(char c)
+void	ft_putchar(int fd, char c)
 {
-	write(1, &c, 1);
+	write(fd, &c, 1);
 }
 
-void	ft_putnbr16(unsigned int nbr, int base, char *dgts)
+void	ft_putnbr(int fd, unsigned int nbr, int base, char *dgts)
 {
 	if (nbr >= (unsigned int)base)
-		ft_putnbr16(nbr / (unsigned int)base, (unsigned int)base, dgts);
-	ft_putchar(dgts[nbr % (unsigned int)base]);
+		ft_putnbr(fd, nbr / (unsigned int)base, (unsigned int)base, dgts);
+	ft_putchar(fd, dgts[nbr % (unsigned int)base]);
 }

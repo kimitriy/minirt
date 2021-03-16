@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/16 01:20:27 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/16 20:55:45 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -500,8 +500,8 @@ float				max_3floats(float a, float b, float c);
 float				min_2floats(float a, float b);
 void				err_message(char *error);
 int					ft_strcmp(char *s1, char *s2);
-void				ft_putchar(char c);
-void				ft_putnbr16(unsigned int nbr, int base, char *dgts);
+void				ft_putchar(int fd, char c);
+void				ft_putnbr(int fd, unsigned int nbr, int base, char *dgts);
 
 //ft_mnrt_list.c
 t_list				*ft_lstnew(void *content);
@@ -666,7 +666,7 @@ void    			color_node(t_scn *lscn, t_ray *ray, t_lum *lum);
 
 //ft_mnrt_bmp.c
 void    			bmp_node(t_scn *nscn, unsigned int **arr);
-void				img2pic(t_scn *nscn, unsigned char *image, int fd, int padding_size);
+void				img2pic(t_scn *nscn, unsigned int **arr, unsigned int pddng, int fd);
 void				bmp_hdr(t_scn *nscn, int file_size, int fd);
 unsigned int		get_pddng(t_scn *nscn);
 
