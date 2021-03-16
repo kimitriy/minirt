@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/17 00:43:07 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:46:06 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <fcntl.h>
 # include <math.h>
 # include "mlx_dy/mlx.h"
-// # include "mlx_st/mlx.h"
-//# include <stdarg.h>
 
 //t_list
 typedef struct		s_list
@@ -168,10 +166,10 @@ typedef struct 		s_trigon
 typedef struct 		s_qdron
 {
 	t_point			xp; //intersection point at which the ray intersects the pln
-	t_vctr			vTMP;
-	t_vctr			vR;
-	t_vctr			vUP;
-	t_vctr			vCXP; //vctr on the pln from .C (which is the point which is given to build the pln) to .i (which is an intersection point on the pln)
+	t_vctr			v_tmp;
+	t_vctr			v_r;
+	t_vctr			v_up;
+	t_vctr			v_cxp; //vctr on the pln from .C (which is the point which is given to build the pln) to .i (which is an intersection point on the pln)
 	float			alpha; //rad, angle between vR и vpi
 	float			t;
 	float			x;
@@ -550,7 +548,6 @@ void				ray_null(t_ray *ray);
 unsigned long 		cnvrse2trgb(t_color *trgb);
 unsigned int		**make_rays_array(t_scn *lscn);
 void				launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray);
-
 
 //ft_mnrt_mtrx.c
 void				mtrx4_x_vctr(t_vctr *out, t_mtrx4x4 *mtrx, t_vxyz *in);

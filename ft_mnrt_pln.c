@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/12 00:31:58 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:31:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,6 @@ t_plnx	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
 		plnx.t = 0.99999 * tmp1 / tmp2; //9
 	return (plnx);
 }
-
-// float	pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray)
-// {
-// 	float	dist;
-// 	t_vctr	o_p0; //vctr from .o (tail point) to the pln
-// 	t_point	p0;	//point on the pln, projection of tail point to this pln
-// 	float tmp1;
-// 	float tmp2;
-// 	float t;
-
-// 	dist = (p->x - r_orgn->x) * nrml->nxyz.x + (p->y - r_orgn->y) * nrml->nxyz.y + (p->z - r_orgn->z) * nrml->nxyz.z; //1
-// 	v_null(&o_p0);
-// 	v_n_prdct(&o_p0.xyz, &nrml->nxyz, dist); //3
-// 	v_fill(&o_p0);
-// 	p_calc(&p0, &o_p0, r_orgn); //4
-// 	tmp1 = v_d_prdct(&o_p0.xyz, &nrml->nxyz); //6, 7
-// 	tmp2 = v_d_prdct(&ray->nxyz, &nrml->nxyz); //8
-// 	t = tmp1 / tmp2; //9
-// 	return (t);
-// }
 
 void	pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray)
 {

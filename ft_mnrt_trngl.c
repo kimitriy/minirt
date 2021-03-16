@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 20:16:24 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/12 10:07:31 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:35:07 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void    nrml_make(t_trngl *trngl)
 void    xp_calc(t_trngl *trngl, t_ray *ray)
 {
     float       t;
-    // t_vctr		v_op;
 
     t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]).t;
     if (fabsf(t) < INFINITY && t > 0)
@@ -60,7 +59,6 @@ void    xp_calc(t_trngl *trngl, t_ray *ray)
 		v_fill(&trngl->trgn.v_op);
 		p_calc(&trngl->trgn.xp, &trngl->trgn.v_op.xyz, &ray->tail_p); //calculates p(x, y, z)
 		trngl->trgn.t = t;
-		// v_copy(&ray->vctr[ray->sgm], &trngl->trgn.v_op);
 	}
 }
 
@@ -135,21 +133,8 @@ void    trgn_make(t_trngl *trngl, t_ray *ray)
 
 void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 {
-	// t_vctr		o_p; //vctr from ray origin to the pln that is collinear to ray->vctr[0] and reaches p
-	// float		t;
-	
 	trgn_null(&trngl->trgn);
 	trgn_make(trngl, ray);
-	// nrml_trngl(trngl, ray);
-	// t = pln_equation(&trngl->p1, &ray->tail_p, &trngl->n, &ray->vctr[ray->sgm]).t; //3, 4
-	// if (fabsf(t) < INFINITY && t > 0.00006)
-	// {
-	// 	v_null(&o_p);
-	// 	v_n_prdct(&o_p.xyz, &ray->vctr[ray->sgm].nxyz, t); //calculates vctr from ray origin point to p
-	// 	v_fill(&o_p);
-	// 	p_calc(&trngl->trgn.xp, &o_p.xyz, &ray->tail_p); //calculates p(x, y, z)
-	// 	trgn_make(trngl, ray);
-	// }
 	if (trngl->trgn.xp_in == '+' && trngl->trgn.t > 0 && trngl->trgn.t <= ray->dist && ray->sgm == 0)
 	{
 		ray->dist = trngl->trgn.t;

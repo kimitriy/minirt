@@ -6,12 +6,11 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/15 15:40:54 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:32:25 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
-// #include "mlx_dy/mlx.h"
 
 void	prsr_assist(char *line, t_prsr *np, char *field, int n)
 {

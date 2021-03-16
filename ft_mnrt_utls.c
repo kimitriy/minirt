@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/16 15:50:33 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:35:31 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,27 +175,6 @@ float	max_3floats(float a, float b, float c)
 		max = c;
 	return (max);
 }
-
-// unsigned int	max_3uints(unsigned int a, unsigned int b, unsigned int c)
-// {
-// 	unsigned int	max;
-
-// 	if (a >= b && a >= c)
-// 		max = a;
-// 	if (b >= a && b >= c)
-// 		max = b;
-// 	if (c >= a && c >= b)
-// 		max = c;
-// 	return (max);
-// }
-
-// unsigned int	min_2uints(unsigned int a, unsigned int b)
-// {
-// 	if (a <= b)
-// 		return (a);
-// 	else
-// 		return (b);
-// }
 
 float	min_2floats(float a, float b)
 {

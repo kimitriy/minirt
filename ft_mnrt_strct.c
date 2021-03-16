@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/15 15:02:53 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:34:19 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	make_t_ambnt(t_scn *scn)
 
 void	make_t_cam(t_scn *scn)
 {
-	t_cam	*new_cam; //малочить сука!!!
+	t_cam	*new_cam;
 	
 	if (!(new_cam = (t_cam*)malloc(1 * sizeof(t_cam))))
 		new_cam = NULL;
@@ -90,7 +90,6 @@ void	make_t_cyl(t_scn *scn)
 	p_make(&new_cyl->p, 0, 0, 0);
 	v_null(&new_cyl->v);
 	v_null(&new_cyl->n);
-	// v_null(&new_cyl->n2);
 	new_cyl->d = 0;
 	new_cyl->h = 0;
 	color_make(&new_cyl->trgb, 0, 0, 0);
@@ -171,8 +170,6 @@ t_scn	*make_t_scn(char save)
 	return (scn);
 }
 
-//-3.40282300000000000000000000000000000000
-
 void	nprsr_reset_counters(t_prsr *nprsr)
 {
 	nprsr->i = 0;
@@ -238,8 +235,6 @@ void	strct_node(char **scn_arr, int size, char save)
 	np = make_t_prsr();
 
 	prsr(scn_arr, size, scn, &np);
-	//rays_node(&scn);
-	//v_node();
 	print_node(scn);
 	lookat_node(scn);
 	

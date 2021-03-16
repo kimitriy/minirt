@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 15:26:21 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/11 21:02:08 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:35:53 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	v_n(t_vctr *nvctr)
 	float	lngth_invrsn;
 
 	v_lngth = sqrtf(powf(nvctr->nxyz.x, 2) + powf(nvctr->nxyz.y, 2) + powf(nvctr->nxyz.z, 2));
-	// if (nvctr->nxyz.x == 0 && nvctr->nxyz.y == 0 & nvctr->nxyz.z == 0)
 	if (roundf(v_lngth) != 1)
 	{
 		lngth_invrsn = 1 / nvctr->lngth;
@@ -162,9 +161,6 @@ float	v_angle(t_vctr *vctr1, t_vctr *vctr2)
 void	v_opposite(t_vctr *vctr)
 {
 	v_n_prdct(&vctr->xyz, &vctr->xyz, -1);
-	// vctr->xyz.x = (-1) * vctr->xyz.x;
-	// vctr->xyz.y = (-1) * vctr->xyz.y;
-	// vctr->xyz.z = (-1) * vctr->xyz.z;
 	v_fill(vctr);
 }
 

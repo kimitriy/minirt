@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/16 15:52:53 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:28:25 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,6 @@ void	draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr)
 	}
 }
 
-// void	ft_putnbr(int n)
-// {
-// 	char	ch;
-	
-// 	if (n == -2147483648)
-// 		write(1, "-2147483648", 11);
-// 	else if (n < 0)
-// 	{
-// 		write(1, "-", 1);
-// 		ft_putnbr(n * (-1));
-// 	}
-// 	else if (n > 9)
-// 	{
-// 		ft_putnbr(n / 10);
-// 		ft_putnbr(n % 10);
-// 	}
-// 	else
-// 	{	
-// 		ch = n + '0';
-// 		write(1, &ch, 1);
-// 	}
-// }
 
 int		key_hook(int keycode, t_scn *nscn)
 {
@@ -109,27 +87,7 @@ void	img2win(t_scn *nscn, unsigned int **arr)
 	mlx_destroy_image(nscn->vrs.mlx, nscn->dt.img);
 	nscn->dt.img = mlx_new_image(nscn->vrs.mlx, nscn->n_rsltn.x, nscn->n_rsltn.y);
 	nscn->dt.addr = mlx_get_data_addr(nscn->dt.img, &nscn->dt.bits_per_pix, &nscn->dt.line_lngth, &nscn->dt.endian);
-
-	// mlx_loop(nscn->vrs.mlx); //holds the window opened
 }
-
-// void	img2win(t_scn *nscn, unsigned int **arr)
-// {
-// 	void		*mlx; //pointer for mlx instance
-// 	void		*mlx_win; //pointer for mlx window instance
-// 	t_data		img;
-	
-// 	mlx = mlx_init(); //initialises mlx instance
-// 	mlx_win = mlx_new_window(mlx, nscn->n_rsltn.x, nscn->n_rsltn.y, "Hello, world!"); //initialises new window
-// 	img.img = mlx_new_image(mlx, nscn->n_rsltn.x, nscn->n_rsltn.y);
-// 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pix, &img.line_lngth, &img.endian);
-	
-// 	draw_from_arr(nscn, &img, arr);
-	
-// 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-
-// 	mlx_loop(mlx); //holds the window opened
-// }
 
 void	mlx_node(t_scn *nscn, unsigned int **arr)
 {
@@ -142,8 +100,6 @@ void	mlx_node(t_scn *nscn, unsigned int **arr)
 	mlx_key_hook(nscn->vrs.win, key_hook, nscn);
 	mlx_hook(nscn->vrs.win, 2, 1L<<0, close_mlx_win, &nscn->vrs);
 	mlx_hook(nscn->vrs.win, 17, 1L << 2, stop_ex, &nscn->vrs);
-
 	img2win(nscn, arr);
-
 	mlx_loop(nscn->vrs.mlx); //holds the window opened
 }

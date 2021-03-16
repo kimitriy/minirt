@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:46:58 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/17 00:52:14 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 02:46:06 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	qdron_null(t_qdron *qdrn)
 	qdrn->x = 0;
 	qdrn->y = 0;
 	p_make(&qdrn->xp, 0, 0, 0);
-	v_null(&qdrn->vTMP);
-	v_null(&qdrn->vR);
-	v_null(&qdrn->vUP);
-	v_null(&qdrn->vCXP);
+	v_null(&qdrn->v_tmp);
+	v_null(&qdrn->v_r);
+	v_null(&qdrn->v_up);
+	v_null(&qdrn->v_cxp);
 }
 
 void	qdron_make(t_qdron *qdrn, t_sqr *sqr)
@@ -33,13 +33,13 @@ void	qdron_make(t_qdron *qdrn, t_sqr *sqr)
 	v_copy(&lkt.v_tmp, &sqr->v_tmp);
 	lkt.tmp = '+';
 	look_at_mtrx(&lkt, &sqr->v, &sqr->p);
-	v_copy(&qdrn->vTMP, &lkt.v_tmp);
-	v_copy(&qdrn->vR, &lkt.v_r);
-	v_copy(&qdrn->vUP, &lkt.v_up);
-	v_make(&qdrn->vCXP, &sqr->p, &qdrn->xp); //creates vCA
-	qdrn->alpha = v_angle(&qdrn->vR, &qdrn->vCXP);
-	qdrn->x = qdrn->vCXP.lngth * cosf(qdrn->alpha);
-	qdrn->y = qdrn->vCXP.lngth * sinf(qdrn->alpha);
+	v_copy(&qdrn->v_tmp, &lkt.v_tmp);
+	v_copy(&qdrn->v_r, &lkt.v_r);
+	v_copy(&qdrn->v_up, &lkt.v_up);
+	v_make(&qdrn->v_cxp, &sqr->p, &qdrn->xp); //creates vCA
+	qdrn->alpha = v_angle(&qdrn->v_r, &qdrn->v_cxp);
+	qdrn->x = qdrn->v_cxp.lngth * cosf(qdrn->alpha);
+	qdrn->y = qdrn->v_cxp.lngth * sinf(qdrn->alpha);
 }
 
 void	is_in_sqr(t_qdron *qdrn,t_sqr *sqr)
@@ -62,7 +62,6 @@ void	sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray)
 	t_qdron		qdrn;
 
 	qdron_null(&qdrn);
-	
 	nrml_sqr(sqr, ray);
 	qdrn.t = pln_equation(&sqr->p, &ray->tail_p, &sqr->v, &ray->vctr[ray->sgm]).t;
 	if (qdrn.t > 0 && qdrn.t < INFINITY)
@@ -76,7 +75,7 @@ void	sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray)
 			is_in_sqr(&qdrn,sqr);
 		}
 	}
-	if (qdrn.xp_in == '+'/* && t < ray->dist*/ && ray->sgm == 0 && ray->dist > qdrn.t)
+	if (qdrn.xp_in == '+' && ray->sgm == 0 && ray->dist > qdrn.t)
 	{
 		ray->dist = qdrn.t;
 		ray->obj = 'q';
