@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/16 20:55:45 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 00:43:07 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,38 +132,12 @@ typedef struct		s_mtrx4x4
 typedef struct		s_look_at
 {
 	char			tmp;
-	t_vctr			vF;
-	t_vctr			vTMP;
-	t_vctr			vR;
-	t_vctr			vUP;
+	t_vctr			v_f;
+	t_vctr			v_tmp;
+	t_vctr			v_r;
+	t_vctr			v_up;
 	t_mtrx4x4		m;
 }					t_look_at;
-
-
-
-// typedef struct 		s_trigon
-// {
-// 	t_point			xp;
-// 	t_point			a;
-// 	t_point			b;
-// 	t_point			c;
-// 	t_vctr			c_a;
-// 	t_vctr			a_b;
-// 	t_vctr			b_c;
-// 	t_vctr			xp_a;
-// 	t_vctr			xp_b;
-// 	t_vctr			xp_c;
-// 	float			prmtr;
-// 	float			prmtr1;
-// 	float			prmtr2;
-// 	float			prmtr3;
-// 	float			area;
-// 	float			area1;
-// 	float			area2;
-// 	float			area3;
-// 	char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
-// 	char			xp_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
-// }					t_trigon;
 
 typedef struct 		s_trigon
 {
