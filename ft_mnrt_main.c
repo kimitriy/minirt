@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:54:57 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/15 13:40:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/17 05:17:53 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ void	check_argv(int argc, char **argv, char *save)
 	int		i;
 
 	if (argc > 3)
-		err_message("Error. Wrong number of arguments.");
+		err_message("Wrong number of arguments.");
 	if (argv[1] == NULL)
-		err_message("Error. Scene file is not specified.");
+		err_message("Scene file is not specified.");
 	else
 	{
 		i = ft_strlen(argv[1]);
 		if (ft_strcmp(&argv[1][i - 3], ".rt") != 0)
-			err_message("Error. Wrong name of scene file.");
+			err_message("Wrong name of scene file.");
 	}
 	if (argv[2] != NULL)
 	{	
 		if (ft_strcmp(argv[2], "--save") != 0)
-			err_message("Error. Second argument is incorrect.");
+			err_message("Second argument is incorrect.");
 		else
 			*save = '+';
 	}
@@ -49,6 +49,7 @@ void	make_scn_arr(t_list **head, int size, char save)
 		scn_arr[++i] = tmp->content;
 		tmp = tmp->next;
 	}
+	check_node(scn_arr, size);
 	strct_node(scn_arr, size, save);
 }
 
@@ -63,7 +64,7 @@ int		main(int argc, char **argv)
 	check_argv(argc, argv, &save);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		err_message("Error. Scene file doesn't exist.");
+		err_message("Scene file doesn't exist.");
 	line = NULL;
 	head = NULL;
 	while (get_next_line(fd, &line))
