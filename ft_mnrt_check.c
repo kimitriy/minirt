@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 04:53:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/18 11:41:41 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 11:56:24 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	rt_print(char **scn_arr, int size)
 	}
 	i = 0;
 	j = 0;
-	// printf("first symbol: %c\n", scn_arr[1][j]);
 }
 
 void	vldt_null(t_vldt *v)
@@ -107,9 +106,9 @@ void	n_arg(char *l, int n)
 	int		arg_cntr;
 	int		nxt;
 
-	i = 0;
+	i = -1;
 	arg_cntr = 0;
-	while (i < (int)ft_strlen(l))
+	while (++i < (int)ft_strlen(l))
 	{
 		if (ft_isdigit(l[i]) == 1)
 		{
@@ -125,7 +124,6 @@ void	n_arg(char *l, int n)
 				nxt++;
 			}
 		}
-		i++;
 	}
 	if (arg_cntr != n)
 		err_message("Invalid number of arguments.");
@@ -175,7 +173,4 @@ void    check_node(char **scn_arr, int size)
 			check_line(scn_arr[i], &v);
 		i++;
 	}
-
-
-	
 }
