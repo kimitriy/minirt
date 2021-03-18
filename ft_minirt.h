@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/18 07:28:29 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 13:12:22 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ typedef struct 		s_ray
 
 /*
 obj:
+r - res
+a - amb
+o - cam
+l - light
 p - pln;
 s - sphr;
 c - cyl;
@@ -645,5 +649,15 @@ unsigned int		get_pddng(t_scn *nscn);
 
 //ft_mnrt_check.c
 void    			check_node(char	**scn_arr, int size);
+void				vldt_null(t_vldt *v);
+void				check_keys(char *l, t_vldt *v);
+void				p_marks_hndlr(char *l, int i);
+void				check_delimeters(char *l);
+void				n_arg(char *l, int n);
+void				check_args(char *l);
+void				check_line(char *line, t_vldt *v);
+
+void				check_values_node(t_prsr *np, char obj);
+void				check_resolution(t_prsr *np);
 
 #endif

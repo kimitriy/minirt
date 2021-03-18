@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/17 02:32:25 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 16:03:17 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	prsr_assist(char *line, t_prsr *np, char *field, int n)
 	char	f;
 
 	f = '0';
-	while (line[np->i])
+	while (np->j < n)
 	{
 		if ((ft_isdigit(line[np->i]) == 1 || line[np->i] == '.' || line[np->i] == '-') && np->j < n)
 		{
@@ -55,7 +55,7 @@ void	set_rsltn(t_scn *nscn)
 		orx = (float)nscn->n_rsltn.x / (float)scr_w;
 		ory = (float)nscn->n_rsltn.y / (float)scr_h;
 		if (orx >= ory)
-		{	
+		{
 			nscn->n_rsltn.x = scr_w;
 			nscn->n_rsltn.y = (int)scr_w / ratio;
 		}
@@ -69,6 +69,7 @@ void	set_rsltn(t_scn *nscn)
 
 void	write_rsltn(t_scn *nscn, t_prsr *np)
 {
+	check_values_node(np, 'r');
 	nscn->n_rsltn.x = ft_atoi(np->rx);
 	nscn->n_rsltn.y = ft_atoi(np->ry);
 	set_rsltn(nscn);
@@ -76,6 +77,7 @@ void	write_rsltn(t_scn *nscn, t_prsr *np)
 
 void	write_ambnt(t_scn *nscn, t_prsr *np)
 {
+	check_values_node(np, 'a');
 	nscn->n_ambnt.lvl = ft_atof(np->lvl);
 	nscn->n_ambnt.trgb.t = 0;
 	nscn->n_ambnt.trgb.r = ft_atoi(np->r);
@@ -87,6 +89,7 @@ void	write_cam(t_scn *nscn, t_prsr *np)
 {
 	t_cam 	*tmp;
 
+	check_values_node(np, 'o');
 	tmp = NULL;
 	make_t_cam(nscn);
 	if (nscn->n_cntr.cam == 0)
@@ -109,6 +112,7 @@ void	write_lght(t_scn *nscn, t_prsr *np)
 {
 	t_lght *tmp;
 	
+	check_values_node(np, 'l');
 	tmp = NULL;
 	make_t_lght(nscn);
 	if (nscn->n_cntr.lght == 0)
@@ -131,6 +135,7 @@ void	write_pln(t_scn *nscn, t_prsr *np)
 {
 	t_pln *tmp;
 
+	check_values_node(np, 'p');
 	tmp = NULL;
 	make_t_pln(nscn);
 	if (nscn->n_cntr.pln == 0)
@@ -156,6 +161,7 @@ void	write_sphr(t_scn *nscn, t_prsr *np)
 {
 	t_sphr *tmp;
 
+	check_values_node(np, 's');
 	make_t_sphr(nscn);
 	if (nscn->n_cntr.sphr == 0)
 		nscn->frst_sphr = nscn->n_sphr;
@@ -177,6 +183,7 @@ void	write_cyl(t_scn *nscn, t_prsr *np)
 {
 	t_cyl *tmp;
 
+	check_values_node(np, 'c');
 	make_t_cyl(nscn);
 	if (nscn->n_cntr.cyl == 0)
 		nscn->frst_cyl = nscn->n_cyl;
@@ -203,6 +210,7 @@ void	write_sqr(t_scn *nscn, t_prsr *np)
 {
 	t_sqr *tmp;
 
+	check_values_node(np, 'q');
 	make_t_sqr(nscn);
 	if (nscn->n_cntr.sqr == 0)
 		nscn->frst_sqr = nscn->n_sqr;
@@ -232,6 +240,7 @@ void	write_trngl(t_scn *nscn, t_prsr *np)
 {
 	t_trngl *tmp;
 
+	check_values_node(np, 't');
 	make_t_trngl(nscn);
 	if (nscn->n_cntr.trngl == 0)
 		nscn->frst_trngl = nscn->n_trngl;

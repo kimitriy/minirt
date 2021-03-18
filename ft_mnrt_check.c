@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 04:53:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/18 11:56:24 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 16:15:41 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,4 +173,150 @@ void    check_node(char **scn_arr, int size)
 			check_line(scn_arr[i], &v);
 		i++;
 	}
+}
+
+void	check_val_color(t_prsr *np)
+{
+	float	lvl;
+	int		r;
+	int		g;
+	int		b;
+
+	if (ft_strchr(np->r, '.') != NULL || ft_strchr(np->g, '.') != NULL || ft_strchr(np->b, '.') != NULL)
+		err_message("Unable to apply color.");
+	lvl = ft_atof(np->lvl);
+	r = ft_atof(np->r);
+	g = ft_atof(np->g);
+	b = ft_atof(np->b);
+	if (lvl < 0 || lvl > 1)
+		err_message("Unable to apply brightness.");
+	if ((r < 0 || r > 255) || (g < 0 || g > 255) || (b < 0 || b > 255))
+		err_message("Unable to apply color.");
+}
+
+void	check_val_coordinates(char *x, char *y, char *z)
+{
+	float	dx;
+	float	dy;
+	float	dz;
+
+	dx = ft_atof(x);
+	dy = ft_atof(y);
+	dz = ft_atof(z);
+	if ((dx < -1 * __FLT_MAX__) || (dx > (double)__FLT_MAX__))
+		err_message("Unable to apply coordinates.");
+	if ((dy < -1 * __FLT_MAX__) || (dy > (double)__FLT_MAX__))
+		err_message("Unable to apply coordinates.");
+	if ((dz < -1 * __FLT_MAX__) || (dz > (double)__FLT_MAX__))
+		err_message("Unable to apply coordinates.");
+	// if (dx < (double)(-1 * __FLT_MAX__) || dx > (double)__FLT_MAX__)
+	// 	err_message("Unable to apply coordinates.");
+	// if (dy < (double)(-1 * __FLT_MAX__) || dy > (double)__FLT_MAX__)
+	// 	err_message("Unable to apply coordinates.");
+	// if (dz < (double)(-1 * __FLT_MAX__) || dz > (double)__FLT_MAX__)
+	// 	err_message("Unable to apply coordinates.");
+}
+
+void	check_val_uint(char *n, int lim, char *mssg)
+{
+	int		tmp;
+
+	if (ft_strchr(n, '.') != NULL)
+		err_message(mssg);
+	tmp = ft_atoi(n);
+	if (tmp < 0 || tmp > lim)
+		err_message(mssg);
+}
+
+void	check_val_float(char *n, char *mssg)
+{
+	double	tmp;
+
+	tmp = ft_atoi(n);
+	if (tmp < (double)(-1 * __FLT_MAX__) || tmp > (double)__FLT_MAX__)
+		err_message(mssg);
+}
+
+void	check_val_rsltn(t_prsr *np)
+{
+	check_val_uint(np->rx, 16000, "Unable to apply resolution.");
+	check_val_uint(np->ry, 16000, "Unable to apply resolution.");
+}
+
+void	check_val_ambnt(t_prsr *np)
+{
+	check_val_color(np);
+}
+
+void	check_val_cam(t_prsr *np)
+{
+	check_val_uint(np->fov, 180, "Unable to apply FOV.");
+	check_val_coordinates(np->x, np->y, np->z);
+}
+
+void	check_val_lght(t_prsr *np)
+{
+	check_val_coordinates(np->x, np->y, np->z);
+	check_val_color(np);
+}
+
+void	check_val_pln(t_prsr *np)
+{
+	check_val_coordinates(np->x, np->y, np->z);
+	check_val_coordinates(np->nx, np->ny, np->nz);
+	check_val_color(np);
+}
+
+void	check_val_sphr(t_prsr *np)
+{
+	check_val_coordinates(np->x, np->y, np->z);
+	check_val_float(np->d, "Unable to apply diameter.");
+	check_val_color(np);
+}
+
+void	check_val_cyl(t_prsr *np)
+{
+	check_val_coordinates(np->x, np->y, np->z);
+	check_val_coordinates(np->nx, np->ny, np->nz);
+	check_val_float(np->d, "Unable to apply diameter.");
+	check_val_float(np->d, "Unable to apply height.");
+	check_val_color(np);
+}
+
+void	check_val_sqr(t_prsr *np)
+{
+	check_val_coordinates(np->x, np->y, np->z);
+	check_val_coordinates(np->nx, np->ny, np->nz);
+	check_val_float(np->side, "Unable to apply side.");
+	check_val_color(np);
+}
+
+void	check_val_trngl(t_prsr *np)
+{
+	check_val_coordinates(np->x, np->y, np->z);
+	check_val_coordinates(np->x2, np->y2, np->z2);
+	check_val_coordinates(np->x3, np->y3, np->z3);
+	check_val_color(np);
+}
+
+void	check_values_node(t_prsr *np, char obj)
+{
+	if (obj == 'r')
+		check_val_rsltn(np);
+	else if (obj == 'a')
+		check_val_ambnt(np);
+	else if (obj == 'o')
+		check_val_cam(np);
+	else if (obj == 'l')
+		check_val_lght(np);
+	else if (obj == 'p')
+		check_val_pln(np);
+	else if (obj == 's')
+		check_val_sphr(np);
+	else if (obj == 'c')
+		check_val_cyl(np);
+	else if (obj == 'q')
+		check_val_sqr(np);
+	else if (obj == 't')
+		check_val_trngl(np);
 }
