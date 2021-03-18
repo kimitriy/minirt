@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:11:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/17 01:15:50 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 02:06:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,8 @@ void	lookat_node(t_scn *nscn)
 	t_scn	*lscn;
 
 	lscn = make_t_scn(nscn->save);
-	cnvrse2local(lscn, nscn);
+	if (nscn->n_cntr.cam > 0)
+		cnvrse2local(lscn, nscn);
 	print_node(lscn);
 	rays_node(lscn, nscn);
 }

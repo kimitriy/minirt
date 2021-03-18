@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 23:05:55 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/17 02:35:31 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 07:28:17 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,4 +220,26 @@ void	ft_putnbr(int fd, unsigned int nbr, int base, char *dgts)
 	if (nbr >= (unsigned int)base)
 		ft_putnbr(fd, nbr / (unsigned int)base, (unsigned int)base, dgts);
 	ft_putchar(fd, dgts[nbr % (unsigned int)base]);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	size_t	i;
+
+	if (NULL == s)
+		return (NULL);
+	i = 0;
+	if (c == '\0')
+	{
+		while (s[i])
+			i++;
+		return ((char*)&s[i]);
+	}
+	while (s[i])
+	{
+		if (s[i] == (unsigned char)c)
+			return ((char*)&s[i]);
+		i++;
+	}
+	return (NULL);
 }

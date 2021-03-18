@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:35:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/17 01:14:51 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 02:36:04 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,9 @@ unsigned long cnvrse2trgb(t_color *trgb)
 
 unsigned int	**make_rays_array(t_scn *lscn)
 {
-	unsigned int 	x;
 	unsigned int	y;
 	unsigned int	**arr;
-	t_color			grey;
-
+	
 	y = 0;
 	if (!(arr = (unsigned int**)malloc(lscn->n_rsltn.y * sizeof(unsigned int*))))
 		return (NULL);
@@ -56,20 +54,28 @@ unsigned int	**make_rays_array(t_scn *lscn)
 			return (NULL);
 		y++;
 	}
+	return (arr);
+}
+
+void	arr_ground_color(t_scn *lscn, unsigned int **rays_arr)
+{
+	unsigned int 	x;
+	unsigned int	y;
+	t_color 		clr;
+
 	y = 0;
 	x = 0;
-	color_make(&grey, 255, 255, 255);
+	color_make(&clr, 0, 0, 0);
 	while (y < lscn->n_rsltn.y)
 	{
 		while (x < lscn->n_rsltn.x)
 		{
-			arr[y][x] = (unsigned int)cnvrse2trgb(&grey);
+			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&clr);
 			x++;
 		}
 		x = 0;
 		y++;
 	}
-	return (arr);
 }
 
 void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
@@ -78,26 +84,26 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 	unsigned int	y;
 	t_2d_point		xy;
 	
-	x = 0;
-	y = 0;
-	while (y < lscn->n_rsltn.y)
+	if (lscn->n_cntr.cam > 0)
 	{
-		while (x < lscn->n_rsltn.x)
+		x = -1;
+		y = -1;
+		while (++y < lscn->n_rsltn.y)
 		{
-			p2d_make(&xy, x, y);
-			cnvrse2crtsn(lscn, &xy);
-			cnvrse2xyz(&ray->head_p, lscn, &xy);
-			trace_ray(lscn, ray);
-			rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
-			ray_null(ray);
-			x++;
+			while (++x < lscn->n_rsltn.x)
+			{
+				p2d_make(&xy, x, y);
+				cnvrse2crtsn(lscn, &xy);
+				cnvrse2xyz(&ray->head_p, lscn, &xy);
+				trace_ray(lscn, ray);
+				rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
+				ray_null(ray);
+			}
+			x = 0;
 		}
-		x = 0;
-		y++;
 	}
-	
-	// x = 500;
-	// y = 500;
+	else
+		arr_ground_color(lscn, rays_arr);
 	
 	// x = 500;
 	// y = 500;
@@ -138,7 +144,10 @@ void	rays_node(t_scn *lscn, t_scn *nscn)
 	unsigned int	**rays_arr;
 	t_ray			ray;
 	
-	rays_arr = make_rays_array(lscn);
+	if (nscn->n_cntr.cam > 0)
+		rays_arr = make_rays_array(lscn);
+	else
+		rays_arr = make_rays_array(nscn);
 	ray_null(&ray);
 	launch_rays(lscn, rays_arr, &ray);
 	if (lscn->save != '+')

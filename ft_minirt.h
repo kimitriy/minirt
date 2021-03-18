@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/17 02:46:06 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 07:28:29 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,15 +198,12 @@ typedef struct 		s_cylon
 	t_point			xp1;
 	t_point			xp2;
 	t_point			p;	//intersection point with the cyl's cap plane
-	// t_2d_point		p_nb; //conversed .P'
 	t_vctr2d		v_od_nb; //projection of the vD vctr
 	t_vctr2d		v_oc_nb; //vctr from _RO to _C
 	t_vctr			v_d;
 	t_vctr			v_od; //projection of v_d
 	t_vctr			v_oxp1;
 	t_vctr			v_oxp2;
-	// t_vctr			v_cxp1;
-	// t_vctr			v_cxp2;
 	t_vctr			v_o_c; //vctr from _o' to _c'
 	t_vctr			v_p_c; //vctr from .plnXP' to _c'
 	t_pln			pln; //a pln where the cap 1 lies
@@ -244,12 +241,7 @@ typedef struct 		s_lum
 	t_color			l_trgb;
 }					t_lum;
 
-
-
-
-
 //mlx
-
 typedef struct  s_vars {
     void			*mlx; //pointer for mlx instance
     void			*win; //pointer for mlx window instance
@@ -406,6 +398,14 @@ typedef struct		s_prsr
 	char			h[42];
 }					t_prsr;
 
+typedef struct 		s_vldt
+{
+	int				r_cnt;
+	int				a_cnt;
+	
+}					t_vldt;
+
+
 //ft_mnrt_main.c
 void				check_argv(int argc, char **argv, char *save);
 void				make_scn_arr(t_list **head, int size, char save);
@@ -474,6 +474,8 @@ void				err_message(char *error);
 int					ft_strcmp(char *s1, char *s2);
 void				ft_putchar(int fd, char c);
 void				ft_putnbr(int fd, unsigned int nbr, int base, char *dgts);
+char				*ft_strchr(const char *s, int c);
+
 
 //ft_mnrt_list.c
 t_list				*ft_lstnew(void *content);
@@ -640,5 +642,8 @@ void    			bmp_node(t_scn *nscn, unsigned int **arr);
 void				img2pic(t_scn *nscn, unsigned int **arr, unsigned int pddng, int fd);
 void				bmp_hdr(t_scn *nscn, int file_size, int fd);
 unsigned int		get_pddng(t_scn *nscn);
+
+//ft_mnrt_check.c
+void    			check_node(char	**scn_arr, int size);
 
 #endif
