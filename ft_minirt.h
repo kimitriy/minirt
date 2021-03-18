@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/18 16:59:59 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 17:37:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 # include <math.h>
 # include "mlx_dy/mlx.h"
 
-//t_list
+/*t_list*/
 typedef struct		s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
 
-//color
+/*color*/
 typedef struct		s_color
 {
 	unsigned int	t;
@@ -44,7 +44,7 @@ typedef struct		s_cmyk
 	float			k;
 }					t_cmyk;
 
-//geometry
+/*geometry*/
 typedef struct 		s_point
 {
 	float			x;
@@ -92,7 +92,6 @@ typedef struct 		s_ray
 	t_vctr			vctr[2];
 	t_point			hit_p;
 	float			dist;
-	//float			l;
 	char			obj;
 	char			shdw;
 	t_color			obj_trgb;
@@ -124,13 +123,13 @@ typedef struct 		s_plnx
 	float			t; //distan
 }					t_plnx;
 
-//mtrx
+/*mtrx*/
 typedef struct		s_mtrx4x4
 {
 	float			m[4][4];
 }					t_mtrx4x4;
 
-//look_at_mtrx
+/*look_at_mtrx*/
 typedef struct		s_look_at
 {
 	char			tmp;
@@ -163,7 +162,6 @@ typedef struct 		s_trigon
 	t_vctr2d		_cb;
 	t_vctr2d		_cxp;
 	float			t;
-	// char			f; //flag; if (f == '\0') make_plgn() hasn't been called yet, if (f == 'f') it has
 	char			xp_in; //if (p_in == '\0') .p is not in trngl, if (p_in == '+') .p is in trngl
 }					t_trigon;
 
@@ -222,7 +220,7 @@ typedef struct 		s_cylon
 	float			sin_alpha; //angle between vN of the cyl and vD of the ray
 }					t_cylon;
 
-//lum
+/*lum*/
 typedef struct 		s_lum
 {
 	float			alvl;
@@ -245,7 +243,7 @@ typedef struct 		s_lum
 	t_color			l_trgb;
 }					t_lum;
 
-//mlx
+/*mlx*/
 typedef struct  s_vars {
     void			*mlx; //pointer for mlx instance
     void			*win; //pointer for mlx window instance
@@ -260,7 +258,7 @@ typedef struct 		s_data
 	int				endian;
 }					t_data;
 
-//prsr
+/*prsr*/
 typedef struct		s_rsltn
 {
 	unsigned int	x;
@@ -289,14 +287,6 @@ typedef struct		s_lght
 	struct s_lght	*nxt;
 }					t_lght;
 
-// typedef struct		s_pln
-// {
-// 	t_point			p;
-// 	t_vctr			v;
-// 	t_color			trgb;
-// 	struct s_pln	*nxt;
-// }					t_pln;
-
 typedef struct		s_sphr
 {
 	t_point			p;
@@ -310,7 +300,6 @@ typedef struct		s_cyl
 	t_point			p;
 	t_vctr			v;
 	t_vctr			n;
-	// t_vctr			n2;
 	float			d;
 	float			h;
 	t_color			trgb;
@@ -410,11 +399,11 @@ typedef struct 		s_vldt
 }					t_vldt;
 
 
-//ft_mnrt_main.c
+/*ft_mnrt_main.c*/
 void				check_argv(int argc, char **argv, char *save);
 void				make_scn_arr(t_list **head, int size, char save);
 
-//ft_mnrt_strct.c
+/*ft_mnrt_strct.c*/
 void				make_t_rsltn(t_scn *nscn);
 void				make_t_ambnt(t_scn *nscn);
 void				make_t_cam(t_scn *nscn);
@@ -434,7 +423,7 @@ t_prsr				make_t_prsr(void);
 void				strct_node(char **scn_arr, int size, char save);
 
 
-//ft_mnrt_prsr.c
+/*ft_mnrt_prsr.c*/
 void				prsr(char **scn_arr, int size, t_scn *nscn, t_prsr *np);
 void				prsr_rsltn(char *line, t_scn *nscn, t_prsr *np);
 void				prsr_ambnt(char *line, t_scn *nscn, t_prsr *np);
@@ -457,11 +446,11 @@ void				write_sqr(t_scn *nscn, t_prsr *np);
 void				write_trngl(t_scn *nscn, t_prsr *np);
 
 
-//ft_mnrt_atof.c
+/*ft_mnrt_atof.c*/
 double				ft_atof(const char *str);
 
 
-//ft_mnrt_utls.c
+/*ft_mnrt_utls.c*/
 void				ft_bzero(void *s, size_t n);
 size_t				ft_strlen(const char *s);
 void				*ft_calloc(size_t count, size_t size);
@@ -481,14 +470,14 @@ void				ft_putnbr(int fd, unsigned int nbr, int base, char *dgts);
 char				*ft_strchr(const char *s, int c);
 
 
-//ft_mnrt_list.c
+/*ft_mnrt_list.c*/
 t_list				*ft_lstnew(void *content);
 t_list				*ft_lstlast(t_list *lst);
 void				ft_lstadd_front(t_list **lst, t_list *new);
 void				ft_lstadd_back(t_list **lst, t_list *new);
 int					ft_lstsize(t_list *lst);
 
-//ft_mnrt_mlx.c
+/*ft_mnrt_mlx.c*/
 void				mlx_node(t_scn *lscn, unsigned int **arr);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void				draw_from_arr(t_scn * nscn, t_data *data, unsigned int **arr);
@@ -496,7 +485,7 @@ void				img2win(t_scn *nscn, unsigned int **arr);
 int					key_hook(int keycode, t_scn *lscn);
 int					close_mlx_win(int keycode, t_vars *vrs);
 
-//ft_mnrt_print_nscn.c
+/*ft_mnrt_print_nscn.c*/
 void				print_node(t_scn *nscn);
 void    			print_cam(t_scn *nscn);
 void    			print_light(t_scn *nscn);
@@ -506,7 +495,7 @@ void    			print_cyl(t_scn *nscn);
 void    			print_sqr(t_scn *nscn);
 void    			print_trngl(t_scn *nscn);
 
-//ft_mnrt_point.c
+/*ft_mnrt_point.c*/
 void				p2d_make(t_2d_point *out, int x, int y);
 void				p_make(t_point *output, float x, float y, float z);
 void				p_calc(t_point *out, t_vxyz *vctr, t_point *tail);
@@ -514,7 +503,7 @@ void				p_copy(t_point *out, t_point *in);
 int					p_is_equal(t_point *p1, t_point *p2);
 void				p2pln_prjctn(t_plnx *plnx, t_pln *pln, t_point *p);
 
-//ft_mnrt_vctr2d.c
+/*ft_mnrt_vctr2d.c*/
 void				v_xy(t_vxy *out, t_2d_point *tail, t_2d_point *head);
 void				v2d_null(t_vctr2d *vctr);
 void				v2d_lngth(t_vctr2d *vctr);
@@ -522,7 +511,7 @@ void				v2d_make(t_vctr2d *out, t_2d_point *tail, t_2d_point *head);
 float				v2d_d_prdct(t_vxy *xy1, t_vxy *xy2);
 float				v2d_pd_prdct(t_vctr2d *_vD, t_vctr2d *_vOC);
 
-//ft_mnrt_vctr3d.c
+/*ft_mnrt_vctr3d.c*/
 void				v_xyz(t_vxyz *out, t_point *tail, t_point *head);
 void				v_lngth(t_vctr *vctr);
 void				v_n(t_vctr *vctr);
@@ -541,13 +530,13 @@ void				v_opposite(t_vctr *vctr);
 float				v_are_collinear(t_vctr *v1, t_vctr *v2);
 void				v_node(void);
 
-//ft_mnrt_cnvs.c
+/*ft_mnrt_cnvs.c*/
 void				cnvs_node(t_scn *lscn);
 void				cnvrse2crtsn(t_scn *lscn,t_2d_point *xy);
 void				cnvrse2ncrtsn(t_scn *lscn,t_2d_point *xy);
 void				cnvrse2xyz(t_point *out, t_scn *lscn, t_2d_point *xy);
 
-//ft_mnrt_rays.c
+/*ft_mnrt_rays.c*/
 void				rays_node(t_scn *lscn, t_scn *nscn);
 void				trace_ray(t_scn *lscn, t_ray *ray);
 void				ray_null(t_ray *ray);
@@ -555,11 +544,11 @@ unsigned long 		cnvrse2trgb(t_color *trgb);
 unsigned int		**make_rays_array(t_scn *lscn);
 void				launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray);
 
-//ft_mnrt_mtrx.c
+/*ft_mnrt_mtrx.c*/
 void				mtrx4_x_vctr(t_vctr *out, t_mtrx4x4 *mtrx, t_vxyz *in);
 void				mtrx4_x_point(t_point *out, t_mtrx4x4 *mtrx, t_point *in);
 
-//ft_mnrt_lookat.c
+/*ft_mnrt_lookat.c*/
 void				null_lookat(t_look_at *lookat);
 void				v_tmp_make(t_vctr *vf, t_vctr *tmp, t_look_at *lookat);
 void				look_at_mtrx(t_look_at *lookat, t_vctr *vF, t_point *p);
@@ -573,12 +562,12 @@ void				cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat);
 void				cnvrse2local(t_scn *lscn, t_scn *nscn);
 void				lookat_node(t_scn *nscn);
 
-//ft_mnrt_intrsct.c
+/*ft_mnrt_intrsct.c*/
 void				intrsct_node(t_scn *lscn, t_ray *ray);
 void				check_objcts(t_scn *lscn, t_ray *ray);
 void				check_lghts(t_scn *lscn, t_ray *ray);
 
-//ft_mnrt_lum.c
+/*ft_mnrt_lum.c*/
 void				l_ambnt(t_lum *lum);
 void				l_dffse(t_lum *lum);
 void				l_spclr(t_lum *lum);
@@ -588,34 +577,33 @@ void    			lum_sphr(t_scn *lscn, t_lght *lght, t_ray *ray);
 void				lum_pln(t_scn *lscn, t_lght *lght, t_ray *ray);
 void				lum_node(t_scn *lscn, t_lght *lght, t_ray *ray);
 
-//ft_mnrt_nrml.c
+/*ft_mnrt_nrml.c*/
 void				nrml_sphr(t_vctr *nrml, t_ray *ray, t_sphr *sphr);
 void				nrml_trngl(t_trngl *trngl, t_ray *ray);
 void				nrml_pln(t_pln *pln, t_ray *ray);
 void				nrml_sqr(t_sqr *sqr, t_ray *ray);
 void				nrml_cyl(t_cyl *cyl, t_ray *ray);
 
-//ft_mnrt_sphr.c
+/*ft_mnrt_sphr.c*/
 float				q_equation(float *root, float a, float b, float c);
 void				sphr_intrsct(t_scn *lscn, t_sphr *sphr, t_ray *ray);
 void 				check_sphrs(t_scn *lscn, t_ray *ray);
 
-//ft_mnrt_pln.c
-// float				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
+/*ft_mnrt_pln.c*/
 t_plnx				pln_equation(t_point *p, t_point *r_orgn, t_vctr *nrml, t_vctr *ray);
 void				pln_intrsct(t_scn *lscn, t_pln *pln, t_ray *ray);
 void 				check_plns(t_scn *lscn, t_ray *ray);
 void				pln_null(t_pln *pln);
 void				plnx_null(t_plnx *plnx);
 
-//ft_mnrt_sqr.c
+/*ft_mnrt_sqr.c*/
 void				qdron_null(t_qdron *qdrn);
 void				qdron_make(t_qdron *qdrn, t_sqr *sqr);
 void				is_in_sqr(t_qdron *qdrn,t_sqr *sqr);
 void				sqr_intrsct(t_scn *lscn, t_sqr *sqr, t_ray *ray);
 void 				check_sqrs(t_scn *lscn, t_ray *ray);
 
-//ft_mnrt_trngl.c
+/*ft_mnrt_trngl.c*/
 void				trgn_null(t_trigon *trgn);
 void				trgn_prmtr(t_trigon *trgn);
 void				trgn_area(t_trigon *trgn);
@@ -624,7 +612,7 @@ void				trgn_make(t_trngl *trngl, t_ray *ray);
 void				trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray);
 void 				check_trngls(t_scn *lscn, t_ray *ray);
 
-//ft_mnrt_cyl.c
+/*ft_mnrt_cyl.c*/
 void				cylon_null(t_cylon *cln);
 void				cylon_cnvrse(t_cylon *cln, t_look_at *lkt);
 void				cylon_make(t_cylon *cln, t_ray *ray, t_cyl *cyl);
@@ -634,20 +622,24 @@ void				cylon_make3(t_cylon *cln, t_cyl *cyl);
 void				cyl_intrsct(t_scn *lscn, t_cyl *cyl, t_ray *ray);
 void 				check_cyls(t_scn *lscn, t_ray *ray);
 
-//ft_mnrt_color.c
+/*ft_mnrt_color.c*/
 void				color_make(t_color *color, unsigned int r, unsigned int g, unsigned int b);
 void				color_null(t_color *color);
 void				color_calc(t_color *out, t_color *in, t_lum *lum);
 void				color_copy(t_color *to, t_color *from);
 void    			color_node(t_scn *lscn, t_ray *ray, t_lum *lum);
 
-//ft_mnrt_bmp.c
+/*ft_mnrt_bmp_1.c*/
 void    			bmp_node(t_scn *nscn, unsigned int **arr);
 void				img2pic(t_scn *nscn, unsigned int **arr, unsigned int pddng, int fd);
-void				bmp_hdr(t_scn *nscn, int file_size, int fd);
+void				make_bmp_hdr(t_scn *nscn, int file_size, int fd);
+void				pxl_put(unsigned int **arr, unsigned int h, unsigned int w, int fd);
+void				pddng_put(int fd);
+
+/*ft_mnrt_bmp_2.c*/
 unsigned int		get_pddng(t_scn *nscn);
 
-//ft_mnrt_check.c
+/*ft_mnrt_check.c*/
 void    			check_node(char	**scn_arr, int size);
 void				vldt_null(t_vldt *v);
 void				check_keys(char *l, t_vldt *v);
