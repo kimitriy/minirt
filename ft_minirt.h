@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/18 13:12:22 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 16:59:59 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,7 +458,7 @@ void				write_trngl(t_scn *nscn, t_prsr *np);
 
 
 //ft_mnrt_atof.c
-float				ft_atof(const char *str);
+double				ft_atof(const char *str);
 
 
 //ft_mnrt_utls.c

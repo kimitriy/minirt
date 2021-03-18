@@ -6,13 +6,13 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 18:21:42 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/18 16:15:49 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 16:59:25 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
 
-float	ft_atof(const char *str)
+double	ft_atof(const char *str)
 {
 	double	r1;
 	double	r2;

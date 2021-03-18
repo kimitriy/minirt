@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 04:53:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/18 16:15:41 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/18 17:06:20 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,25 +196,19 @@ void	check_val_color(t_prsr *np)
 
 void	check_val_coordinates(char *x, char *y, char *z)
 {
-	float	dx;
-	float	dy;
-	float	dz;
+	double	dx;
+	double	dy;
+	double	dz;
 
 	dx = ft_atof(x);
 	dy = ft_atof(y);
 	dz = ft_atof(z);
-	if ((dx < -1 * __FLT_MAX__) || (dx > (double)__FLT_MAX__))
+	if ((dx < -1 * __FLT_MAX__) || (dx > __FLT_MAX__))
 		err_message("Unable to apply coordinates.");
-	if ((dy < -1 * __FLT_MAX__) || (dy > (double)__FLT_MAX__))
+	if ((dy < -1 * __FLT_MAX__) || (dy > __FLT_MAX__))
 		err_message("Unable to apply coordinates.");
-	if ((dz < -1 * __FLT_MAX__) || (dz > (double)__FLT_MAX__))
+	if ((dz < -1 * __FLT_MAX__) || (dz > __FLT_MAX__))
 		err_message("Unable to apply coordinates.");
-	// if (dx < (double)(-1 * __FLT_MAX__) || dx > (double)__FLT_MAX__)
-	// 	err_message("Unable to apply coordinates.");
-	// if (dy < (double)(-1 * __FLT_MAX__) || dy > (double)__FLT_MAX__)
-	// 	err_message("Unable to apply coordinates.");
-	// if (dz < (double)(-1 * __FLT_MAX__) || dz > (double)__FLT_MAX__)
-	// 	err_message("Unable to apply coordinates.");
 }
 
 void	check_val_uint(char *n, int lim, char *mssg)
