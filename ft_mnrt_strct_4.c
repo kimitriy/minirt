@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 17:58:05 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 20:11:22 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 01:11:21 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,5 @@ void	strct_node(char **scn_arr, int size, char save)
 	scn = make_t_scn(save);
 	np = make_t_prsr();
 	prsr(scn_arr, size, scn, &np);
-	lookat_node(scn);
+	lookat_node(scn, 0);
 }

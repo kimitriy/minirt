@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 23:13:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 13:28:36 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 01:14:06 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	draw_from_arr(t_scn *nscn, t_data *data, unsigned int **arr)
 
 int		key_hook(int keycode, t_scn *nscn)
 {
-	ft_putnbr(1, keycode, 10, "0123456789");
-	write(1, "\n", 1);
 	if (keycode == 13)
 	{
 		if (nscn->n_cam->next != NULL)
@@ -56,7 +54,7 @@ int		key_hook(int keycode, t_scn *nscn)
 		nscn->n_trngl = nscn->frst_trngl;
 		nscn->n_cyl = nscn->frst_cyl;
 		mlx_destroy_window(nscn->vrs.mlx, nscn->vrs.win);
-		lookat_node(nscn);
+		lookat_node(nscn, 77777);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 18:20:24 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 18:21:12 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 22:40:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void	is_in_trngl(t_trngl *trngl)
 	int		i;
 
 	i = 0;
-	r1 = v2d_pd_prdct(&trngl->trgn._axp, &trngl->trgn._ab);
-	r2 = v2d_pd_prdct(&trngl->trgn._ac, &trngl->trgn._ab);
+	r1 = v2d_pd_prdct(&trngl->trgn.v2_axp, &trngl->trgn.v2_ab);
+	r2 = v2d_pd_prdct(&trngl->trgn.v2_ac, &trngl->trgn.v2_ab);
 	if (r1 <= 0 && r2 < 0)
 		i++;
-	r1 = v2d_pd_prdct(&trngl->trgn._bxp, &trngl->trgn._bc);
-	r2 = v2d_pd_prdct(&trngl->trgn._ba, &trngl->trgn._bc);
+	r1 = v2d_pd_prdct(&trngl->trgn.v2_bxp, &trngl->trgn.v2_bc);
+	r2 = v2d_pd_prdct(&trngl->trgn.v2_ba, &trngl->trgn.v2_bc);
 	if (r1 <= 0 && r2 < 0)
 		i++;
-	r1 = v2d_pd_prdct(&trngl->trgn._cxp, &trngl->trgn._ca);
-	r2 = v2d_pd_prdct(&trngl->trgn._cb, &trngl->trgn._ca);
+	r1 = v2d_pd_prdct(&trngl->trgn.v2_cxp, &trngl->trgn.v2_ca);
+	r2 = v2d_pd_prdct(&trngl->trgn.v2_cb, &trngl->trgn.v2_ca);
 	if (r1 <= 0 && r2 < 0)
 		i++;
 	if (i == 3)

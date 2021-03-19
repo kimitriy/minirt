@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 22:41:12 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 12:33:49 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 22:45:17 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	cylon_null_1(t_cylon *cln)
 {
-	cln->_ch = INFINITY;
+	cln->ch_p = INFINITY;
 	cln->t1 = INFINITY;
 	cln->t2 = INFINITY;
-	cln->_oh = 0;
-	cln->_hxp = 0;
-	cln->_oxp1 = 0;
-	cln->_oxp2 = 0;
+	cln->oh_p = 0;
+	cln->hxp_p = 0;
+	cln->oxp1_p = 0;
+	cln->oxp2_p = 0;
 	cln->angle = 0;
 	cln->sin_alpha = 0;
 }
@@ -29,12 +29,12 @@ void	cylon_null(t_cylon *cln)
 {
 	cylon_null_1(cln);
 	p_make(&cln->o, 0, 0, 0);
-	p_make(&cln->_o, 0, 0, 0);
+	p_make(&cln->o_p, 0, 0, 0);
 	p_make(&cln->o_nb, 0, 0, 0);
 	p_make(&cln->c, 0, 0, 0);
-	p_make(&cln->_c, 0, 0, 0);
+	p_make(&cln->c_p, 0, 0, 0);
 	p_make(&cln->d, 0, 0, 0);
-	p_make(&cln->_d, 0, 0, 0);
+	p_make(&cln->d_p, 0, 0, 0);
 	p2d_make(&cln->d_nb, 0, 0);
 	p_make(&cln->xp1, 0, 0, 0);
 	p_make(&cln->xp2, 0, 0, 0);
@@ -88,7 +88,7 @@ void	cylon_cnvrse(t_cylon *cln, t_look_at *lkt)
 	t_point		ptmp;
 
 	mtrx4_x_point(&cln->o_nb, &lkt->m, &cln->o);
-	mtrx4_x_point(&ptmp, &lkt->m, &cln->_d);
+	mtrx4_x_point(&ptmp, &lkt->m, &cln->d_p);
 	cln->d_nb.x = ptmp.x;
 	cln->d_nb.y = ptmp.y;
 	v_null(&vtmp);

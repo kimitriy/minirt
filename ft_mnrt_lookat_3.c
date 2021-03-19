@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 12:44:31 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 20:20:41 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 01:10:19 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,13 @@ void	cnvrse_trngl(t_scn *nscn, t_scn *lscn, t_look_at *lookat)
 	}
 }
 
-void	cnvrse2local(t_scn *lscn, t_scn *nscn)
+void	cnvrse2local(t_scn *lscn, t_scn *nscn, int h)
 {
 	t_cam		*cam;
 	t_look_at	lookat;
 
-	nscn->n_cam = nscn->frst_cam;
+	if (h != 77777)
+		nscn->n_cam = nscn->frst_cam;
 	cam = nscn->n_cam->content;
 	look_at_mtrx(&lookat, &cam->v, &cam->p);
 	lscn->n_rsltn = nscn->n_rsltn;
@@ -86,12 +87,12 @@ void	cnvrse2local(t_scn *lscn, t_scn *nscn)
 	cnvrse_trngl(nscn, lscn, &lookat);
 }
 
-void	lookat_node(t_scn *nscn)
+void	lookat_node(t_scn *nscn, int h)
 {
 	t_scn	*lscn;
 
 	lscn = make_t_scn(nscn->save);
 	if (nscn->n_cntr.cam > 0)
-		cnvrse2local(lscn, nscn);
+		cnvrse2local(lscn, nscn, h);
 	rays_node(lscn, nscn);
 }

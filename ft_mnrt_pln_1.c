@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:38:26 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 13:44:29 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 23:21:30 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	pln_null(t_pln *pln)
 
 void	plnx_null(t_plnx *plnx)
 {
-	p_make(&plnx->_o, 0, 0, 0);
+	p_make(&plnx->o, 0, 0, 0);
 	v_null(&plnx->orth);
 	plnx->t = INFINITY;
 }

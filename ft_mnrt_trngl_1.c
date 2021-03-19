@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 20:16:24 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 18:21:11 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 22:38:31 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ void	trgn_null(t_trigon *trgn)
 	v_null(&trgn->v_op);
 	v_null(&trgn->v_minus_f);
 	null_lookat(&trgn->lkt);
-	p2d_make(&trgn->_a, 0, 0);
-	p2d_make(&trgn->_b, 0, 0);
-	p2d_make(&trgn->_c, 0, 0);
-	p2d_make(&trgn->_xp, 0, 0);
-	v2d_null(&trgn->_ab);
-	v2d_null(&trgn->_ac);
-	v2d_null(&trgn->_axp);
-	v2d_null(&trgn->_bc);
-	v2d_null(&trgn->_ba);
-	v2d_null(&trgn->_bxp);
-	v2d_null(&trgn->_ca);
-	v2d_null(&trgn->_cb);
-	v2d_null(&trgn->_cxp);
+	p2d_make(&trgn->p2_a, 0, 0);
+	p2d_make(&trgn->p2_b, 0, 0);
+	p2d_make(&trgn->p2_c, 0, 0);
+	p2d_make(&trgn->p2_xp, 0, 0);
+	v2d_null(&trgn->v2_ab);
+	v2d_null(&trgn->v2_ac);
+	v2d_null(&trgn->v2_axp);
+	v2d_null(&trgn->v2_bc);
+	v2d_null(&trgn->v2_ba);
+	v2d_null(&trgn->v2_bxp);
+	v2d_null(&trgn->v2_ca);
+	v2d_null(&trgn->v2_cb);
+	v2d_null(&trgn->v2_cxp);
 }
 
 void	nrml_make(t_trngl *trngl)
@@ -67,31 +67,31 @@ void	trgn_converse(t_trngl *trngl)
 
 	p_make(&tmp, 0, 0, 0);
 	mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->p1);
-	trngl->trgn._a.x = tmp.x;
-	trngl->trgn._a.y = tmp.y;
+	trngl->trgn.p2_a.x = tmp.x;
+	trngl->trgn.p2_a.y = tmp.y;
 	p_make(&tmp, 0, 0, 0);
 	mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->p2);
-	trngl->trgn._b.x = tmp.x;
-	trngl->trgn._b.y = tmp.y;
+	trngl->trgn.p2_b.x = tmp.x;
+	trngl->trgn.p2_b.y = tmp.y;
 	p_make(&tmp, 0, 0, 0);
 	mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->p3);
-	trngl->trgn._c.x = tmp.x;
-	trngl->trgn._c.y = tmp.y;
+	trngl->trgn.p2_c.x = tmp.x;
+	trngl->trgn.p2_c.y = tmp.y;
 	p_make(&tmp, 0, 0, 0);
 	mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->trgn.xp);
-	trngl->trgn._xp.x = tmp.x;
-	trngl->trgn._xp.y = tmp.y;
+	trngl->trgn.p2_xp.x = tmp.x;
+	trngl->trgn.p2_xp.y = tmp.y;
 }
 
 void	vctr2d_make(t_trngl *trngl)
 {
-	v2d_make(&trngl->trgn._ab, &trngl->trgn._a, &trngl->trgn._b);
-	v2d_make(&trngl->trgn._ac, &trngl->trgn._a, &trngl->trgn._c);
-	v2d_make(&trngl->trgn._axp, &trngl->trgn._a, &trngl->trgn._xp);
-	v2d_make(&trngl->trgn._bc, &trngl->trgn._b, &trngl->trgn._c);
-	v2d_make(&trngl->trgn._ba, &trngl->trgn._b, &trngl->trgn._a);
-	v2d_make(&trngl->trgn._bxp, &trngl->trgn._b, &trngl->trgn._xp);
-	v2d_make(&trngl->trgn._ca, &trngl->trgn._c, &trngl->trgn._a);
-	v2d_make(&trngl->trgn._cb, &trngl->trgn._c, &trngl->trgn._b);
-	v2d_make(&trngl->trgn._cxp, &trngl->trgn._c, &trngl->trgn._xp);
+	v2d_make(&trngl->trgn.v2_ab, &trngl->trgn.p2_a, &trngl->trgn.p2_b);
+	v2d_make(&trngl->trgn.v2_ac, &trngl->trgn.p2_a, &trngl->trgn.p2_c);
+	v2d_make(&trngl->trgn.v2_axp, &trngl->trgn.p2_a, &trngl->trgn.p2_xp);
+	v2d_make(&trngl->trgn.v2_bc, &trngl->trgn.p2_b, &trngl->trgn.p2_c);
+	v2d_make(&trngl->trgn.v2_ba, &trngl->trgn.p2_b, &trngl->trgn.p2_a);
+	v2d_make(&trngl->trgn.v2_bxp, &trngl->trgn.p2_b, &trngl->trgn.p2_xp);
+	v2d_make(&trngl->trgn.v2_ca, &trngl->trgn.p2_c, &trngl->trgn.p2_a);
+	v2d_make(&trngl->trgn.v2_cb, &trngl->trgn.p2_c, &trngl->trgn.p2_b);
+	v2d_make(&trngl->trgn.v2_cxp, &trngl->trgn.p2_c, &trngl->trgn.p2_xp);
 }

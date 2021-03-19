@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:48:02 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 12:32:52 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 22:46:10 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	pln_calc(t_cylon *cln)
 		p_calc(&cln->p, &cln->v_d.xyz, &cln->o);
 		v_make(&cln->v_p_c, &cln->p, &cln->pln.p);
 	}
-	p_copy(&cln->_o, &plnx._o);
-	v_make(&cln->v_o_c, &cln->_o, &cln->pln.p);
+	p_copy(&cln->o_p, &plnx.o);
+	v_make(&cln->v_o_c, &cln->o_p, &cln->pln.p);
 	v_copy(&tmp, &plnx.orth);
 	plnx_null(&plnx);
 	plnx = pln_equation(&cln->pln.p, &cln->d, &cln->pln.v, &tmp);
-	p_copy(&cln->_d, &plnx._o);
-	v_make(&cln->v_od, &cln->_o, &cln->_d);
+	p_copy(&cln->d_p, &plnx.o);
+	v_make(&cln->v_od, &cln->o_p, &cln->d_p);
 }
 
 void	cln_angles(t_cylon *cln)
@@ -50,7 +50,7 @@ void	ch_calc(t_cylon *cln, t_look_at *lkt)
 
 	cylon_cnvrse(cln, lkt);
 	tmp = v2d_pd_prdct(&cln->v_od_nb, &cln->v_oc_nb);
-	cln->_ch = fabsf(tmp / cln->v_od_nb.lngth);
+	cln->ch_p = fabsf(tmp / cln->v_od_nb.lngth);
 }
 
 void	calc_nrml_cyl(t_cylon *cln, t_cyl *cyl)

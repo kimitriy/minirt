@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:48:14 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 12:34:01 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 22:50:14 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	find_roots(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 	float	r;
 
 	r = cyl->d / 2;
-	cln->_oh = sqrtf(powf(cln->v_o_c.lngth, 2) - powf(cln->_ch, 2));
-	cln->_hxp = sqrtf(powf(r, 2) - powf(cln->_ch, 2));
+	cln->oh_p = sqrtf(powf(cln->v_o_c.lngth, 2) - powf(cln->ch_p, 2));
+	cln->hxp_p = sqrtf(powf(r, 2) - powf(cln->ch_p, 2));
 	if (cln->v_o_c.lngth <= r && cln->v_p_c.lngth <= r && cln->o_nb.z < 0)
 		case1_2(cln, lkt);
 	else if (cln->v_o_c.lngth <= r && cln->o_nb.z >= 0 && cln->o_nb.z <= cyl->h)
@@ -27,9 +27,9 @@ void	find_roots(t_cylon *cln, t_cyl *cyl, t_look_at *lkt)
 	{
 		if (cln->angle < 90)
 		{
-			if (cln->_ch < r)
+			if (cln->ch_p < r)
 				case3(cln);
-			else if (cln->_ch == r)
+			else if (cln->ch_p == r)
 				case4(cln);
 			else
 				cylon_null(cln);

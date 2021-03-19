@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:14:59 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 09:31:26 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 01:17:32 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	check_node(char **scn_arr, int size)
 	t_vldt	v;
 
 	vldt_null(&v);
-	rt_print(scn_arr, size);
 	i = 0;
 	while (i < size)
 	{

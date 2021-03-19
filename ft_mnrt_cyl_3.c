@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:48:08 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 12:33:17 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 22:49:27 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	oxp_calc(t_cylon *cln, t_look_at *lkt)
 
 	v_crss_prdct(&t.v_ort.xyz, &cln->v_od.nxyz, &cln->pln.v.nxyz);
 	v_fill(&t.v_ort);
-	p_calc(&t.ort, &t.v_ort.xyz, &cln->_o);
+	p_calc(&t.ort, &t.v_ort.xyz, &cln->o_p);
 	mtrx4_x_point(&t.ort, &lkt->m, &t.ort);
 	p2d_make(&t.ort_nb, t.ort.x, t.ort.y);
 	p2d_make(&t.o_nb, cln->o_nb.x, cln->o_nb.y);
@@ -29,13 +29,13 @@ void	oxp_calc(t_cylon *cln, t_look_at *lkt)
 	t.tmp = v2d_pd_prdct(&t.v_ort_o, &t.v_ort_d) *
 		v2d_pd_prdct(&t.v_ort_o, &t.v_ort_c);
 	if (t.tmp < 0)
-		cln->_oxp1 = cln->_hxp - cln->_oh;
+		cln->oxp1_p = cln->hxp_p - cln->oh_p;
 	else if (t.tmp > 0)
-		cln->_oxp1 = cln->_hxp + cln->_oh;
+		cln->oxp1_p = cln->hxp_p + cln->oh_p;
 	else if (t.tmp == 0)
 	{
 		if (v2d_pd_prdct(&t.v_ort_o, &t.v_ort_c) == 0 && cln->v_od.lngth != 0)
-			cln->_oxp1 = cln->_hxp;
+			cln->oxp1_p = cln->hxp_p;
 	}
 	else
 		cylon_null(cln);
@@ -44,23 +44,23 @@ void	oxp_calc(t_cylon *cln, t_look_at *lkt)
 void	case1_2(t_cylon *cln, t_look_at *lkt)
 {
 	oxp_calc(cln, lkt);
-	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
+	cln->t1 = 0.999965 * cln->oxp1_p / cln->sin_alpha;
 	xp_cyl(cln);
 }
 
 void	case3(t_cylon *cln)
 {
-	cln->_oxp1 = cln->_oh - cln->_hxp;
-	cln->_oxp2 = cln->_oh + cln->_hxp;
-	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
-	cln->t2 = 0.999965 * cln->_oxp2 / cln->sin_alpha;
+	cln->oxp1_p = cln->oh_p - cln->hxp_p;
+	cln->oxp2_p = cln->oh_p + cln->hxp_p;
+	cln->t1 = 0.999965 * cln->oxp1_p / cln->sin_alpha;
+	cln->t2 = 0.999965 * cln->oxp2_p / cln->sin_alpha;
 	xp_cyl(cln);
 }
 
 void	case4(t_cylon *cln)
 {
-	cln->_oxp1 = cln->_oh;
-	cln->t1 = 0.999965 * cln->_oxp1 / cln->sin_alpha;
+	cln->oxp1_p = cln->oh_p;
+	cln->t1 = 0.999965 * cln->oxp1_p / cln->sin_alpha;
 	xp_cyl(cln);
 }
 

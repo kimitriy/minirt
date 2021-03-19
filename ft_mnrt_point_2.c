@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 13:49:17 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 13:49:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 23:20:16 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void	p2pln_prjctn(t_plnx *plnx, t_pln *pln, t_point *p)
 	v_null(&plnx->orth);
 	v_n_prdct(&plnx->orth.xyz, &pln->v.nxyz, d1);
 	v_fill(&plnx->orth);
-	p_calc(&plnx->_o, &plnx->orth.xyz, p);
+	p_calc(&plnx->o, &plnx->orth.xyz, p);
 }
