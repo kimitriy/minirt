@@ -6,14 +6,14 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 16:45:03 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/04 05:16:38 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:41:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minirt.h"
 
 void	check_objcts(t_scn *lscn, t_ray *ray)
-{	
+{
 	check_sphrs(lscn, ray);
 	check_trngls(lscn, ray);
 	check_sqrs(lscn, ray);
@@ -25,7 +25,7 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 {
 	int		i;
 	t_lght	*lght;
-	
+
 	lscn->n_lght = lscn->frst_lght;
 	i = 0;
 	color_null(&ray->p_trgb);
@@ -37,7 +37,7 @@ void	check_lghts(t_scn *lscn, t_ray *ray)
 			ray->tail_p = ray->hit_p;
 			ray->head_p = lght->p;
 			ray->sgm = 1;
-			v_make(&ray->vctr[1], &ray->tail_p, &ray->head_p); //!!!
+			v_make(&ray->vctr[1], &ray->tail_p, &ray->head_p);
 			check_objcts(lscn, ray);
 		}
 		if (ray->dist < INFINITY && ray->sgm > 0)

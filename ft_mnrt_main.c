@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:54:57 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/18 16:15:47 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/19 13:09:31 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	check_argv(int argc, char **argv, char *save)
 			err_message("Wrong type of scene file.");
 	}
 	if (argv[2] != NULL)
-	{	
+	{
 		if (ft_strcmp(argv[2], "--save") != 0)
 			err_message("Second argument is incorrect.");
 		else
@@ -64,7 +64,7 @@ int		main(int argc, char **argv)
 	check_argv(argc, argv, &save);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		err_message("Scene file doesn't exist or unable to read the scene file.");
+		err_message("Scene file doesn't exist or cannot be read.");
 	line = NULL;
 	head = NULL;
 	while (get_next_line(fd, &line))
