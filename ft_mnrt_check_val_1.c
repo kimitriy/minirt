@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 08:14:57 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/22 12:31:27 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 16:15:12 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,23 @@ void	check_val_color(t_prsr *np)
 
 void	check_val_coordinates(char *x, char *y, char *z, char v)
 {
-	double	dx;
-	double	dy;
-	double	dz;
-	t_point	tp;
-	t_point hp;
-	t_vctr	tmp;
+	t_check_val_coordinates t;
 
-	dx = ft_atof(x);
-	dy = ft_atof(y);
-	dz = ft_atof(z);
-	if ((dx < -1 * __FLT_MAX__) || (dx > __FLT_MAX__))
+	t.dx = ft_atof(x);
+	t.dy = ft_atof(y);
+	t.dz = ft_atof(z);
+	if ((t.dx < -1 * __FLT_MAX__) || (t.dx > __FLT_MAX__))
 		err_message("Unable to apply coordinates.");
-	if ((dy < -1 * __FLT_MAX__) || (dy > __FLT_MAX__))
+	if ((t.dy < -1 * __FLT_MAX__) || (t.dy > __FLT_MAX__))
 		err_message("Unable to apply coordinates.");
-	if ((dz < -1 * __FLT_MAX__) || (dz > __FLT_MAX__))
+	if ((t.dz < -1 * __FLT_MAX__) || (t.dz > __FLT_MAX__))
 		err_message("Unable to apply coordinates.");
 	if (v == 'v')
 	{
-		p_make(&tp, 0, 0, 0);
-		p_make(&hp, dx, dy, dz);
-		v_make(&tmp, &tp, &hp);
-		if (tmp.lngth > 1 || tmp.lngth == 0)
+		p_make(&t.tp, 0, 0, 0);
+		p_make(&t.hp, t.dx, t.dy, t.dz);
+		v_make(&t.tmp, &t.tp, &t.hp);
+		if (roundf(t.tmp.lngth * 100) / 100 > 1 || t.tmp.lngth == 0)
 			err_message("Unable to apply vector coordinates.");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 18:51:13 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 18:03:10 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 15:04:39 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	make_t_cam(t_scn *scn)
 	t_cam	*new_cam;
 
 	if (!(new_cam = (t_cam*)malloc(1 * sizeof(t_cam))))
-		new_cam = NULL;
+		err_message("Memory allocation error.");
 	p_make(&new_cam->p, 0, 0, 0);
 	v_null(&new_cam->v);
 	new_cam->fov = 0;
@@ -50,7 +50,7 @@ void	make_t_lght(t_scn *scn)
 	t_lght	*new_lght;
 
 	if (!(new_lght = (t_lght*)malloc(1 * sizeof(t_lght))))
-		new_lght = NULL;
+		err_message("Memory allocation error.");
 	t_lght_null(new_lght);
 	ft_lstadd_back(&scn->n_lght, ft_lstnew(new_lght));
 }

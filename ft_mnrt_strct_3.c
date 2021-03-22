@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 17:57:54 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 18:02:44 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 15:04:38 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_scn	*make_t_scn(char save)
 	t_scn	*scn;
 
 	if (!(scn = (t_scn*)malloc(1 * sizeof(t_scn))))
-		return (NULL);
+		err_message("Memory allocation error.");
 	make_t_cntr(scn);
 	make_t_rsltn(scn);
 	make_t_ambnt(scn);

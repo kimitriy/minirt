@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/22 12:17:28 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 16:24:54 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,16 @@ typedef struct		s_sphr_intrsct
 	float			dscr;
 	float			root;
 }					t_sphr_intrsct;
+
+typedef struct		s_check_val_coordinates
+{
+	double			dx;
+	double			dy;
+	double			dz;
+	t_point			tp;
+	t_point			hp;
+	t_vctr			tmp;
+}					t_check_val_coordinates;
 
 typedef struct		s_lum
 {

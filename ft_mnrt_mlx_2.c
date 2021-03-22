@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 13:28:10 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 13:28:32 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 15:08:23 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	img2win(t_scn *nscn, unsigned int **arr)
 void	mlx_node(t_scn *nscn, unsigned int **arr)
 {
 	nscn->vrs.mlx = mlx_init();
+	if (nscn->vrs.mlx == NULL)
+		err_message("Unable to initialize mlx instance.");
 	nscn->vrs.win = mlx_new_window(nscn->vrs.mlx,
 		nscn->n_rsltn.x, nscn->n_rsltn.y, "miniRT");
 	nscn->dt.img = mlx_new_image(nscn->vrs.mlx,
