@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/02 21:21:29 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 16:09:13 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 13:47:16 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ void	prsr_assist(char *line, t_prsr *np, char *field, int n)
 	f = '0';
 	while (np->j < n)
 	{
-		if ((ft_isdigit(line[np->i]) == 1 || line[np->i] == '.'
-			|| line[np->i] == '-') && np->j < n)
+		if (line[np->i] == '0' && f == '0' && line[np->i + 1] != '.' &&
+			line[np->i + 1] != '\0' && line[np->i + 1] != ',' &&
+			line[np->i + 1] != '9' && line[np->i + 1] != ' ')
+			np->i++;
+		else if ((ft_isdigit(line[np->i]) == 1 || line[np->i] == '.' || line[np->i] == '-'))
 		{
 			field[np->j] = line[np->i];
 			np->i++;
