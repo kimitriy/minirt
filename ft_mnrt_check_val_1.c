@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 08:14:57 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 09:11:34 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 12:31:27 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,14 @@ void	check_val_color(t_prsr *np)
 		err_message("Unable to apply color.");
 }
 
-void	check_val_coordinates(char *x, char *y, char *z)
+void	check_val_coordinates(char *x, char *y, char *z, char v)
 {
 	double	dx;
 	double	dy;
 	double	dz;
+	t_point	tp;
+	t_point hp;
+	t_vctr	tmp;
 
 	dx = ft_atof(x);
 	dy = ft_atof(y);
@@ -47,6 +50,14 @@ void	check_val_coordinates(char *x, char *y, char *z)
 		err_message("Unable to apply coordinates.");
 	if ((dz < -1 * __FLT_MAX__) || (dz > __FLT_MAX__))
 		err_message("Unable to apply coordinates.");
+	if (v == 'v')
+	{
+		p_make(&tp, 0, 0, 0);
+		p_make(&hp, dx, dy, dz);
+		v_make(&tmp, &tp, &hp);
+		if (tmp.lngth > 1 || tmp.lngth == 0)
+			err_message("Unable to apply vector coordinates.");
+	}
 }
 
 void	check_val_uint(char *n, int lim, char *mssg)
@@ -60,11 +71,14 @@ void	check_val_uint(char *n, int lim, char *mssg)
 		err_message(mssg);
 }
 
-void	check_val_float(char *n, char *mssg)
+void	check_val_float(char *n, char pos, char *mssg)
 {
 	double	tmp;
 
-	tmp = ft_atoi(n);
+	tmp = ft_atof(n);
 	if (tmp < (double)(-1 * __FLT_MAX__) || tmp > (double)__FLT_MAX__)
 		err_message(mssg);
+	if (pos == '+')
+		if (tmp <= 0)
+			err_message(mssg);
 }

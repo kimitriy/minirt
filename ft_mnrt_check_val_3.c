@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:09:01 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 09:11:08 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 12:20:33 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,33 @@
 
 void	check_val_sphr(t_prsr *np)
 {
-	check_val_coordinates(np->x, np->y, np->z);
-	check_val_float(np->d, "Unable to apply diameter.");
+	check_val_coordinates(np->x, np->y, np->z, 'p');
+	check_val_float(np->d, '+', "Unable to apply diameter.");
 	check_val_color(np);
 }
 
 void	check_val_cyl(t_prsr *np)
 {
-	check_val_coordinates(np->x, np->y, np->z);
-	check_val_coordinates(np->nx, np->ny, np->nz);
-	check_val_float(np->d, "Unable to apply diameter.");
-	check_val_float(np->d, "Unable to apply height.");
+	check_val_coordinates(np->x, np->y, np->z, 'p');
+	check_val_coordinates(np->nx, np->ny, np->nz, 'v');
+	check_val_float(np->d, '+', "Unable to apply diameter.");
+	check_val_float(np->h, '+', "Unable to apply height.");
 	check_val_color(np);
 }
 
 void	check_val_sqr(t_prsr *np)
 {
-	check_val_coordinates(np->x, np->y, np->z);
-	check_val_coordinates(np->nx, np->ny, np->nz);
-	check_val_float(np->side, "Unable to apply side.");
+	check_val_coordinates(np->x, np->y, np->z, 'p');
+	check_val_coordinates(np->nx, np->ny, np->nz, 'v');
+	check_val_float(np->side, '+', "Unable to apply side.");
 	check_val_color(np);
 }
 
 void	check_val_trngl(t_prsr *np)
 {
-	check_val_coordinates(np->x, np->y, np->z);
-	check_val_coordinates(np->x2, np->y2, np->z2);
-	check_val_coordinates(np->x3, np->y3, np->z3);
+	check_val_coordinates(np->x, np->y, np->z, 'p');
+	check_val_coordinates(np->x2, np->y2, np->z2, 'p');
+	check_val_coordinates(np->x3, np->y3, np->z3, 'p');
 	check_val_color(np);
 }
 

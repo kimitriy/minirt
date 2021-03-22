@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 21:32:54 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 13:49:35 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 12:08:01 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,10 @@ void	p_copy(t_point *out, t_point *in)
 	out->x = in->x;
 	out->y = in->y;
 	out->z = in->z;
+}
+
+void	p3dt2d_conv(t_2d_point *out, float x, float y)
+{
+	out->x = x;
+	out->y = y;
 }

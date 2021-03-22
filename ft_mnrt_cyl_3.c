@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 09:48:08 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 22:49:27 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 11:23:47 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	oxp_calc(t_cylon *cln, t_look_at *lkt)
 	v_fill(&t.v_ort);
 	p_calc(&t.ort, &t.v_ort.xyz, &cln->o_p);
 	mtrx4_x_point(&t.ort, &lkt->m, &t.ort);
-	p2d_make(&t.ort_nb, t.ort.x, t.ort.y);
-	p2d_make(&t.o_nb, cln->o_nb.x, cln->o_nb.y);
+	p3dt2d_conv(&t.ort_nb, t.ort.x, t.ort.y);
+	p3dt2d_conv(&t.o_nb, cln->o_nb.x, cln->o_nb.y);
 	p2d_make(&t.c_nb, 0, 0);
 	v2d_make(&t.v_ort_o, &t.ort_nb, &t.o_nb);
 	v2d_make(&t.v_ort_d, &t.ort_nb, &cln->d_nb);

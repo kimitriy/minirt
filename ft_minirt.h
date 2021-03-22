@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:54:23 by mspinnet          #+#    #+#             */
-/*   Updated: 2021/03/20 01:17:50 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/22 12:17:28 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ typedef struct		s_trigon
 	t_vctr			v_op;
 	t_vctr			v_minus_f;
 	t_look_at		lkt;
+
 	t_2d_point		p2_a;
 	t_2d_point		p2_b;
 	t_2d_point		p2_c;
@@ -528,6 +529,7 @@ void				p2d_make(t_2d_point *out, int x, int y);
 void				p_make(t_point *output, float x, float y, float z);
 void				p_calc(t_point *out, t_vxyz *vctr, t_point *tail);
 void				p_copy(t_point *out, t_point *in);
+void				p3dt2d_conv(t_2d_point *out, float x, float y);
 
 int					p_is_equal(t_point *p1, t_point *p2);
 void				p2pln_prjctn(t_plnx *plnx, t_pln *pln, t_point *p);
@@ -706,9 +708,9 @@ void				check_line(char *line, t_vldt *v);
 void				check_node(char **scn_arr, int size);
 
 void				check_val_color(t_prsr *np);
-void				check_val_coordinates(char *x, char *y, char *z);
+void				check_val_coordinates(char *x, char *y, char *z, char v);
 void				check_val_uint(char *n, int lim, char *mssg);
-void				check_val_float(char *n, char *mssg);
+void				check_val_float(char *n, char pos, char *mssg);
 
 void				check_val_rsltn(t_prsr *np);
 void				check_val_ambnt(t_prsr *np);

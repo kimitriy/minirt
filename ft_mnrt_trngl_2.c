@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 18:20:24 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 22:40:10 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 02:54:04 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	trngl_intrsct(t_scn *lscn, t_trngl *trngl, t_ray *ray)
 		v_copy(&ray->vctr[0], &trngl->trgn.v_op);
 		p_copy(&ray->hit_p, &trngl->trgn.xp);
 	}
-	if (trngl->trgn.xp_in == '+' && ray->sgm == 1 && trngl->trgn.t > 0.000147
-		&& ray->shdw != 'y' && trngl->trgn.t < ray->vctr[1].lngth)
+	if (trngl->trgn.xp_in == '+' && ray->sgm == 1 && trngl->trgn.t > 0.000147 &&
+		ray->shdw != 'y' && trngl->trgn.t < ray->vctr[1].lngth)
 		ray->shdw = 'y';
 }
 

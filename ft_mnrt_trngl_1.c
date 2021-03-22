@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 20:16:24 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/19 22:38:31 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/20 02:50:15 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	trgn_null(t_trigon *trgn)
 {
+	trgn->t = 0;
 	trgn->xp_in = '\0';
 	p_make(&trgn->xp, 0, 0, 0);
 	v_null(&trgn->v_ab);
@@ -56,6 +57,7 @@ void	xp_calc(t_trngl *trngl, t_ray *ray)
 	{
 		v_null(&trngl->trgn.v_op);
 		v_n_prdct(&trngl->trgn.v_op.xyz, &ray->vctr[ray->sgm].nxyz, t);
+		v_fill(&trngl->trgn.v_op);
 		p_calc(&trngl->trgn.xp, &trngl->trgn.v_op.xyz, &ray->tail_p);
 		trngl->trgn.t = t;
 	}
@@ -63,7 +65,7 @@ void	xp_calc(t_trngl *trngl, t_ray *ray)
 
 void	trgn_converse(t_trngl *trngl)
 {
-	t_point	tmp;
+	t_point tmp;
 
 	p_make(&tmp, 0, 0, 0);
 	mtrx4_x_point(&tmp, &trngl->trgn.lkt.m, &trngl->p1);
