@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:23:50 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/20 12:09:22 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/24 13:24:32 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	launch_rays(t_scn *lscn, unsigned int **rays_arr, t_ray *ray)
 				rays_arr[y][x] = (unsigned int)cnvrse2trgb(&ray->p_trgb);
 				ray_null(ray);
 			}
-			x = 0;
+			x = -1;
 		}
 	}
 	else

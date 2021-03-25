@@ -6,7 +6,7 @@
 /*   By: rburton <rburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 08:14:57 by rburton           #+#    #+#             */
-/*   Updated: 2021/03/22 16:15:12 by rburton          ###   ########.fr       */
+/*   Updated: 2021/03/24 12:28:22 by rburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	check_val_color(t_prsr *np)
 {
-	float	lvl;
+	double	lvl;
 	int		r;
 	int		g;
 	int		b;
@@ -62,7 +62,7 @@ void	check_val_uint(char *n, int lim, char *mssg)
 	if (ft_strchr(n, '.') != NULL)
 		err_message(mssg);
 	tmp = ft_atoi(n);
-	if (tmp < 0 || tmp > lim)
+	if (tmp <= 0 || tmp > lim)
 		err_message(mssg);
 }
 
